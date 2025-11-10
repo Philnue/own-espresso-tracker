@@ -14,6 +14,7 @@ struct FinishBrewView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BrewingViewModel
 
+    let brewMethod: String
     let grinder: Grinder?
     let machine: Machine?
     let bean: Bean?
@@ -212,6 +213,7 @@ struct FinishBrewView: View {
             grinder: grinder,
             machine: machine,
             bean: bean,
+            brewMethod: brewMethod,
             grindSetting: viewModel.grindSetting,
             doseIn: dose,
             yieldOut: yield,

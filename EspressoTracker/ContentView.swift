@@ -2,42 +2,49 @@
 //  ContentView.swift
 //  EspressoTracker
 //
-//  Main navigation and tab view
+//  Main tab view navigation
 //
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State private var selectedTab = 0
+    @StateObject private var settings = UserSettings.shared
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView {
             BrewingView()
                 .tabItem {
                     Label("Brew", systemImage: "cup.and.saucer.fill")
                 }
-                .tag(0)
 
             HistoryView()
                 .tabItem {
                     Label("History", systemImage: "clock.fill")
                 }
-                .tag(1)
-
-            EquipmentView()
-                .tabItem {
-                    Label("Equipment", systemImage: "wrench.and.screwdriver.fill")
-                }
-                .tag(2)
 
             BeansView()
                 .tabItem {
                     Label("Beans", systemImage: "leaf.fill")
                 }
-                .tag(3)
+
+            RecipeCalculatorView()
+                .tabItem {
+                    Label("Recipes", systemImage: "book.fill")
+                }
+
+            EquipmentView()
+                .tabItem {
+                    Label("Equipment", systemImage: "gearshape.fill")
+                }
+
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
         }
         .accentColor(.espressoBrown)
+        .preferredColorScheme(settings.preferredColorScheme)
     }
 }
 

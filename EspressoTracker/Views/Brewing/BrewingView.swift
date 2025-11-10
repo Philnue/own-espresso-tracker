@@ -11,6 +11,7 @@ import SwiftData
 struct BrewingView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel = BrewingViewModel()
+    @StateObject private var settings = UserSettings.shared
 
     @Query(sort: \Grinder.name) private var grinders: [Grinder]
     @Query(sort: \Machine.name) private var machines: [Machine]
@@ -19,6 +20,7 @@ struct BrewingView: View {
     @State private var selectedGrinder: Grinder?
     @State private var selectedMachine: Machine?
     @State private var selectedBean: Bean?
+    @State private var selectedMethod: BrewMethod = .espresso
     @State private var showingFinishSheet = false
 
     var body: some View {
@@ -28,6 +30,9 @@ struct BrewingView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
+                        // Brewing method selector
+                        methodSelector
+
                         // Stopwatch section
                         stopwatchSection
 
@@ -50,10 +55,52 @@ struct BrewingView: View {
             .sheet(isPresented: $showingFinishSheet) {
                 FinishBrewView(
                     viewModel: viewModel,
+                    brewMethod: selectedMethod.rawValue.lowercased(),
                     grinder: selectedGrinder,
                     machine: selectedMachine,
                     bean: selectedBean
                 )
+            }
+            .onAppear {
+                // Load default settings
+                viewModel.doseIn = String(settings.defaultDoseIn)
+                viewModel.targetRatio = settings.defaultRatio
+                viewModel.waterTemp = String(settings.defaultWaterTemp)
+                viewModel.pressure = String(settings.defaultPressure)
+                if let method = BrewMethod.allCases.first(where: { $0.rawValue.lowercased() == settings.defaultBrewMethod }) {
+                    selectedMethod = method
+                }
+            }
+        }
+    }
+
+    private var methodSelector: some View {
+        CustomCard {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Brewing Method")
+                    .font(.headline)
+                    .foregroundColor(.textPrimary)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(BrewMethod.allCases, id: \.self) { method in
+                            Button(action: {
+                                selectedMethod = method
+                            }) {
+                                VStack(spacing: 4) {
+                                    Image(systemName: method.icon)
+                                        .font(.title3)
+                                    Text(method.rawValue)
+                                        .font(.caption2)
+                                }
+                                .frame(width: 70, height: 60)
+                                .foregroundColor(selectedMethod == method ? .white : .textSecondary)
+                                .background(selectedMethod == method ? Color.espressoBrown : Color.backgroundSecondary)
+                                .cornerRadius(10)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

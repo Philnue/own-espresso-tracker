@@ -13,12 +13,13 @@ final class BrewingSession {
     @Attribute(.unique) var id: UUID
     var startTime: Date
     var endTime: Date
+    var brewMethod: String // "espresso", "aeropress", "frenchPress", "coldBrew", "pourOver", "moka"
     var grindSetting: String
     var doseIn: Double // Input dose in grams
     var yieldOut: Double // Output yield in grams
     var brewTime: Double // Time in seconds
     var waterTemp: Double // Temperature in Celsius
-    var pressure: Double // Pressure in bars
+    var pressure: Double // Pressure in bars (for espresso)
     var rating: Int // 1-5 stars
     var notes: String
     @Attribute(.externalStorage) var imageData: Data?
@@ -37,6 +38,7 @@ final class BrewingSession {
         id: UUID = UUID(),
         startTime: Date = Date(),
         endTime: Date = Date(),
+        brewMethod: String = "espresso",
         grindSetting: String = "",
         doseIn: Double = 0,
         yieldOut: Double = 0,
@@ -54,6 +56,7 @@ final class BrewingSession {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
+        self.brewMethod = brewMethod
         self.grindSetting = grindSetting
         self.doseIn = doseIn
         self.yieldOut = yieldOut

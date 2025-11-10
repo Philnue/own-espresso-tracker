@@ -131,10 +131,11 @@ class DataManager {
     }
 
     // MARK: - Brewing Session Operations
-    func createBrewingSession(grinder: Grinder?, machine: Machine?, bean: Bean?, grindSetting: String, doseIn: Double, yieldOut: Double, brewTime: Double, waterTemp: Double, pressure: Double, rating: Int, notes: String, imageData: Data?) {
+    func createBrewingSession(grinder: Grinder?, machine: Machine?, bean: Bean?, brewMethod: String = "espresso", grindSetting: String, doseIn: Double, yieldOut: Double, brewTime: Double, waterTemp: Double, pressure: Double, rating: Int, notes: String, imageData: Data?) {
         let session = BrewingSession(
             startTime: Date(),
             endTime: Date().addingTimeInterval(brewTime),
+            brewMethod: brewMethod,
             grindSetting: grindSetting,
             doseIn: doseIn,
             yieldOut: yieldOut,

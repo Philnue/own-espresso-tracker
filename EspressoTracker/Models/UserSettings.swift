@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-@MainActor
 class UserSettings: ObservableObject {
     static let shared = UserSettings()
 

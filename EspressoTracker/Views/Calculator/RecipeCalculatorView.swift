@@ -125,7 +125,7 @@ struct RecipeCalculatorView: View {
                 HStack {
                     Image(systemName: "info.circle")
                         .foregroundColor(.espressoBrown)
-                    Text("Typical ratio: 1:\(selectedMethod.typicalRatio.lowerBound, specifier: "%.0f") - 1:\(selectedMethod.typicalRatio.upperBound, specifier: "%.0f")")
+                    Text("Typical ratio: 1:\(String(format: "%.0f", selectedMethod.typicalRatio.lowerBound)) - 1:\(String(format: "%.0f", selectedMethod.typicalRatio.upperBound))")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }
@@ -143,7 +143,7 @@ struct RecipeCalculatorView: View {
                 HStack(spacing: 20) {
                     // Target Yield
                     VStack {
-                        Text("\(targetYield, specifier: "%.1f")")
+                        Text(String(format: "%.1f", targetYield))
                             .font(.system(size: 42, weight: .bold))
                             .foregroundColor(.espressoBrown)
                         Text("Target Yield (g)")
@@ -158,7 +158,7 @@ struct RecipeCalculatorView: View {
                     // Water Amount
                     VStack {
                         let waterAmount = targetYield - (Double(doseIn) ?? 0)
-                        Text("\(waterAmount, specifier: "%.0f")")
+                        Text(String(format: "%.0f", waterAmount))
                             .font(.system(size: 42, weight: .bold))
                             .foregroundColor(.espressoBrown)
                         Text("Water (ml)")
@@ -195,7 +195,7 @@ struct RecipeCalculatorView: View {
                 InfoRow(
                     icon: "drop.fill",
                     label: "Typical Ratio",
-                    value: "1:\(selectedMethod.typicalRatio.lowerBound, specifier: "%.0f")-\(selectedMethod.typicalRatio.upperBound, specifier: "%.0f")"
+                    value: "1:\(String(format: "%.0f", selectedMethod.typicalRatio.lowerBound))-\(String(format: "%.0f", selectedMethod.typicalRatio.upperBound))"
                 )
 
                 // Method-specific tips
@@ -396,11 +396,11 @@ struct RecipeRow: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(recipe.dose, specifier: "%.0f")g")
+                    Text("\(String(format: "%.0f", recipe.dose))g")
                         .font(.caption)
                         .fontWeight(.medium)
                         .foregroundColor(.espressoBrown)
-                    Text("1:\(recipe.ratio, specifier: "%.1f")")
+                    Text("1:\(String(format: "%.1f", recipe.ratio))")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
                 }

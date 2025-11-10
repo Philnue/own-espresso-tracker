@@ -35,15 +35,13 @@ struct SessionDetailView: View {
                     // Rating and date
                     CustomCard {
                         VStack(spacing: 16) {
-                            if let date = session.startTime {
-                                VStack(spacing: 8) {
-                                    Text(date.formatted(date: .long, time: .omitted))
-                                        .font(.headline)
-                                        .foregroundColor(.textPrimary)
-                                    Text(date.formatted(date: .omitted, time: .shortened))
-                                        .font(.subheadline)
-                                        .foregroundColor(.textSecondary)
-                                }
+                            VStack(spacing: 8) {
+                                Text(session.startTime.formatted(date: .long, time: .omitted))
+                                    .font(.headline)
+                                    .foregroundColor(.textPrimary)
+                                Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                                    .font(.subheadline)
+                                    .foregroundColor(.textSecondary)
                             }
 
                             // Rating
@@ -120,11 +118,11 @@ struct SessionDetailView: View {
                                 )
                             }
 
-                            if let grindSetting = session.grindSetting, !grindSetting.isEmpty {
+                            if !session.grindSetting.isEmpty {
                                 InfoRow(
                                     icon: "gearshape.2",
                                     label: "Grind Setting",
-                                    value: grindSetting
+                                    value: session.grindSetting
                                 )
                             }
                         }
@@ -179,18 +177,16 @@ struct SessionDetailView: View {
                                             }
                                         }
 
-                                        if let daysFromRoast = bean.daysFromRoast {
-                                            HStack(spacing: 12) {
-                                                Spacer()
-                                                    .frame(width: 24)
-                                                Text("Freshness")
-                                                    .font(.caption)
-                                                    .foregroundColor(.textTertiary)
-                                                Spacer()
-                                                Text("\(daysFromRoast) days from roast")
-                                                    .font(.caption)
-                                                    .foregroundColor(.textSecondary)
-                                            }
+                                        HStack(spacing: 12) {
+                                            Spacer()
+                                                .frame(width: 24)
+                                            Text("Freshness")
+                                                .font(.caption)
+                                                .foregroundColor(.textTertiary)
+                                            Spacer()
+                                            Text("\(bean.daysFromRoast) days from roast")
+                                                .font(.caption)
+                                                .foregroundColor(.textSecondary)
                                         }
                                     }
                                 }

@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 @MainActor
-class DataManager: ObservableObject {
+class DataManager {
     let modelContext: ModelContext
 
     init(modelContext: ModelContext) {

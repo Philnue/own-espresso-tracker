@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct EquipmentView: View {
     @State private var selectedCategory = 0

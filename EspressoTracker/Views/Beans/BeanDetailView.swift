@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct BeanDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct MachineListView: View {
     @Environment(\.managedObjectContext) private var viewContext

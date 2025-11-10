@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import CoreData
 
 struct AddGrinderView: View {
     @Environment(\.managedObjectContext) private var viewContext

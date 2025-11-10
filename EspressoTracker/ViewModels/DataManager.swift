@@ -5,8 +5,9 @@
 //  Central data management for Core Data operations
 //
 
-import CoreData
 import SwiftUI
+import CoreData
+import Combine
 
 class DataManager: ObservableObject {
     let container: NSPersistentCloudKitContainer

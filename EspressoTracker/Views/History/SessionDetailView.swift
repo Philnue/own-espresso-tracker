@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SessionDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext

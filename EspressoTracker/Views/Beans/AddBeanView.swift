@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import CoreData
 
 struct AddBeanView: View {
     @Environment(\.managedObjectContext) private var viewContext

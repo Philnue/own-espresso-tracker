@@ -53,8 +53,8 @@ struct MachineDetailView: View {
                                 .font(.title3)
                                 .foregroundColor(.espressoBrown)
 
-                            if let model = machine.model, !model.isEmpty {
-                                Text("Model: \(model)")
+                            if !machine.model.isEmpty {
+                                Text("Model: \(machine.model)")
                                     .font(.subheadline)
                                     .foregroundColor(.textSecondary)
                             }
@@ -62,19 +62,19 @@ struct MachineDetailView: View {
                             Divider()
                                 .background(Color.dividerColor)
 
-                            if let boilerType = machine.boilerType {
+                            if !machine.boilerType.isEmpty {
                                 InfoRow(
                                     icon: "flame",
                                     label: "Boiler Type",
-                                    value: boilerType
+                                    value: machine.boilerType
                                 )
                             }
 
-                            if let groupHeadType = machine.groupHeadType {
+                            if !machine.groupHeadType.isEmpty {
                                 InfoRow(
                                     icon: "circle.hexagonpath",
                                     label: "Group Head",
-                                    value: groupHeadType
+                                    value: machine.groupHeadType
                                 )
                             }
 
@@ -128,12 +128,11 @@ struct MachineDetailView: View {
                                     value: "\(sessionCount)"
                                 )
 
-                                if let lastSession = machine.sessionsArray.first,
-                                   let date = lastSession.startTime {
+                                if let lastSession = machine.sessionsArray.first {
                                     InfoRow(
                                         icon: "clock",
                                         label: "Last Used",
-                                        value: date.formatted(date: .abbreviated, time: .omitted)
+                                        value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                     )
                                 }
                             }

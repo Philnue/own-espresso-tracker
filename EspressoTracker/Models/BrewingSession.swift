@@ -25,6 +25,13 @@ final class BrewingSession {
     @Attribute(.externalStorage) var imageData: Data?
     var createdAt: Date
 
+    // Taste Profile (1-5 scale)
+    var acidity: Int // Brightness/Sourness
+    var sweetness: Int // Sweet notes
+    var bitterness: Int // Bitter notes
+    var body: Int // Mouthfeel/Weight
+    var aftertaste: Int // Finish quality
+
     @Relationship(deleteRule: .nullify)
     var grinder: Grinder?
 
@@ -49,6 +56,11 @@ final class BrewingSession {
         notes: String = "",
         imageData: Data? = nil,
         createdAt: Date = Date(),
+        acidity: Int = 3,
+        sweetness: Int = 3,
+        bitterness: Int = 3,
+        body: Int = 3,
+        aftertaste: Int = 3,
         grinder: Grinder? = nil,
         machine: Machine? = nil,
         bean: Bean? = nil
@@ -67,6 +79,11 @@ final class BrewingSession {
         self.notes = notes
         self.imageData = imageData
         self.createdAt = createdAt
+        self.acidity = acidity
+        self.sweetness = sweetness
+        self.bitterness = bitterness
+        self.body = body
+        self.aftertaste = aftertaste
         self.grinder = grinder
         self.machine = machine
         self.bean = bean
@@ -118,6 +135,75 @@ final class BrewingSession {
             return "Over-extracted"
         } else {
             return "Optimal"
+        }
+    }
+
+    // Brewing recommendations based on taste profile
+    var recommendations: [String] {
+        var suggestions: [String] = []
+
+        // Analyze bitterness (high = over-extraction)
+        if bitterness >= 4 {
+            suggestions.append("Too bitter: Try coarser grind, lower water temp (88-91°C), or shorter brew time")
+        }
+
+        // Analyze acidity (high = under-extraction or bright beans)
+        if acidity >= 4 {
+            suggestions.append("Too acidic: Try finer grind, higher water temp (93-96°C), or longer brew time")
+        } else if acidity <= 2 {
+            suggestions.append("Lacking brightness: Increase water temp slightly or use fresher beans")
+        }
+
+        // Analyze body
+        if body <= 2 {
+            suggestions.append("Weak body: Increase dose, use finer grind, or higher pressure")
+        } else if body >= 4 {
+            suggestions.append("Too heavy: Decrease dose or try a coarser grind")
+        }
+
+        // Analyze sweetness
+        if sweetness <= 2 {
+            suggestions.append("Lacking sweetness: Ensure proper extraction (25-30s), check bean freshness")
+        }
+
+        // Analyze aftertaste
+        if aftertaste <= 2 {
+            suggestions.append("Poor finish: Check bean quality, adjust extraction time")
+        }
+
+        // Combined analysis
+        if bitterness >= 4 && acidity <= 2 {
+            suggestions.append("Over-extracted: Significantly coarsen grind and reduce brew time")
+        } else if acidity >= 4 && bitterness <= 2 {
+            suggestions.append("Under-extracted: Finer grind and longer brew time needed")
+        }
+
+        // Ratio analysis
+        if brewRatio < 1.5 {
+            suggestions.append("Very concentrated - consider increasing yield for more balance")
+        } else if brewRatio > 3.0 {
+            suggestions.append("Over-diluted - reduce yield or increase dose")
+        }
+
+        if suggestions.isEmpty {
+            suggestions.append("Great shot! Current parameters are working well")
+        }
+
+        return suggestions
+    }
+
+    var tasteBalance: String {
+        let total = acidity + sweetness + bitterness + body + aftertaste
+        let average = Double(total) / 5.0
+
+        if average >= 4.0 {
+            return "Excellent"
+        } else if average >= 3.5 {
+            return "Good"
+        } else if average >= 2.5 {
+            return "Fair"
+        } else {
+            return "Needs Work"
         }
     }
 }

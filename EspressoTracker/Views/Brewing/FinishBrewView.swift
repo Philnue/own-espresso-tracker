@@ -25,6 +25,13 @@ struct FinishBrewView: View {
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
 
+    // Taste parameters
+    @State private var acidity: Int = 3
+    @State private var sweetness: Int = 3
+    @State private var bitterness: Int = 3
+    @State private var body: Int = 3
+    @State private var aftertaste: Int = 3
+
     var actualRatio: Double {
         guard let dose = Double(viewModel.doseIn),
               let yield = Double(yieldOut),
@@ -100,6 +107,20 @@ struct FinishBrewView: View {
                                 }
                             }
                         }
+                    }
+                    .listRowBackground(Color.cardBackground)
+
+                    // Taste Profile
+                    Section(header: Text("Taste Profile").foregroundColor(.espressoBrown)) {
+                        TasteSlider(label: "Acidity", value: $acidity, icon: "sparkles")
+                        Divider()
+                        TasteSlider(label: "Sweetness", value: $sweetness, icon: "heart.fill")
+                        Divider()
+                        TasteSlider(label: "Bitterness", value: $bitterness, icon: "flame.fill")
+                        Divider()
+                        TasteSlider(label: "Body", value: $body, icon: "drop.fill")
+                        Divider()
+                        TasteSlider(label: "Aftertaste", value: $aftertaste, icon: "star.fill")
                     }
                     .listRowBackground(Color.cardBackground)
 
@@ -222,7 +243,12 @@ struct FinishBrewView: View {
             pressure: pressure,
             rating: rating,
             notes: notes,
-            imageData: imageData
+            imageData: imageData,
+            acidity: acidity,
+            sweetness: sweetness,
+            bitterness: bitterness,
+            body: body,
+            aftertaste: aftertaste
         )
 
         // Reset the view model
@@ -231,5 +257,46 @@ struct FinishBrewView: View {
         viewModel.grindSetting = ""
 
         dismiss()
+    }
+}
+
+struct TasteSlider: View {
+    let label: String
+    @Binding var value: Int
+    let icon: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(.espressoBrown)
+                Text(label)
+                    .font(.subheadline)
+                    .foregroundColor(.textPrimary)
+                Spacer()
+                Text("\(value)")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.espressoBrown)
+            }
+
+            HStack(spacing: 8) {
+                ForEach(1...5, id: \.self) { level in
+                    Circle()
+                        .fill(level <= value ? Color.espressoBrown : Color.backgroundSecondary)
+                        .frame(width: 30, height: 30)
+                        .overlay(
+                            Text("\(level)")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundColor(level <= value ? .white : .textSecondary)
+                        )
+                        .onTapGesture {
+                            value = level
+                        }
+                }
+            }
+        }
+        .padding(.vertical, 4)
     }
 }

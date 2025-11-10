@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
-    @StateObject private var settings = UserSettings.shared
+    @ObservedObject private var settings = UserSettings.shared
 
     @State private var showingImport = false
     @State private var showingExport = false

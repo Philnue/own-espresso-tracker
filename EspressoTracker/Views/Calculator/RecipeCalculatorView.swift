@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeCalculatorView: View {
-    @StateObject private var settings = UserSettings.shared
+    @ObservedObject private var settings = UserSettings.shared
     @State private var selectedMethod: BrewMethod = .espresso
     @State private var doseIn: String = "18"
     @State private var ratio: String = "2.0"

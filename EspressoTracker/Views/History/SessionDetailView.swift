@@ -213,6 +213,70 @@ struct SessionDetailView: View {
                         }
                     }
 
+                    // Taste Profile
+                    CustomCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "cup.and.saucer.fill")
+                                    .foregroundColor(.espressoBrown)
+                                Text("Taste Profile")
+                                    .font(.headline)
+                                    .foregroundColor(.textPrimary)
+                                Spacer()
+                                Text(session.tasteBalance)
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 4)
+                                    .background(Color.espressoBrown)
+                                    .cornerRadius(8)
+                            }
+
+                            Divider()
+                                .background(Color.dividerColor)
+
+                            VStack(spacing: 12) {
+                                TasteBar(label: "Acidity", value: session.acidity, icon: "sparkles")
+                                TasteBar(label: "Sweetness", value: session.sweetness, icon: "heart.fill")
+                                TasteBar(label: "Bitterness", value: session.bitterness, icon: "flame.fill")
+                                TasteBar(label: "Body", value: session.body, icon: "drop.fill")
+                                TasteBar(label: "Aftertaste", value: session.aftertaste, icon: "star.fill")
+                            }
+                        }
+                    }
+
+                    // Recommendations
+                    CustomCard {
+                        VStack(alignment: .leading, spacing: 16) {
+                            HStack {
+                                Image(systemName: "lightbulb.fill")
+                                    .foregroundColor(.espressoBrown)
+                                Text("Recommendations")
+                                    .font(.headline)
+                                    .foregroundColor(.textPrimary)
+                            }
+
+                            Divider()
+                                .background(Color.dividerColor)
+
+                            VStack(alignment: .leading, spacing: 12) {
+                                ForEach(Array(session.recommendations.enumerated()), id: \.offset) { index, recommendation in
+                                    HStack(alignment: .top, spacing: 12) {
+                                        Image(systemName: "arrow.right.circle.fill")
+                                            .font(.caption)
+                                            .foregroundColor(.espressoBrown)
+                                            .padding(.top, 2)
+                                        Text(recommendation)
+                                            .font(.subheadline)
+                                            .foregroundColor(.textPrimary)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Extraction analysis
                     CustomCard {
                         VStack(alignment: .leading, spacing: 12) {
@@ -280,6 +344,43 @@ struct SessionDetailView: View {
             dismiss()
         } catch {
             print("Error deleting session: \(error)")
+        }
+    }
+}
+
+struct TasteBar: View {
+    let label: String
+    let value: Int
+    let icon: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.caption)
+                    .foregroundColor(.espressoBrown)
+                Text(label)
+                    .font(.subheadline)
+                    .foregroundColor(.textPrimary)
+                Spacer()
+                Text("\(value)/5")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.espressoBrown)
+            }
+
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.backgroundSecondary)
+                        .frame(height: 8)
+
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.espressoBrown)
+                        .frame(width: geometry.size.width * (CGFloat(value) / 5.0), height: 8)
+                }
+            }
+            .frame(height: 8)
         }
     }
 }

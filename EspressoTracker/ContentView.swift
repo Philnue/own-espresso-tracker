@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @StateObject private var settings = UserSettings.shared
+    @ObservedObject private var settings = UserSettings.shared
 
     var body: some View {
         TabView {

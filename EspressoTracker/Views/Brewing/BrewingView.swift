@@ -11,7 +11,7 @@ import SwiftData
 struct BrewingView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel = BrewingViewModel()
-    @StateObject private var settings = UserSettings.shared
+    @ObservedObject private var settings = UserSettings.shared
 
     @Query(sort: \Grinder.name) private var grinders: [Grinder]
     @Query(sort: \Machine.name) private var machines: [Machine]

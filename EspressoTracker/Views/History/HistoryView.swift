@@ -117,7 +117,7 @@ struct HistoryView: View {
     private var sessionsThisWeek: Int {
         let calendar = Calendar.current
         let weekAgo = calendar.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        return sessions.filter { ($0.startTime ?? Date()) >= weekAgo }.count
+        return sessions.filter { $0.startTime >= weekAgo }.count
     }
 }
 

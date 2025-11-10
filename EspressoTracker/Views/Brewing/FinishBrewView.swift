@@ -218,7 +218,7 @@ struct FinishBrewView: View {
             brewTime: viewModel.elapsedTime,
             waterTemp: waterTemp,
             pressure: pressure,
-            rating: Int16(rating),
+            rating: rating,
             notes: notes,
             imageData: imageData
         )

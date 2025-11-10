@@ -125,15 +125,13 @@ struct BeanCardView: View {
                         }
 
                         // Freshness indicator
-                        if let freshness = bean.daysFromRoast {
-                            HStack(spacing: 4) {
-                                Image(systemName: "calendar")
-                                    .font(.caption)
-                                Text("\(freshness)d")
-                                    .font(.caption)
-                            }
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                        HStack(spacing: 4) {
+                            Image(systemName: "calendar")
+                                .font(.caption)
+                            Text("\(bean.daysFromRoast)d")
+                                .font(.caption)
                         }
+                        .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
                     }
                     .foregroundColor(.textSecondary)
                 }

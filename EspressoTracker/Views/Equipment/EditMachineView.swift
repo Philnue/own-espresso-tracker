@@ -146,9 +146,9 @@ struct EditMachineView: View {
     private func loadMachineData() {
         name = machine.wrappedName
         brand = machine.wrappedBrand
-        model = machine.model ?? ""
-        boilerType = machine.boilerType ?? "Single Boiler"
-        groupHeadType = machine.groupHeadType ?? "Standard"
+        model = machine.model
+        boilerType = machine.boilerType
+        groupHeadType = machine.groupHeadType
         pressure = String(format: "%.1f", machine.pressureBar)
         notes = machine.wrappedNotes
         imageData = machine.imageData

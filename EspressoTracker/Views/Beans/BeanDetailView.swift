@@ -42,36 +42,34 @@ struct BeanDetailView: View {
                     }
 
                     // Freshness indicator
-                    if let daysFromRoast = bean.daysFromRoast {
-                        HStack(spacing: 20) {
-                            VStack {
-                                Text("\(daysFromRoast)")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.textPrimary)
-                                Text("days from roast")
-                                    .font(.caption)
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            Divider()
-                                .frame(height: 40)
-
-                            VStack {
-                                Text(bean.freshnessIndicator)
-                                    .font(.title3)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-                                Text("freshness")
-                                    .font(.caption)
-                                    .foregroundColor(.textSecondary)
-                            }
+                    HStack(spacing: 20) {
+                        VStack {
+                            Text("\(bean.daysFromRoast)")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.textPrimary)
+                            Text("days from roast")
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
                         }
-                        .padding()
-                        .background(Color.cardBackground)
-                        .cornerRadius(16)
-                        .cardShadow()
+
+                        Divider()
+                            .frame(height: 40)
+
+                        VStack {
+                            Text(bean.freshnessIndicator)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                            Text("freshness")
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+                        }
                     }
+                    .padding()
+                    .background(Color.cardBackground)
+                    .cornerRadius(16)
+                    .cardShadow()
 
                     // Info card
                     CustomCard {
@@ -94,39 +92,37 @@ struct BeanDetailView: View {
                                 value: bean.wrappedOrigin
                             )
 
-                            if let roastLevel = bean.roastLevel {
+                            if !bean.roastLevel.isEmpty {
                                 InfoRow(
                                     icon: "flame",
                                     label: "Roast Level",
-                                    value: roastLevel
+                                    value: bean.roastLevel
                                 )
                             }
 
-                            if let roastDate = bean.roastDate {
-                                InfoRow(
-                                    icon: "calendar",
-                                    label: "Roast Date",
-                                    value: roastDate.formatted(date: .long, time: .omitted)
-                                )
-                            }
+                            InfoRow(
+                                icon: "calendar",
+                                label: "Roast Date",
+                                value: bean.roastDate.formatted(date: .long, time: .omitted)
+                            )
 
-                            if let process = bean.process {
+                            if !bean.process.isEmpty {
                                 InfoRow(
                                     icon: "leaf",
                                     label: "Process",
-                                    value: process
+                                    value: bean.process
                                 )
                             }
 
-                            if let variety = bean.variety {
+                            if !bean.variety.isEmpty {
                                 InfoRow(
                                     icon: "tag",
                                     label: "Variety",
-                                    value: variety
+                                    value: bean.variety
                                 )
                             }
 
-                            if let tastingNotes = bean.tastingNotes, !tastingNotes.isEmpty {
+                            if !bean.tastingNotes.isEmpty {
                                 VStack(alignment: .leading, spacing: 8) {
                                     HStack {
                                         Image(systemName: "cup.and.saucer")
@@ -137,7 +133,7 @@ struct BeanDetailView: View {
                                             .foregroundColor(.textSecondary)
                                     }
 
-                                    Text(tastingNotes)
+                                    Text(bean.tastingNotes)
                                         .font(.body)
                                         .foregroundColor(.textPrimary)
                                 }
@@ -193,12 +189,11 @@ struct BeanDetailView: View {
                                     value: "\(sessionCount)"
                                 )
 
-                                if let lastSession = bean.sessionsArray.first,
-                                   let date = lastSession.startTime {
+                                if let lastSession = bean.sessionsArray.first {
                                     InfoRow(
                                         icon: "clock",
                                         label: "Last Used",
-                                        value: date.formatted(date: .abbreviated, time: .omitted)
+                                        value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                     )
                                 }
                             }

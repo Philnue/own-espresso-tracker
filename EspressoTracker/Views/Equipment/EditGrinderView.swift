@@ -125,7 +125,7 @@ struct EditGrinderView: View {
     private func loadGrinderData() {
         name = grinder.wrappedName
         brand = grinder.wrappedBrand
-        burrType = grinder.burrType ?? "Conical"
+        burrType = grinder.burrType
         burrSize = String(grinder.burrSize)
         notes = grinder.wrappedNotes
         imageData = grinder.imageData

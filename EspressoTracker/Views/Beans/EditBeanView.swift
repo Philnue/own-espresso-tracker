@@ -166,11 +166,11 @@ struct EditBeanView: View {
         name = bean.wrappedName
         roaster = bean.wrappedRoaster
         origin = bean.wrappedOrigin
-        roastLevel = bean.roastLevel ?? "Medium"
-        roastDate = bean.roastDate ?? Date()
-        process = bean.process ?? "Washed"
-        variety = bean.variety ?? "Arabica"
-        tastingNotes = bean.tastingNotes ?? ""
+        roastLevel = bean.roastLevel
+        roastDate = bean.roastDate
+        process = bean.process
+        variety = bean.variety
+        tastingNotes = bean.tastingNotes
         price = String(format: "%.2f", bean.price)
         weight = String(format: "%.0f", bean.weight)
         notes = bean.wrappedNotes

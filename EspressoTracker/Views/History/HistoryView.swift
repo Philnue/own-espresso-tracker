@@ -129,15 +129,13 @@ struct SessionCardView: View {
             VStack(alignment: .leading, spacing: 12) {
                 // Header with date and rating
                 HStack {
-                    if let date = session.startTime {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(date.formatted(date: .abbreviated, time: .omitted))
-                                .font(.subheadline)
-                                .foregroundColor(.textSecondary)
-                            Text(date.formatted(date: .omitted, time: .shortened))
-                                .font(.caption)
-                                .foregroundColor(.textTertiary)
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(session.startTime.formatted(date: .abbreviated, time: .omitted))
+                            .font(.subheadline)
+                            .foregroundColor(.textSecondary)
+                        Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                            .font(.caption)
+                            .foregroundColor(.textTertiary)
                     }
 
                     Spacer()

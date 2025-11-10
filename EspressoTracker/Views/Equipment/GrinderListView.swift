@@ -113,11 +113,11 @@ struct GrinderCardView: View {
                         .font(.subheadline)
                         .foregroundColor(.espressoBrown)
 
-                    if let burrType = grinder.burrType {
+                    if !grinder.burrType.isEmpty {
                         HStack(spacing: 4) {
                             Image(systemName: "gearshape.2")
                                 .font(.caption)
-                            Text("\(burrType) - \(grinder.burrSize)mm")
+                            Text("\(grinder.burrType) - \(grinder.burrSize)mm")
                                 .font(.caption)
                         }
                         .foregroundColor(.textSecondary)

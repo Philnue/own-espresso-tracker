@@ -111,11 +111,11 @@ struct MachineCardView: View {
                         .font(.subheadline)
                         .foregroundColor(.espressoBrown)
 
-                    if let boilerType = machine.boilerType {
+                    if !machine.boilerType.isEmpty {
                         HStack(spacing: 4) {
                             Image(systemName: "flame")
                                 .font(.caption)
-                            Text(boilerType)
+                            Text(machine.boilerType)
                                 .font(.caption)
                         }
                         .foregroundColor(.textSecondary)

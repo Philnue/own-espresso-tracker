@@ -56,11 +56,11 @@ struct GrinderDetailView: View {
                             Divider()
                                 .background(Color.dividerColor)
 
-                            if let burrType = grinder.burrType {
+                            if !grinder.burrType.isEmpty {
                                 InfoRow(
                                     icon: "gearshape.2",
                                     label: "Burr Type",
-                                    value: burrType
+                                    value: grinder.burrType
                                 )
                             }
 
@@ -106,12 +106,11 @@ struct GrinderDetailView: View {
                                     value: "\(sessionCount)"
                                 )
 
-                                if let lastSession = grinder.sessionsArray.first,
-                                   let date = lastSession.startTime {
+                                if let lastSession = grinder.sessionsArray.first {
                                     InfoRow(
                                         icon: "clock",
                                         label: "Last Used",
-                                        value: date.formatted(date: .abbreviated, time: .omitted)
+                                        value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                     )
                                 }
                             }

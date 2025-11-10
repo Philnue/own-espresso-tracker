@@ -11,7 +11,7 @@ import SwiftData
 struct GrinderDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var grinder: Grinder
+    var grinder: Grinder
 
     @State private var showingEditView = false
     @State private var showingDeleteAlert = false

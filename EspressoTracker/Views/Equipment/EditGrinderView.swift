@@ -12,7 +12,7 @@ import PhotosUI
 struct EditGrinderView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var grinder: Grinder
+    var grinder: Grinder
 
     @State private var name = ""
     @State private var brand = ""
@@ -132,7 +132,7 @@ struct EditGrinderView: View {
     }
 
     private func saveChanges() {
-        let burrSizeValue = Int16(burrSize) ?? 0
+        let burrSizeValue = Int(burrSize) ?? 0
         let dataManager = DataManager(modelContext: modelContext)
         dataManager.updateGrinder(
             grinder,

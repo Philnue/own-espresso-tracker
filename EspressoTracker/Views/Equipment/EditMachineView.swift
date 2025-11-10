@@ -12,7 +12,7 @@ import PhotosUI
 struct EditMachineView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var machine: Machine
+    var machine: Machine
 
     @State private var name = ""
     @State private var brand = ""

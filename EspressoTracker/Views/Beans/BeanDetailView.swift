@@ -11,7 +11,7 @@ import SwiftData
 struct BeanDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var bean: Bean
+    var bean: Bean
 
     @State private var showingEditView = false
     @State private var showingDeleteAlert = false

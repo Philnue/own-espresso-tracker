@@ -11,7 +11,7 @@ import SwiftData
 struct MachineDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var machine: Machine
+    var machine: Machine
 
     @State private var showingEditView = false
     @State private var showingDeleteAlert = false

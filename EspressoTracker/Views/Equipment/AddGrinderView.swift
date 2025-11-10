@@ -119,7 +119,7 @@ struct AddGrinderView: View {
     }
 
     private func saveGrinder() {
-        let burrSizeValue = Int16(burrSize) ?? 0
+        let burrSizeValue = Int(burrSize) ?? 0
         let dataManager = DataManager(modelContext: modelContext)
         dataManager.createGrinder(
             name: name,

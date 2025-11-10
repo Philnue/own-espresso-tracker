@@ -7,30 +7,75 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class UserSettings: ObservableObject {
     static let shared = UserSettings()
 
+    private let defaults = UserDefaults.standard
+
     // MARK: - Brewing Defaults
-    @AppStorage("defaultDoseIn") var defaultDoseIn: Double = 18.0
-    @AppStorage("defaultRatio") var defaultRatio: Double = 2.0
-    @AppStorage("defaultWaterTemp") var defaultWaterTemp: Double = 93.0
-    @AppStorage("defaultPressure") var defaultPressure: Double = 9.0
-    @AppStorage("defaultGrindSetting") var defaultGrindSetting: String = ""
+    @Published var defaultDoseIn: Double {
+        didSet { defaults.set(defaultDoseIn, forKey: "defaultDoseIn") }
+    }
+
+    @Published var defaultRatio: Double {
+        didSet { defaults.set(defaultRatio, forKey: "defaultRatio") }
+    }
+
+    @Published var defaultWaterTemp: Double {
+        didSet { defaults.set(defaultWaterTemp, forKey: "defaultWaterTemp") }
+    }
+
+    @Published var defaultPressure: Double {
+        didSet { defaults.set(defaultPressure, forKey: "defaultPressure") }
+    }
+
+    @Published var defaultGrindSetting: String {
+        didSet { defaults.set(defaultGrindSetting, forKey: "defaultGrindSetting") }
+    }
 
     // MARK: - Appearance
-    @AppStorage("colorScheme") var colorScheme: String = "dark" // dark, light, system
+    @Published var colorScheme: String {
+        didSet { defaults.set(colorScheme, forKey: "colorScheme") }
+    }
 
     // MARK: - Localization
-    @AppStorage("appLanguage") var appLanguage: String = "en" // en, de
+    @Published var appLanguage: String {
+        didSet { defaults.set(appLanguage, forKey: "appLanguage") }
+    }
 
     // MARK: - Units
-    @AppStorage("weightUnit") var weightUnit: String = "grams" // grams, ounces
-    @AppStorage("temperatureUnit") var temperatureUnit: String = "celsius" // celsius, fahrenheit
-    @AppStorage("volumeUnit") var volumeUnit: String = "ml" // ml, oz
+    @Published var weightUnit: String {
+        didSet { defaults.set(weightUnit, forKey: "weightUnit") }
+    }
+
+    @Published var temperatureUnit: String {
+        didSet { defaults.set(temperatureUnit, forKey: "temperatureUnit") }
+    }
+
+    @Published var volumeUnit: String {
+        didSet { defaults.set(volumeUnit, forKey: "volumeUnit") }
+    }
 
     // MARK: - Brewing Method
-    @AppStorage("defaultBrewMethod") var defaultBrewMethod: String = "espresso"
+    @Published var defaultBrewMethod: String {
+        didSet { defaults.set(defaultBrewMethod, forKey: "defaultBrewMethod") }
+    }
+
+    private init() {
+        self.defaultDoseIn = defaults.double(forKey: "defaultDoseIn") != 0 ? defaults.double(forKey: "defaultDoseIn") : 18.0
+        self.defaultRatio = defaults.double(forKey: "defaultRatio") != 0 ? defaults.double(forKey: "defaultRatio") : 2.0
+        self.defaultWaterTemp = defaults.double(forKey: "defaultWaterTemp") != 0 ? defaults.double(forKey: "defaultWaterTemp") : 93.0
+        self.defaultPressure = defaults.double(forKey: "defaultPressure") != 0 ? defaults.double(forKey: "defaultPressure") : 9.0
+        self.defaultGrindSetting = defaults.string(forKey: "defaultGrindSetting") ?? ""
+        self.colorScheme = defaults.string(forKey: "colorScheme") ?? "dark"
+        self.appLanguage = defaults.string(forKey: "appLanguage") ?? "en"
+        self.weightUnit = defaults.string(forKey: "weightUnit") ?? "grams"
+        self.temperatureUnit = defaults.string(forKey: "temperatureUnit") ?? "celsius"
+        self.volumeUnit = defaults.string(forKey: "volumeUnit") ?? "ml"
+        self.defaultBrewMethod = defaults.string(forKey: "defaultBrewMethod") ?? "espresso"
+    }
 
     var preferredColorScheme: ColorScheme? {
         switch colorScheme {

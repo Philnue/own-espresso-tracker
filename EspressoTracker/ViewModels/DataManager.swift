@@ -131,7 +131,7 @@ class DataManager {
     }
 
     // MARK: - Brewing Session Operations
-    func createBrewingSession(grinder: Grinder?, machine: Machine?, bean: Bean?, brewMethod: String = "espresso", grindSetting: String, doseIn: Double, yieldOut: Double, brewTime: Double, waterTemp: Double, pressure: Double, rating: Int, notes: String, imageData: Data?, acidity: Int = 3, sweetness: Int = 3, bitterness: Int = 3, body: Int = 3, aftertaste: Int = 3) {
+    func createBrewingSession(grinder: Grinder?, machine: Machine?, bean: Bean?, brewMethod: String = "espresso", grindSetting: String, doseIn: Double, yieldOut: Double, brewTime: Double, waterTemp: Double, pressure: Double, rating: Int, notes: String, imageData: Data?, acidity: Int = 3, sweetness: Int = 3, bitterness: Int = 3, bodyWeight: Int = 3, aftertaste: Int = 3) {
         let session = BrewingSession(
             startTime: Date(),
             endTime: Date().addingTimeInterval(brewTime),
@@ -148,7 +148,7 @@ class DataManager {
             acidity: acidity,
             sweetness: sweetness,
             bitterness: bitterness,
-            body: body,
+            bodyWeight: bodyWeight,
             aftertaste: aftertaste,
             grinder: grinder,
             machine: machine,

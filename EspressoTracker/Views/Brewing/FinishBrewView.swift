@@ -29,7 +29,7 @@ struct FinishBrewView: View {
     @State private var acidity: Int = 3
     @State private var sweetness: Int = 3
     @State private var bitterness: Int = 3
-    @State private var body: Int = 3
+    @State private var bodyWeight: Int = 3
     @State private var aftertaste: Int = 3
 
     var actualRatio: Double {
@@ -118,7 +118,7 @@ struct FinishBrewView: View {
                         Divider()
                         TasteSlider(label: "Bitterness", value: $bitterness, icon: "flame.fill")
                         Divider()
-                        TasteSlider(label: "Body", value: $body, icon: "drop.fill")
+                        TasteSlider(label: "Body", value: $bodyWeight, icon: "drop.fill")
                         Divider()
                         TasteSlider(label: "Aftertaste", value: $aftertaste, icon: "star.fill")
                     }
@@ -247,7 +247,7 @@ struct FinishBrewView: View {
             acidity: acidity,
             sweetness: sweetness,
             bitterness: bitterness,
-            body: body,
+            bodyWeight: bodyWeight,
             aftertaste: aftertaste
         )
 

@@ -29,7 +29,7 @@ final class BrewingSession {
     var acidity: Int // Brightness/Sourness
     var sweetness: Int // Sweet notes
     var bitterness: Int // Bitter notes
-    var body: Int // Mouthfeel/Weight
+    var bodyWeight: Int // Mouthfeel/Weight
     var aftertaste: Int // Finish quality
 
     @Relationship(deleteRule: .nullify)
@@ -59,7 +59,7 @@ final class BrewingSession {
         acidity: Int = 3,
         sweetness: Int = 3,
         bitterness: Int = 3,
-        body: Int = 3,
+        bodyWeight: Int = 3,
         aftertaste: Int = 3,
         grinder: Grinder? = nil,
         machine: Machine? = nil,
@@ -82,7 +82,7 @@ final class BrewingSession {
         self.acidity = acidity
         self.sweetness = sweetness
         self.bitterness = bitterness
-        self.body = body
+        self.bodyWeight = bodyWeight
         self.aftertaste = aftertaste
         self.grinder = grinder
         self.machine = machine
@@ -155,9 +155,9 @@ final class BrewingSession {
         }
 
         // Analyze body
-        if body <= 2 {
+        if bodyWeight <= 2 {
             suggestions.append("Weak body: Increase dose, use finer grind, or higher pressure")
-        } else if body >= 4 {
+        } else if bodyWeight >= 4 {
             suggestions.append("Too heavy: Decrease dose or try a coarser grind")
         }
 
@@ -193,7 +193,7 @@ final class BrewingSession {
     }
 
     var tasteBalance: String {
-        let total = acidity + sweetness + bitterness + body + aftertaste
+        let total = acidity + sweetness + bitterness + bodyWeight + aftertaste
         let average = Double(total) / 5.0
 
         if average >= 4.0 {

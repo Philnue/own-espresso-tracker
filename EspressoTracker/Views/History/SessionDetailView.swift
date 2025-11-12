@@ -240,7 +240,7 @@ struct SessionDetailView: View {
                                 TasteBar(label: "Acidity", value: session.acidity, icon: "sparkles")
                                 TasteBar(label: "Sweetness", value: session.sweetness, icon: "heart.fill")
                                 TasteBar(label: "Bitterness", value: session.bitterness, icon: "flame.fill")
-                                TasteBar(label: "Body", value: session.body, icon: "drop.fill")
+                                TasteBar(label: "Body", value: session.bodyWeight, icon: "drop.fill")
                                 TasteBar(label: "Aftertaste", value: session.aftertaste, icon: "star.fill")
                             }
                         }

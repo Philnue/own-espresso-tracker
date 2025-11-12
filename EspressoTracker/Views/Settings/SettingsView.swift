@@ -25,9 +25,9 @@ struct SettingsView: View {
 
                 Form {
                     // Brewing Defaults
-                    Section(header: Text("Brewing Defaults").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("brewing_defaults")).foregroundColor(.espressoBrown)) {
                         HStack {
-                            Text("Default Dose")
+                            Text(LocalizedString.get("default_dose"))
                             Spacer()
                             TextField("18.0", value: $settings.defaultDoseIn, format: .number)
                                 .keyboardType(.decimalPad)
@@ -38,7 +38,7 @@ struct SettingsView: View {
                         }
 
                         HStack {
-                            Text("Default Ratio")
+                            Text(LocalizedString.get("default_ratio"))
                             Spacer()
                             TextField("2.0", value: $settings.defaultRatio, format: .number)
                                 .keyboardType(.decimalPad)
@@ -83,18 +83,18 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // Units
-                    Section(header: Text("Units").foregroundColor(.espressoBrown)) {
-                        Picker("Weight", selection: $settings.weightUnit) {
+                    Section(header: Text(LocalizedString.get("units")).foregroundColor(.espressoBrown)) {
+                        Picker(LocalizedString.get("weight"), selection: $settings.weightUnit) {
                             Text("Grams").tag("grams")
                             Text("Ounces").tag("ounces")
                         }
 
-                        Picker("Temperature", selection: $settings.temperatureUnit) {
+                        Picker(LocalizedString.get("temperature"), selection: $settings.temperatureUnit) {
                             Text("Celsius").tag("celsius")
                             Text("Fahrenheit").tag("fahrenheit")
                         }
 
-                        Picker("Volume", selection: $settings.volumeUnit) {
+                        Picker(LocalizedString.get("volume"), selection: $settings.volumeUnit) {
                             Text("Milliliters").tag("ml")
                             Text("Fluid Ounces").tag("oz")
                         }
@@ -102,8 +102,8 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // Appearance
-                    Section(header: Text("Appearance").foregroundColor(.espressoBrown)) {
-                        Picker("Theme", selection: $settings.colorScheme) {
+                    Section(header: Text(LocalizedString.get("appearance")).foregroundColor(.espressoBrown)) {
+                        Picker(LocalizedString.get("theme"), selection: $settings.colorScheme) {
                             Text("Dark").tag("dark")
                             Text("Light").tag("light")
                             Text("System").tag("system")
@@ -113,7 +113,7 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // Language
-                    Section(header: Text("Language").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("language")).foregroundColor(.espressoBrown)) {
                         Picker("App Language", selection: $settings.appLanguage) {
                             HStack {
                                 Text("🇺🇸")
@@ -179,8 +179,9 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
                 }
                 .scrollContentBackground(.hidden)
+                .id(settings.appLanguage) // Force refresh when language changes
             }
-            .navigationTitle("Settings")
+            .navigationTitle(LocalizedString.get("tab_settings"))
             .fileImporter(
                 isPresented: $showingImport,
                 allowedContentTypes: [.json],

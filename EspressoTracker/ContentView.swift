@@ -15,36 +15,37 @@ struct ContentView: View {
         TabView {
             BrewingView()
                 .tabItem {
-                    Label("Brew", systemImage: "cup.and.saucer.fill")
+                    Label(LocalizedString.get("tab_brew"), systemImage: "cup.and.saucer.fill")
                 }
 
             HistoryView()
                 .tabItem {
-                    Label("History", systemImage: "clock.fill")
+                    Label(LocalizedString.get("tab_history"), systemImage: "clock.fill")
                 }
 
             BeansView()
                 .tabItem {
-                    Label("Beans", systemImage: "leaf.fill")
+                    Label(LocalizedString.get("tab_beans"), systemImage: "leaf.fill")
                 }
 
             RecipeCalculatorView()
                 .tabItem {
-                    Label("Recipes", systemImage: "book.fill")
+                    Label(LocalizedString.get("tab_recipes"), systemImage: "book.fill")
                 }
 
             EquipmentView()
                 .tabItem {
-                    Label("Equipment", systemImage: "gearshape.fill")
+                    Label(LocalizedString.get("tab_equipment"), systemImage: "gearshape.fill")
                 }
 
             SettingsView()
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label(LocalizedString.get("tab_settings"), systemImage: "gear")
                 }
         }
         .accentColor(.espressoBrown)
         .preferredColorScheme(settings.preferredColorScheme)
+        .id("\(settings.appLanguage)_\(settings.colorScheme)") // Force refresh when language or theme changes
     }
 }
 

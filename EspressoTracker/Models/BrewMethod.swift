@@ -22,7 +22,7 @@ enum BrewMethod: String, CaseIterable, Codable {
         case .frenchPress: return "cylinder.fill"
         case .coldBrew: return "snowflake"
         case .pourOver: return "drop.fill"
-        case .moka: return "kettle.fill"
+        case .moka: return "flame.fill" // Moka pot uses heat
         }
     }
 

@@ -10,7 +10,9 @@
 		782168B42EC29001005238D5 /* EspressoTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracker.xcodeproj; sourceTree = "<group>"; };
 		7833AAA92EC2891500149BA6 /* EspressoTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EspressoTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788FC54B2EC28ABE00319697 /* EspressoTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracker.xcodeproj; sourceTree = "<group>"; };
+		78A43DA52EC4849000571E2C /* EspressoTracke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracke.xcodeproj; sourceTree = "<group>"; };
 		78A65DF62EC28C9C004D1CFF /* EspressoTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracker.xcodeproj; sourceTree = "<group>"; };
+		78D87E6A2EC486E200501B05 /* EspressoTracke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracke.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -75,10 +77,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		78A43DA82EC4849000571E2C /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78A65DFA2EC28C9C004D1CFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		78D87E6D2EC486E200501B05 /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -135,6 +147,14 @@
 			productRefGroup = 7833AAAA2EC2891500149BA6 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 78D87E6D2EC486E200501B05 /* Products */;
+					ProjectRef = 78D87E6A2EC486E200501B05 /* EspressoTracke.xcodeproj */;
+				},
+				{
+					ProductGroup = 78A43DA82EC4849000571E2C /* Products */;
+					ProjectRef = 78A43DA52EC4849000571E2C /* EspressoTracke.xcodeproj */;
+				},
 				{
 					ProductGroup = 78A65DFA2EC28C9C004D1CFF /* Products */;
 					ProjectRef = 78A65DF62EC28C9C004D1CFF /* EspressoTracker.xcodeproj */;
@@ -303,11 +323,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 45SAAL8UAA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = EspressoTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DiaryBrew;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -319,7 +340,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutline.EspressoTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutline.diarybrew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -337,11 +358,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 45SAAL8UAA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = EspressoTracker/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DiaryBrew;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -353,7 +375,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nutline.EspressoTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nutline.diarybrew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;

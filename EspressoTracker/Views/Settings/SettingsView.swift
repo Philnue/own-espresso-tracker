@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var showingImport = false
     @State private var showingExport = false
     @State private var showingExportSuccess = false
+    @State private var showingTestDataAlert = false
     @State private var exportURL: URL?
 
     var body: some View {
@@ -132,6 +133,19 @@ struct SettingsView: View {
 
                     // Data Management
                     Section(header: Text("Data Management").foregroundColor(.espressoBrown)) {
+                        Button(action: { showingTestDataAlert = true }) {
+                            HStack {
+                                Image(systemName: "wand.and.stars")
+                                    .foregroundColor(.warningOrange)
+                                Text("Add Test Data")
+                                    .foregroundColor(.textPrimary)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.textTertiary)
+                                    .font(.caption)
+                            }
+                        }
+
                         Button(action: exportData) {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
@@ -199,7 +213,19 @@ struct SettingsView: View {
             } message: {
                 Text("Your data has been exported successfully.")
             }
+            .alert("Add Test Data", isPresented: $showingTestDataAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Add") {
+                    populateTestData()
+                }
+            } message: {
+                Text("This will add sample grinders, machines, and beans to your database. This is helpful for testing the app.")
+            }
         }
+    }
+
+    private func populateTestData() {
+        TestDataHelper.populateTestData(modelContext: modelContext)
     }
 
     private func exportData() {

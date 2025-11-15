@@ -211,126 +211,32 @@ struct BrewingView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // Grinder selection
-            CustomCard {
-                HStack {
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.title2)
-                        .foregroundColor(.espressoBrown)
-                        .frame(width: 40)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Grinder")
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-
-                        if let grinder = selectedGrinder {
-                            Text(grinder.wrappedName)
-                                .font(.body)
-                                .fontWeight(.medium)
-                                .foregroundColor(.textPrimary)
-                        } else {
-                            Text("Select grinder")
-                                .font(.body)
-                                .foregroundColor(.textTertiary)
-                        }
-                    }
-
-                    Spacer()
-
-                    Menu {
-                        ForEach(grinders) { grinder in
-                            Button(grinder.wrappedName) {
-                                selectedGrinder = grinder
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
+            Menu {
+                ForEach(grinders) { grinder in
+                    Button(grinder.wrappedName) {
+                        selectedGrinder = grinder
                     }
                 }
-            }
-
-            // Machine selection
-            CustomCard {
-                HStack {
-                    Image(systemName: "refrigerator")
-                        .font(.title2)
-                        .foregroundColor(.espressoBrown)
-                        .frame(width: 40)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Machine")
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-
-                        if let machine = selectedMachine {
-                            Text(machine.wrappedName)
-                                .font(.body)
-                                .fontWeight(.medium)
-                                .foregroundColor(.textPrimary)
-                        } else {
-                            Text("Select machine")
-                                .font(.body)
-                                .foregroundColor(.textTertiary)
-                        }
-                    }
-
-                    Spacer()
-
-                    Menu {
-                        ForEach(machines) { machine in
-                            Button(machine.wrappedName) {
-                                selectedMachine = machine
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
-                    }
-                }
-            }
-
-            // Bean selection
-            CustomCard {
-                VStack(spacing: 12) {
+            } label: {
+                CustomCard {
                     HStack {
-                        Image(systemName: "leaf.fill")
+                        Image(systemName: "slider.horizontal.3")
                             .font(.title2)
                             .foregroundColor(.espressoBrown)
                             .frame(width: 40)
 
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Beans")
+                            Text("Grinder")
                                 .font(.caption)
                                 .foregroundColor(.textSecondary)
 
-                            if let bean = selectedBean {
-                                Text(bean.wrappedName)
+                            if let grinder = selectedGrinder {
+                                Text(grinder.wrappedName)
                                     .font(.body)
                                     .fontWeight(.medium)
                                     .foregroundColor(.textPrimary)
-
-                                HStack(spacing: 8) {
-                                    Text(bean.wrappedRoaster)
-                                        .font(.caption2)
-                                        .foregroundColor(.textSecondary)
-
-                                    if bean.weight > 0 {
-                                        Text("•")
-                                            .foregroundColor(.textTertiary)
-                                        Text("\(Int(bean.remainingWeight))g left")
-                                            .font(.caption2)
-                                            .foregroundColor(bean.isLowStock ? .warningOrange : .textSecondary)
-                                    }
-
-                                    Text("•")
-                                        .foregroundColor(.textTertiary)
-                                    Text("\(bean.daysFromRoast)d")
-                                        .font(.caption2)
-                                        .foregroundColor(.textSecondary)
-                                }
                             } else {
-                                Text("Select beans")
+                                Text("Select grinder")
                                     .font(.body)
                                     .foregroundColor(.textTertiary)
                             }
@@ -338,55 +244,152 @@ struct BrewingView: View {
 
                         Spacer()
 
-                        Menu {
-                            // Show archived toggle
-                            Button(action: {
-                                showArchivedBeans.toggle()
-                            }) {
-                                Label(
-                                    showArchivedBeans ? "Hide Archived" : "Show Archived",
-                                    systemImage: showArchivedBeans ? "eye.slash" : "eye"
-                                )
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(.espressoBrown)
+                    }
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            // Machine selection
+            Menu {
+                ForEach(machines) { machine in
+                    Button(machine.wrappedName) {
+                        selectedMachine = machine
+                    }
+                }
+            } label: {
+                CustomCard {
+                    HStack {
+                        Image(systemName: "refrigerator")
+                            .font(.title2)
+                            .foregroundColor(.espressoBrown)
+                            .frame(width: 40)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Machine")
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+
+                            if let machine = selectedMachine {
+                                Text(machine.wrappedName)
+                                    .font(.body)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.textPrimary)
+                            } else {
+                                Text("Select machine")
+                                    .font(.body)
+                                    .foregroundColor(.textTertiary)
                             }
+                        }
 
-                            Divider()
+                        Spacer()
 
-                            ForEach(beans) { bean in
-                                Button(action: {
-                                    selectedBean = bean
-                                }) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        HStack {
-                                            Text(bean.wrappedName)
-                                            if bean.isArchived {
-                                                Image(systemName: "archivebox")
-                                                    .font(.caption)
-                                            }
-                                        }
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(.espressoBrown)
+                    }
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
 
-                                        HStack(spacing: 4) {
-                                            Text(bean.wrappedRoaster)
-                                                .font(.caption)
-                                            Text("•")
-                                            if bean.weight > 0 {
-                                                Text("\(Int(bean.remainingWeight))g")
-                                                    .foregroundColor(bean.isLowStock ? .warningOrange : .primary)
-                                                Text("•")
-                                            }
-                                            Text("\(bean.freshnessIndicator)")
-                                                .font(.caption)
-                                        }
-                                        .foregroundColor(.secondary)
-                                    }
+            // Bean selection
+            Menu {
+                // Show archived toggle
+                Button(action: {
+                    showArchivedBeans.toggle()
+                }) {
+                    Label(
+                        showArchivedBeans ? "Hide Archived" : "Show Archived",
+                        systemImage: showArchivedBeans ? "eye.slash" : "eye"
+                    )
+                }
+
+                Divider()
+
+                ForEach(beans) { bean in
+                    Button(action: {
+                        selectedBean = bean
+                    }) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack {
+                                Text(bean.wrappedName)
+                                if bean.isArchived {
+                                    Image(systemName: "archivebox")
+                                        .font(.caption)
                                 }
                             }
-                        } label: {
+
+                            HStack(spacing: 4) {
+                                Text(bean.wrappedRoaster)
+                                    .font(.caption)
+                                Text("•")
+                                if bean.weight > 0 {
+                                    Text("\(Int(bean.remainingWeight))g")
+                                        .foregroundColor(bean.isLowStock ? .warningOrange : .primary)
+                                    Text("•")
+                                }
+                                Text("\(bean.freshnessIndicator)")
+                                    .font(.caption)
+                            }
+                            .foregroundColor(.secondary)
+                        }
+                    }
+                }
+            } label: {
+                CustomCard {
+                    VStack(spacing: 12) {
+                        HStack {
+                            Image(systemName: "leaf.fill")
+                                .font(.title2)
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 40)
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Beans")
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+
+                                if let bean = selectedBean {
+                                    Text(bean.wrappedName)
+                                        .font(.body)
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.textPrimary)
+
+                                    HStack(spacing: 8) {
+                                        Text(bean.wrappedRoaster)
+                                            .font(.caption2)
+                                            .foregroundColor(.textSecondary)
+
+                                        if bean.weight > 0 {
+                                            Text("•")
+                                                .foregroundColor(.textTertiary)
+                                            Text("\(Int(bean.remainingWeight))g left")
+                                                .font(.caption2)
+                                                .foregroundColor(bean.isLowStock ? .warningOrange : .textSecondary)
+                                        }
+
+                                        Text("•")
+                                            .foregroundColor(.textTertiary)
+                                        Text("\(bean.daysFromRoast)d")
+                                            .font(.caption2)
+                                            .foregroundColor(.textSecondary)
+                                    }
+                                } else {
+                                    Text("Select beans")
+                                        .font(.body)
+                                        .foregroundColor(.textTertiary)
+                                }
+                            }
+
+                            Spacer()
+
                             Image(systemName: "chevron.down")
                                 .foregroundColor(.espressoBrown)
                         }
                     }
                 }
             }
+            .buttonStyle(PlainButtonStyle())
         }
     }
 
@@ -542,7 +545,15 @@ struct BrewingView: View {
                     showingFinishSheet = true
                 }
             }
-            .disabled(viewModel.isRunning || viewModel.elapsedTime == 0)
+            .disabled(viewModel.isRunning || viewModel.elapsedTime == 0 || selectedGrinder == nil || selectedMachine == nil || selectedBean == nil)
+
+            // Show helpful message when equipment is missing
+            if selectedGrinder == nil || selectedMachine == nil || selectedBean == nil {
+                Text("Please select grinder, machine, and beans to continue")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
         }
     }
 

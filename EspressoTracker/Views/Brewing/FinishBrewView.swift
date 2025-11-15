@@ -32,6 +32,10 @@ struct FinishBrewView: View {
     @State private var bodyWeight: Int = 3
     @State private var aftertaste: Int = 3
 
+    // Puck preparation techniques
+    @State private var puckPrepWDT: Bool = false
+    @State private var puckPrepRDT: Bool = false
+
     var actualRatio: Double {
         guard let dose = Double(viewModel.doseIn),
               let yield = Double(yieldOut),
@@ -155,6 +159,59 @@ struct FinishBrewView: View {
                     }
                     .listRowBackground(Color.cardBackground)
 
+                    // Puck Preparation Techniques
+                    Section(header: Text("Puck Prep Techniques").foregroundColor(.espressoBrown)) {
+                        VStack(spacing: 16) {
+                            // WDT Toggle
+                            HStack {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack {
+                                        Image(systemName: "wand.and.stars")
+                                            .foregroundColor(.espressoBrown)
+                                        Text("WDT")
+                                            .font(.subheadline)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.textPrimary)
+                                    }
+                                    Text("Weiss Distribution Technique")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                }
+
+                                Spacer()
+
+                                Toggle("", isOn: $puckPrepWDT)
+                                    .tint(.espressoBrown)
+                            }
+
+                            Divider()
+                                .background(Color.dividerColor)
+
+                            // RDT Toggle
+                            HStack {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack {
+                                        Image(systemName: "drop.triangle")
+                                            .foregroundColor(.espressoBrown)
+                                        Text("RDT")
+                                            .font(.subheadline)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.textPrimary)
+                                    }
+                                    Text("Ross Droplet Technique")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                }
+
+                                Spacer()
+
+                                Toggle("", isOn: $puckPrepRDT)
+                                    .tint(.espressoBrown)
+                            }
+                        }
+                    }
+                    .listRowBackground(Color.cardBackground)
+
                     // Photo
                     Section(header: Text("Shot Photo (Optional)").foregroundColor(.espressoBrown)) {
                         PhotosPicker(selection: $selectedImage, matching: .images) {
@@ -248,7 +305,9 @@ struct FinishBrewView: View {
             sweetness: sweetness,
             bitterness: bitterness,
             bodyWeight: bodyWeight,
-            aftertaste: aftertaste
+            aftertaste: aftertaste,
+            puckPrepWDT: puckPrepWDT,
+            puckPrepRDT: puckPrepRDT
         )
 
         // Reset the view model

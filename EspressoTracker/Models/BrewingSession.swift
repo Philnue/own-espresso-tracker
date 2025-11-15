@@ -32,6 +32,10 @@ final class BrewingSession {
     var bodyWeight: Int // Mouthfeel/Weight
     var aftertaste: Int // Finish quality
 
+    // Puck Preparation Techniques
+    var puckPrepWDT: Bool // Weiss Distribution Technique
+    var puckPrepRDT: Bool // Ross Droplet Technique
+
     @Relationship(deleteRule: .nullify)
     var grinder: Grinder?
 
@@ -61,6 +65,8 @@ final class BrewingSession {
         bitterness: Int = 3,
         bodyWeight: Int = 3,
         aftertaste: Int = 3,
+        puckPrepWDT: Bool = false,
+        puckPrepRDT: Bool = false,
         grinder: Grinder? = nil,
         machine: Machine? = nil,
         bean: Bean? = nil
@@ -84,6 +90,8 @@ final class BrewingSession {
         self.bitterness = bitterness
         self.bodyWeight = bodyWeight
         self.aftertaste = aftertaste
+        self.puckPrepWDT = puckPrepWDT
+        self.puckPrepRDT = puckPrepRDT
         self.grinder = grinder
         self.machine = machine
         self.bean = bean

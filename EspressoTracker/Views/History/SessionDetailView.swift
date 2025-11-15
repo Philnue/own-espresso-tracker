@@ -194,6 +194,58 @@ struct SessionDetailView: View {
                         }
                     }
 
+                    // Puck Preparation
+                    if session.puckPrepWDT || session.puckPrepRDT {
+                        CustomCard {
+                            VStack(alignment: .leading, spacing: 16) {
+                                HStack {
+                                    Image(systemName: "hand.raised.fill")
+                                        .foregroundColor(.espressoBrown)
+                                    Text("Puck Prep Techniques")
+                                        .font(.headline)
+                                        .foregroundColor(.textPrimary)
+                                }
+
+                                Divider()
+                                    .background(Color.dividerColor)
+
+                                VStack(alignment: .leading, spacing: 12) {
+                                    if session.puckPrepWDT {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.successGreen)
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text("WDT")
+                                                    .font(.subheadline)
+                                                    .fontWeight(.semibold)
+                                                    .foregroundColor(.textPrimary)
+                                                Text("Weiss Distribution Technique")
+                                                    .font(.caption)
+                                                    .foregroundColor(.textSecondary)
+                                            }
+                                        }
+                                    }
+
+                                    if session.puckPrepRDT {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.successGreen)
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text("RDT")
+                                                    .font(.subheadline)
+                                                    .fontWeight(.semibold)
+                                                    .foregroundColor(.textPrimary)
+                                                Text("Ross Droplet Technique")
+                                                    .font(.caption)
+                                                    .foregroundColor(.textSecondary)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     // Notes
                     if !session.wrappedNotes.isEmpty {
                         CustomCard {

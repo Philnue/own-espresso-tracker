@@ -87,7 +87,7 @@ class DataManager {
     }
 
     // MARK: - Bean Operations
-    func createBean(name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?) {
+    func createBean(name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?, isArchived: Bool = false) {
         let bean = Bean(
             name: name,
             roaster: roaster,
@@ -99,6 +99,7 @@ class DataManager {
             tastingNotes: tastingNotes,
             price: price,
             weight: weight,
+            isArchived: isArchived,
             imageData: imageData,
             notes: notes
         )
@@ -106,7 +107,7 @@ class DataManager {
         saveContext()
     }
 
-    func updateBean(_ bean: Bean, name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?) {
+    func updateBean(_ bean: Bean, name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?, isArchived: Bool = false) {
         bean.name = name
         bean.roaster = roaster
         bean.origin = origin
@@ -117,6 +118,7 @@ class DataManager {
         bean.tastingNotes = tastingNotes
         bean.price = price
         bean.weight = weight
+        bean.isArchived = isArchived
         bean.notes = notes
         if let imageData = imageData {
             bean.imageData = imageData

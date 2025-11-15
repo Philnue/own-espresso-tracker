@@ -17,6 +17,7 @@ struct SettingsView: View {
     @State private var showingExport = false
     @State private var showingExportSuccess = false
     @State private var showingTestDataAlert = false
+    @State private var showingTestDataSuccess = false
     @State private var exportURL: URL?
 
     var body: some View {
@@ -221,11 +222,21 @@ struct SettingsView: View {
             } message: {
                 Text("This will add sample grinders, machines, and beans to your database. This is helpful for testing the app.")
             }
+            .alert("Test Data Added", isPresented: $showingTestDataSuccess) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Successfully added 3 grinders, 3 machines, and 4 beans. Check the Equipment and Beans tabs!")
+            }
         }
     }
 
     private func populateTestData() {
-        TestDataHelper.populateTestData(modelContext: modelContext)
+        do {
+            TestDataHelper.populateTestData(modelContext: modelContext)
+            showingTestDataSuccess = true
+        } catch {
+            print("Error populating test data: \(error)")
+        }
     }
 
     private func exportData() {

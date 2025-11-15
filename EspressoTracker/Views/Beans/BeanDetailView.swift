@@ -41,35 +41,68 @@ struct BeanDetailView: View {
                             .cornerRadius(20)
                     }
 
-                    // Freshness indicator
-                    HStack(spacing: 20) {
-                        VStack {
-                            Text("\(bean.daysFromRoast)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.textPrimary)
-                            Text("days from roast")
-                                .font(.caption)
-                                .foregroundColor(.textSecondary)
+                    // Freshness and usage indicator
+                    VStack(spacing: 12) {
+                        HStack(spacing: 20) {
+                            VStack {
+                                Text("\(bean.daysFromRoast)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.textPrimary)
+                                Text("days from roast")
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+
+                            Divider()
+                                .frame(height: 40)
+
+                            VStack {
+                                Text(bean.freshnessIndicator)
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                                Text("freshness")
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+
+                            if bean.weight > 0 {
+                                Divider()
+                                    .frame(height: 40)
+
+                                VStack {
+                                    Text("\(Int(bean.remainingWeight))g")
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textPrimary))
+                                    Text("remaining")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                }
+                            }
                         }
+                        .padding()
+                        .background(Color.cardBackground)
+                        .cornerRadius(16)
+                        .cardShadow()
 
-                        Divider()
-                            .frame(height: 40)
-
-                        VStack {
-                            Text(bean.freshnessIndicator)
-                                .font(.title3)
-                                .fontWeight(.bold)
-                                .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-                            Text("freshness")
-                                .font(.caption)
-                                .foregroundColor(.textSecondary)
+                        // Archive status badge
+                        if bean.isArchived {
+                            HStack {
+                                Image(systemName: "archivebox.fill")
+                                    .foregroundColor(.warningOrange)
+                                Text("Archived")
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                            }
+                            .foregroundColor(.warningOrange)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.warningOrange.opacity(0.1))
+                            .cornerRadius(10)
                         }
                     }
-                    .padding()
-                    .background(Color.cardBackground)
-                    .cornerRadius(16)
-                    .cardShadow()
 
                     // Info card
                     CustomCard {
@@ -176,25 +209,91 @@ struct BeanDetailView: View {
 
                     // Statistics card
                     let sessionCount = bean.sessionsArray.count
-                    if sessionCount > 0 {
+                    if sessionCount > 0 || bean.weight > 0 {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Statistics")
+                                Text("Usage & Statistics")
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
 
-                                InfoRow(
-                                    icon: "cup.and.saucer.fill",
-                                    label: "Total Shots",
-                                    value: "\(sessionCount)"
-                                )
-
-                                if let lastSession = bean.sessionsArray.first {
+                                if sessionCount > 0 {
                                     InfoRow(
-                                        icon: "clock",
-                                        label: "Last Used",
-                                        value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
+                                        icon: "cup.and.saucer.fill",
+                                        label: "Total Shots",
+                                        value: "\(sessionCount)"
                                     )
+
+                                    if let lastSession = bean.sessionsArray.first {
+                                        InfoRow(
+                                            icon: "clock",
+                                            label: "Last Used",
+                                            value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
+                                        )
+                                    }
+                                }
+
+                                if bean.weight > 0 {
+                                    Divider()
+                                        .background(Color.dividerColor)
+
+                                    InfoRow(
+                                        icon: "scalemass.fill",
+                                        label: "Coffee Used",
+                                        value: String(format: "%.1fg", bean.totalGramsUsed)
+                                    )
+
+                                    InfoRow(
+                                        icon: "chart.bar.fill",
+                                        label: "Usage",
+                                        value: String(format: "%.1f%%", bean.usagePercentage)
+                                    )
+
+                                    // Usage progress bar
+                                    GeometryReader { geometry in
+                                        ZStack(alignment: .leading) {
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .fill(Color.backgroundSecondary)
+                                                .frame(height: 8)
+
+                                            RoundedRectangle(cornerRadius: 4)
+                                                .fill(bean.isFinished ? Color.errorRed : (bean.isLowStock ? Color.warningOrange : Color.espressoBrown))
+                                                .frame(width: min(geometry.size.width, geometry.size.width * CGFloat(bean.usagePercentage / 100)), height: 8)
+                                        }
+                                    }
+                                    .frame(height: 8)
+                                }
+                            }
+                        }
+                    }
+
+                    // Shot History
+                    if sessionCount > 0 {
+                        CustomCard {
+                            VStack(alignment: .leading, spacing: 16) {
+                                HStack {
+                                    Text("Shot History")
+                                        .font(.headline)
+                                        .foregroundColor(.textPrimary)
+
+                                    Spacer()
+
+                                    Text("\(sessionCount) shots")
+                                        .font(.caption)
+                                        .foregroundColor(.textSecondary)
+                                }
+
+                                Divider()
+                                    .background(Color.dividerColor)
+
+                                ForEach(bean.sessionsArray) { session in
+                                    NavigationLink(destination: SessionDetailView(session: session)) {
+                                        BeanShotRowView(session: session)
+                                    }
+
+                                    if session.id != bean.sessionsArray.last?.id {
+                                        Divider()
+                                            .background(Color.dividerColor)
+                                    }
                                 }
                             }
                         }
@@ -205,6 +304,23 @@ struct BeanDetailView: View {
                         PrimaryButton(title: "Edit Bean") {
                             showingEditView = true
                         }
+
+                        Button(action: {
+                            toggleArchive()
+                        }) {
+                            HStack {
+                                Image(systemName: bean.isArchived ? "arrow.uturn.backward" : "archivebox")
+                                Text(bean.isArchived ? "Unarchive Bean" : "Archive Bean")
+                            }
+                            .font(.body)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .background(Color.warningOrange)
+                            .cornerRadius(16)
+                        }
+                        .buttonShadow()
 
                         PrimaryButton(title: "Delete Bean", action: {
                             showingDeleteAlert = true
@@ -225,6 +341,15 @@ struct BeanDetailView: View {
             }
         } message: {
             Text("Are you sure you want to delete this bean? This action cannot be undone.")
+        }
+    }
+
+    private func toggleArchive() {
+        bean.isArchived.toggle()
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error archiving bean: \(error)")
         }
     }
 

@@ -21,6 +21,7 @@ final class Bean {
     var tastingNotes: String
     var price: Double
     var weight: Double // in grams
+    var isArchived: Bool // Track if bean is archived/finished
     @Attribute(.externalStorage) var imageData: Data?
     var notes: String
     var createdAt: Date
@@ -41,6 +42,7 @@ final class Bean {
         tastingNotes: String = "",
         price: Double = 0,
         weight: Double = 0,
+        isArchived: Bool = false,
         imageData: Data? = nil,
         notes: String = "",
         createdAt: Date = Date(),
@@ -57,6 +59,7 @@ final class Bean {
         self.tastingNotes = tastingNotes
         self.price = price
         self.weight = weight
+        self.isArchived = isArchived
         self.imageData = imageData
         self.notes = notes
         self.createdAt = createdAt
@@ -100,5 +103,27 @@ final class Bean {
 
     var sessionsArray: [BrewingSession] {
         (brewingSessions ?? []).sorted { $0.startTime > $1.startTime }
+    }
+
+    // Consumption tracking
+    var totalGramsUsed: Double {
+        sessionsArray.reduce(0) { $0 + $1.doseIn }
+    }
+
+    var remainingWeight: Double {
+        max(0, weight - totalGramsUsed)
+    }
+
+    var usagePercentage: Double {
+        guard weight > 0 else { return 0 }
+        return min(100, (totalGramsUsed / weight) * 100)
+    }
+
+    var isLowStock: Bool {
+        remainingWeight < 50 && remainingWeight > 0
+    }
+
+    var isFinished: Bool {
+        remainingWeight <= 0
     }
 }

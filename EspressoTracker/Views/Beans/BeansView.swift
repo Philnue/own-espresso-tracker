@@ -10,9 +10,26 @@ import SwiftData
 
 struct BeansView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Bean.createdAt, order: .reverse) private var beans: [Bean]
+    @Query(sort: \Bean.createdAt, order: .reverse) private var allBeans: [Bean]
 
     @State private var showingAddBean = false
+    @State private var showArchivedBeans = false
+
+    private var beans: [Bean] {
+        if showArchivedBeans {
+            return allBeans
+        } else {
+            return allBeans.filter { !$0.isArchived }
+        }
+    }
+
+    private var activeBeanCount: Int {
+        allBeans.filter { !$0.isArchived }.count
+    }
+
+    private var archivedBeanCount: Int {
+        allBeans.filter { $0.isArchived }.count
+    }
 
     var body: some View {
         NavigationView {
@@ -35,8 +52,28 @@ struct BeansView: View {
                     }
                 }
             }
-            .navigationTitle("Beans")
+            .navigationTitle(showArchivedBeans ? "All Beans" : "Active Beans")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if archivedBeanCount > 0 {
+                        Button(action: {
+                            showArchivedBeans.toggle()
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: showArchivedBeans ? "eye.slash" : "eye")
+                                if showArchivedBeans {
+                                    Text("Hide Archived")
+                                        .font(.caption)
+                                } else {
+                                    Text("Show Archived (\(archivedBeanCount))")
+                                        .font(.caption)
+                                }
+                            }
+                            .foregroundColor(.espressoBrown)
+                        }
+                    }
+                }
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showingAddBean = true }) {
                         Image(systemName: "plus")
@@ -86,75 +123,128 @@ struct BeanCardView: View {
 
     var body: some View {
         CustomCard {
-            HStack(spacing: 16) {
-                // Image or placeholder
-                if let imageData = bean.imageData,
-                   let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(12)
-                } else {
-                    Image(systemName: "leaf.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(.textSecondary)
-                        .frame(width: 80, height: 80)
-                        .background(Color.backgroundSecondary)
-                        .cornerRadius(12)
-                }
+            VStack(spacing: 0) {
+                HStack(spacing: 16) {
+                    // Image or placeholder
+                    if let imageData = bean.imageData,
+                       let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 80, height: 80)
+                            .cornerRadius(12)
+                    } else {
+                        Image(systemName: "leaf.fill")
+                            .font(.system(size: 32))
+                            .foregroundColor(.textSecondary)
+                            .frame(width: 80, height: 80)
+                            .background(Color.backgroundSecondary)
+                            .cornerRadius(12)
+                    }
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(bean.wrappedName)
-                        .font(.headline)
-                        .foregroundColor(.textPrimary)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text(bean.wrappedName)
+                                .font(.headline)
+                                .foregroundColor(.textPrimary)
 
-                    Text(bean.wrappedRoaster)
-                        .font(.subheadline)
-                        .foregroundColor(.espressoBrown)
-
-                    HStack(spacing: 12) {
-                        // Origin
-                        if !bean.wrappedOrigin.isEmpty {
-                            HStack(spacing: 4) {
-                                Image(systemName: "globe")
+                            if bean.isArchived {
+                                Image(systemName: "archivebox.fill")
                                     .font(.caption)
-                                Text(bean.wrappedOrigin)
-                                    .font(.caption)
+                                    .foregroundColor(.warningOrange)
                             }
                         }
 
-                        // Freshness indicator
-                        HStack(spacing: 4) {
-                            Image(systemName: "calendar")
-                                .font(.caption)
-                            Text("\(bean.daysFromRoast)d")
-                                .font(.caption)
+                        Text(bean.wrappedRoaster)
+                            .font(.subheadline)
+                            .foregroundColor(.espressoBrown)
+
+                        HStack(spacing: 12) {
+                            // Origin
+                            if !bean.wrappedOrigin.isEmpty {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "globe")
+                                        .font(.caption)
+                                    Text(bean.wrappedOrigin)
+                                        .font(.caption)
+                                }
+                            }
+
+                            // Freshness indicator
+                            HStack(spacing: 4) {
+                                Image(systemName: "calendar")
+                                    .font(.caption)
+                                Text("\(bean.daysFromRoast)d")
+                                    .font(.caption)
+                            }
+                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+
+                            // Remaining weight
+                            if bean.weight > 0 {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "scalemass")
+                                        .font(.caption)
+                                    Text("\(Int(bean.remainingWeight))g")
+                                        .font(.caption)
+                                }
+                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textSecondary))
+                            }
                         }
-                        .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                        .foregroundColor(.textSecondary)
                     }
-                    .foregroundColor(.textSecondary)
-                }
-
-                Spacer()
-
-                // Freshness badge
-                VStack {
-                    Text(bean.freshnessIndicator)
-                        .font(.caption2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(
-                            bean.isStale ? Color.warningOrange : Color.successGreen
-                        )
-                        .cornerRadius(6)
 
                     Spacer()
 
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.textTertiary)
+                    // Freshness badge
+                    VStack {
+                        Text(bean.freshnessIndicator)
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                bean.isStale ? Color.warningOrange : Color.successGreen
+                            )
+                            .cornerRadius(6)
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(.textTertiary)
+                    }
+                }
+
+                // Usage progress bar
+                if bean.weight > 0 && bean.totalGramsUsed > 0 {
+                    VStack(spacing: 4) {
+                        GeometryReader { geometry in
+                            ZStack(alignment: .leading) {
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(Color.backgroundSecondary)
+                                    .frame(height: 4)
+
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(bean.isFinished ? Color.errorRed : (bean.isLowStock ? Color.warningOrange : Color.espressoBrown))
+                                    .frame(width: min(geometry.size.width, geometry.size.width * CGFloat(bean.usagePercentage / 100)), height: 4)
+                            }
+                        }
+                        .frame(height: 4)
+                        .padding(.top, 12)
+
+                        HStack {
+                            Text("\(String(format: "%.1f%%", bean.usagePercentage)) used")
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+
+                            Spacer()
+
+                            Text("\(bean.sessionsArray.count) shots")
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+                        }
+                        .padding(.top, 4)
+                    }
                 }
             }
         }

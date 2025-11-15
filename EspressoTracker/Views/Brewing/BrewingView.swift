@@ -15,13 +15,23 @@ struct BrewingView: View {
 
     @Query(sort: \Grinder.name) private var grinders: [Grinder]
     @Query(sort: \Machine.name) private var machines: [Machine]
-    @Query(sort: \Bean.createdAt, order: .reverse) private var beans: [Bean]
+    @Query(sort: \Bean.createdAt, order: .reverse) private var allBeans: [Bean]
 
     @State private var selectedGrinder: Grinder?
     @State private var selectedMachine: Machine?
     @State private var selectedBean: Bean?
     @State private var selectedMethod: BrewMethod = .espresso
     @State private var showingFinishSheet = false
+    @State private var showArchivedBeans = false
+
+    // Filtered beans based on archive status
+    private var beans: [Bean] {
+        if showArchivedBeans {
+            return allBeans
+        } else {
+            return allBeans.filter { !$0.isArchived }
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -282,40 +292,98 @@ struct BrewingView: View {
 
             // Bean selection
             CustomCard {
-                HStack {
-                    Image(systemName: "leaf.fill")
-                        .font(.title2)
-                        .foregroundColor(.espressoBrown)
-                        .frame(width: 40)
+                VStack(spacing: 12) {
+                    HStack {
+                        Image(systemName: "leaf.fill")
+                            .font(.title2)
+                            .foregroundColor(.espressoBrown)
+                            .frame(width: 40)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Beans")
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Beans")
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
 
-                        if let bean = selectedBean {
-                            Text(bean.wrappedName)
-                                .font(.body)
-                                .fontWeight(.medium)
-                                .foregroundColor(.textPrimary)
-                        } else {
-                            Text("Select beans")
-                                .font(.body)
-                                .foregroundColor(.textTertiary)
-                        }
-                    }
+                            if let bean = selectedBean {
+                                Text(bean.wrappedName)
+                                    .font(.body)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.textPrimary)
 
-                    Spacer()
+                                HStack(spacing: 8) {
+                                    Text(bean.wrappedRoaster)
+                                        .font(.caption2)
+                                        .foregroundColor(.textSecondary)
 
-                    Menu {
-                        ForEach(beans) { bean in
-                            Button(bean.wrappedName) {
-                                selectedBean = bean
+                                    if bean.weight > 0 {
+                                        Text("•")
+                                            .foregroundColor(.textTertiary)
+                                        Text("\(Int(bean.remainingWeight))g left")
+                                            .font(.caption2)
+                                            .foregroundColor(bean.isLowStock ? .warningOrange : .textSecondary)
+                                    }
+
+                                    Text("•")
+                                        .foregroundColor(.textTertiary)
+                                    Text("\(bean.daysFromRoast)d")
+                                        .font(.caption2)
+                                        .foregroundColor(.textSecondary)
+                                }
+                            } else {
+                                Text("Select beans")
+                                    .font(.body)
+                                    .foregroundColor(.textTertiary)
                             }
                         }
-                    } label: {
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
+
+                        Spacer()
+
+                        Menu {
+                            // Show archived toggle
+                            Button(action: {
+                                showArchivedBeans.toggle()
+                            }) {
+                                Label(
+                                    showArchivedBeans ? "Hide Archived" : "Show Archived",
+                                    systemImage: showArchivedBeans ? "eye.slash" : "eye"
+                                )
+                            }
+
+                            Divider()
+
+                            ForEach(beans) { bean in
+                                Button(action: {
+                                    selectedBean = bean
+                                }) {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        HStack {
+                                            Text(bean.wrappedName)
+                                            if bean.isArchived {
+                                                Image(systemName: "archivebox")
+                                                    .font(.caption)
+                                            }
+                                        }
+
+                                        HStack(spacing: 4) {
+                                            Text(bean.wrappedRoaster)
+                                                .font(.caption)
+                                            Text("•")
+                                            if bean.weight > 0 {
+                                                Text("\(Int(bean.remainingWeight))g")
+                                                    .foregroundColor(bean.isLowStock ? .warningOrange : .primary)
+                                                Text("•")
+                                            }
+                                            Text("\(bean.freshnessIndicator)")
+                                                .font(.caption)
+                                        }
+                                        .foregroundColor(.secondary)
+                                    }
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.espressoBrown)
+                        }
                     }
                 }
             }

@@ -242,6 +242,39 @@
   "stale": "Abgestanden",
 
   "puck_prep": "Puck-Vorbereitung",
+  "puck_prep_techniques": "Puck-Vorbereitung",
   "wdt": "WDT",
-  "rdt": "RDT"
+  "wdt_full": "Weiss Verteilungstechnik",
+  "rdt": "RDT",
+  "rdt_full": "Ross Tropfen-Technik",
+
+  "brewing_parameters": "Brühparameter",
+  "equipment_beans": "Ausstattung & Bohnen",
+  "no_history_yet": "Keine Brühhistorie",
+  "no_history_description": "Ihre Brühsitzungen erscheinen hier",
+  "dose": "Dosis",
+  "target": "Ziel",
+
+  "specifications": "Spezifikationen",
+  "burr_size_mm": "Mahlscheibengröße (mm)",
+  "burr_type": "Mahlscheibentyp",
+  "model": "Modell",
+  "statistics": "Statistiken",
+  "purchase_information": "Kaufinformationen",
+  "boiler_type": "Kesseltyp",
+  "group_head": "Brühgruppe",
+  "pressure_bar": "Druck (bar)",
+
+  "no_machines_yet": "Noch keine Maschinen",
+  "no_machines_description": "Fügen Sie Ihre Espressomaschine hinzu",
+  "delete_machine_confirm": "Möchten Sie diese Maschine wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "delete_session_confirm": "Möchten Sie diese Brühsitzung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+
+  "weight_g": "Gewicht (g)",
+  "price_currency": "Preis (€)",
+
+  "add_grinder": "Mühle hinzufügen",
+  "add_machine": "Maschine hinzufügen",
+  "grinders": "Mühlen",
+  "machines": "Maschinen"
 }

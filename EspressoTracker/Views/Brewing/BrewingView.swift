@@ -255,34 +255,38 @@ struct BrewingView: View {
                     }
                 } label: {
                     VStack(spacing: 8) {
-                        Image(systemName: "slider.horizontal.3")
-                            .font(.title2)
+                        Image(systemName: "gearshape.2.fill")
+                            .font(.system(size: 28))
                             .foregroundColor(.espressoBrown)
+                            .frame(height: 32)
 
                         Text("Grinder")
-                            .font(.caption2)
+                            .font(.caption)
+                            .fontWeight(.medium)
                             .foregroundColor(.textSecondary)
 
                         if let grinder = selectedGrinder {
                             Text(grinder.wrappedName)
-                                .font(.caption)
-                                .fontWeight(.medium)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.textPrimary)
                                 .lineLimit(1)
                         } else {
                             Text("Select")
-                                .font(.caption)
+                                .font(.subheadline)
                                 .foregroundColor(.textTertiary)
                         }
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .frame(height: 100)
+                    .padding(.horizontal, 8)
                     .background(Color.cardBackground)
                     .cornerRadius(12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(selectedGrinder != nil ? Color.espressoBrown : Color.clear, lineWidth: 2)
+                            .stroke(selectedGrinder != nil ? Color.espressoBrown : Color.dividerColor, lineWidth: selectedGrinder != nil ? 2 : 1)
                     )
+                    .cardShadow()
                 }
 
                 // Machine selection
@@ -301,34 +305,38 @@ struct BrewingView: View {
                     }
                 } label: {
                     VStack(spacing: 8) {
-                        Image(systemName: "espressomaker")
-                            .font(.title2)
+                        Image(systemName: "cup.and.saucer.fill")
+                            .font(.system(size: 28))
                             .foregroundColor(.espressoBrown)
+                            .frame(height: 32)
 
                         Text("Machine")
-                            .font(.caption2)
+                            .font(.caption)
+                            .fontWeight(.medium)
                             .foregroundColor(.textSecondary)
 
                         if let machine = selectedMachine {
                             Text(machine.wrappedName)
-                                .font(.caption)
-                                .fontWeight(.medium)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
                                 .foregroundColor(.textPrimary)
                                 .lineLimit(1)
                         } else {
                             Text("Select")
-                                .font(.caption)
+                                .font(.subheadline)
                                 .foregroundColor(.textTertiary)
                         }
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .frame(height: 100)
+                    .padding(.horizontal, 8)
                     .background(Color.cardBackground)
                     .cornerRadius(12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(selectedMachine != nil ? Color.espressoBrown : Color.clear, lineWidth: 2)
+                            .stroke(selectedMachine != nil ? Color.espressoBrown : Color.dividerColor, lineWidth: selectedMachine != nil ? 2 : 1)
                     )
+                    .cardShadow()
                 }
             }
 

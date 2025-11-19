@@ -76,10 +76,10 @@ class UserSettings: ObservableObject {
         if let savedLanguage = defaults.string(forKey: "appLanguage") {
             detectedLanguage = savedLanguage
         } else {
-            // Get device's preferred language
-            let deviceLanguage = Locale.current.language.languageCode?.identifier ?? "en"
-            // Map to supported languages (en, de)
-            if deviceLanguage == "de" {
+            // Get device's preferred language from system settings
+            let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+            // Check if it starts with "de" (e.g., "de", "de-DE", "de-AT")
+            if preferredLanguage.hasPrefix("de") {
                 detectedLanguage = "de"
             } else {
                 detectedLanguage = "en"

@@ -129,8 +129,10 @@ struct BrewingView: View {
                                         .font(.title3)
                                     Text(method.rawValue)
                                         .font(.caption2)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
                                 }
-                                .frame(width: 70, height: 60)
+                                .frame(width: 80, height: 60)
                                 .foregroundColor(selectedMethod == method ? .white : .textSecondary)
                                 .background(selectedMethod == method ? Color.espressoBrown : Color.backgroundSecondary)
                                 .cornerRadius(10)
@@ -619,7 +621,7 @@ struct BrewingView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 12) {
-            PrimaryButton(title: "Finish & Save Shot") {
+            PrimaryButton(title: LocalizedString.get("finish_save_shot")) {
                 if !viewModel.isRunning {
                     showingFinishSheet = true
                 }
@@ -628,7 +630,7 @@ struct BrewingView: View {
 
             // Show helpful message when equipment is missing
             if selectedGrinder == nil || selectedMachine == nil || selectedBean == nil {
-                Text("Please select grinder, machine, and beans to continue")
+                Text(LocalizedString.get("please_select_equipment"))
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)

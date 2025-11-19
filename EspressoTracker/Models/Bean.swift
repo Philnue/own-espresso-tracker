@@ -26,8 +26,8 @@ final class Bean {
     var notes: String
     var createdAt: Date
     var updatedAt: Date
-    var batchNumber: Int // Track multiple batches of the same bean
-    var purchaseDate: Date // When this batch was purchased
+    var batchNumber: Int = 1 // Track multiple batches of the same bean
+    var purchaseDate: Date = Date() // When this batch was purchased
 
     @Relationship(deleteRule: .nullify, inverse: \BrewingSession.bean)
     var brewingSessions: [BrewingSession]?

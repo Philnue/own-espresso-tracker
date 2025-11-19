@@ -112,9 +112,13 @@ class DataManager {
     // Create a new batch of an existing bean
     func createBatchFromBean(_ existingBean: Bean, weight: Double, roastDate: Date, purchaseDate: Date = Date(), price: Double) {
         // Find the highest batch number for this bean name/roaster combo
+        // Capture values as local constants for the predicate
+        let beanName = existingBean.name
+        let beanRoaster = existingBean.roaster
+
         let descriptor = FetchDescriptor<Bean>(
             predicate: #Predicate { bean in
-                bean.name == existingBean.name && bean.roaster == existingBean.roaster
+                bean.name == beanName && bean.roaster == beanRoaster
             }
         )
 

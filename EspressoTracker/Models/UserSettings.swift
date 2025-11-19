@@ -72,20 +72,22 @@ class UserSettings: ObservableObject {
         self.colorScheme = defaults.string(forKey: "colorScheme") ?? "dark"
 
         // Detect device language and set as default on first launch
+        let detectedLanguage: String
         if let savedLanguage = defaults.string(forKey: "appLanguage") {
-            self.appLanguage = savedLanguage
+            detectedLanguage = savedLanguage
         } else {
             // Get device's preferred language
             let deviceLanguage = Locale.current.language.languageCode?.identifier ?? "en"
             // Map to supported languages (en, de)
             if deviceLanguage == "de" {
-                self.appLanguage = "de"
+                detectedLanguage = "de"
             } else {
-                self.appLanguage = "en"
+                detectedLanguage = "en"
             }
             // Save the detected language
-            defaults.set(self.appLanguage, forKey: "appLanguage")
+            defaults.set(detectedLanguage, forKey: "appLanguage")
         }
+        self.appLanguage = detectedLanguage
 
         self.weightUnit = defaults.string(forKey: "weightUnit") ?? "grams"
         self.temperatureUnit = defaults.string(forKey: "temperatureUnit") ?? "celsius"

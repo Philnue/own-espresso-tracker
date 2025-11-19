@@ -148,6 +148,17 @@ struct BeanCardView: View {
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
 
+                            if bean.batchNumber > 1 {
+                                Text("#\(bean.batchNumber)")
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 2)
+                                    .background(Color.espressoBrown)
+                                    .cornerRadius(4)
+                            }
+
                             if bean.isArchived {
                                 Image(systemName: "archivebox.fill")
                                     .font(.caption)

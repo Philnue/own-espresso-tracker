@@ -26,6 +26,8 @@ final class Bean {
     var notes: String
     var createdAt: Date
     var updatedAt: Date
+    var batchNumber: Int // Track multiple batches of the same bean
+    var purchaseDate: Date // When this batch was purchased
 
     @Relationship(deleteRule: .nullify, inverse: \BrewingSession.bean)
     var brewingSessions: [BrewingSession]?
@@ -46,7 +48,9 @@ final class Bean {
         imageData: Data? = nil,
         notes: String = "",
         createdAt: Date = Date(),
-        updatedAt: Date = Date()
+        updatedAt: Date = Date(),
+        batchNumber: Int = 1,
+        purchaseDate: Date = Date()
     ) {
         self.id = id
         self.name = name
@@ -64,6 +68,8 @@ final class Bean {
         self.notes = notes
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.batchNumber = batchNumber
+        self.purchaseDate = purchaseDate
     }
 
     var wrappedName: String {
@@ -125,5 +131,20 @@ final class Bean {
 
     var isFinished: Bool {
         remainingWeight <= 0
+    }
+
+    // Batch display name (e.g., "Ethiopia Yirgacheffe #2")
+    var displayName: String {
+        if batchNumber > 1 {
+            return "\(wrappedName) #\(batchNumber)"
+        }
+        return wrappedName
+    }
+
+    // Format purchase date for display
+    var formattedPurchaseDate: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: purchaseDate)
     }
 }

@@ -176,18 +176,18 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // About
-                    Section(header: Text("About").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("about")).foregroundColor(.espressoBrown)) {
                         HStack {
-                            Text("Version")
+                            Text(LocalizedString.get("version"))
                             Spacer()
-                            Text("1.0.0")
+                            Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                                 .foregroundColor(.textSecondary)
                         }
 
                         HStack {
-                            Text("Build")
+                            Text(LocalizedString.get("build"))
                             Spacer()
-                            Text("2024.1")
+                            Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
                                 .foregroundColor(.textSecondary)
                         }
                     }

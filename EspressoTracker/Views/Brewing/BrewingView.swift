@@ -237,87 +237,100 @@ struct BrewingView: View {
                 .foregroundColor(.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Grinder selection
-            Menu {
-                ForEach(grinders) { grinder in
-                    Button(grinder.wrappedName) {
-                        selectedGrinder = grinder
+            // Grinder and Machine in a horizontal layout
+            HStack(spacing: 12) {
+                // Grinder selection
+                Menu {
+                    ForEach(grinders) { grinder in
+                        Button(action: {
+                            selectedGrinder = grinder
+                        }) {
+                            HStack {
+                                Text(grinder.wrappedName)
+                                if selectedGrinder?.id == grinder.id {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
                     }
-                }
-            } label: {
-                CustomCard {
-                    HStack {
+                } label: {
+                    VStack(spacing: 8) {
                         Image(systemName: "slider.horizontal.3")
                             .font(.title2)
                             .foregroundColor(.espressoBrown)
-                            .frame(width: 40)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Grinder")
+                        Text("Grinder")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary)
+
+                        if let grinder = selectedGrinder {
+                            Text(grinder.wrappedName)
                                 .font(.caption)
-                                .foregroundColor(.textSecondary)
+                                .fontWeight(.medium)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
+                        } else {
+                            Text("Select")
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selectedGrinder != nil ? Color.espressoBrown : Color.clear, lineWidth: 2)
+                    )
+                }
 
-                            if let grinder = selectedGrinder {
-                                Text(grinder.wrappedName)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.textPrimary)
-                            } else {
-                                Text("Select grinder")
-                                    .font(.body)
-                                    .foregroundColor(.textTertiary)
+                // Machine selection
+                Menu {
+                    ForEach(machines) { machine in
+                        Button(action: {
+                            selectedMachine = machine
+                        }) {
+                            HStack {
+                                Text(machine.wrappedName)
+                                if selectedMachine?.id == machine.id {
+                                    Image(systemName: "checkmark")
+                                }
                             }
                         }
-
-                        Spacer()
-
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
                     }
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-
-            // Machine selection
-            Menu {
-                ForEach(machines) { machine in
-                    Button(machine.wrappedName) {
-                        selectedMachine = machine
-                    }
-                }
-            } label: {
-                CustomCard {
-                    HStack {
-                        Image(systemName: "refrigerator")
+                } label: {
+                    VStack(spacing: 8) {
+                        Image(systemName: "espressomaker")
                             .font(.title2)
                             .foregroundColor(.espressoBrown)
-                            .frame(width: 40)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Machine")
+                        Text("Machine")
+                            .font(.caption2)
+                            .foregroundColor(.textSecondary)
+
+                        if let machine = selectedMachine {
+                            Text(machine.wrappedName)
                                 .font(.caption)
-                                .foregroundColor(.textSecondary)
-
-                            if let machine = selectedMachine {
-                                Text(machine.wrappedName)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.textPrimary)
-                            } else {
-                                Text("Select machine")
-                                    .font(.body)
-                                    .foregroundColor(.textTertiary)
-                            }
+                                .fontWeight(.medium)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
+                        } else {
+                            Text("Select")
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
                         }
-
-                        Spacer()
-
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selectedMachine != nil ? Color.espressoBrown : Color.clear, lineWidth: 2)
+                    )
                 }
             }
-            .buttonStyle(PlainButtonStyle())
 
             // Bean selection - opens searchable picker
             Button(action: { showingBeanPicker = true }) {

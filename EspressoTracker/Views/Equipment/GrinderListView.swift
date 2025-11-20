@@ -15,38 +15,36 @@ struct GrinderListView: View {
     @State private var showingAddGrinder = false
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.backgroundPrimary.ignoresSafeArea()
+        ZStack {
+            Color.backgroundPrimary.ignoresSafeArea()
 
-                if grinders.isEmpty {
-                    emptyStateView
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
-                            ForEach(grinders) { grinder in
-                                NavigationLink(destination: GrinderDetailView(grinder: grinder)) {
-                                    GrinderCardView(grinder: grinder)
-                                }
-                                .buttonStyle(PlainButtonStyle())
+            if grinders.isEmpty {
+                emptyStateView
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        ForEach(grinders) { grinder in
+                            NavigationLink(destination: GrinderDetailView(grinder: grinder)) {
+                                GrinderCardView(grinder: grinder)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .padding()
                     }
+                    .padding()
                 }
             }
-            .navigationTitle("Grinders")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingAddGrinder = true }) {
-                        Image(systemName: "plus")
-                            .foregroundColor(.espressoBrown)
-                    }
+        }
+        .navigationTitle(LocalizedString.get("grinders"))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { showingAddGrinder = true }) {
+                    Image(systemName: "plus")
+                        .foregroundColor(.espressoBrown)
                 }
             }
-            .sheet(isPresented: $showingAddGrinder) {
-                AddGrinderView()
-            }
+        }
+        .sheet(isPresented: $showingAddGrinder) {
+            AddGrinderView()
         }
     }
 

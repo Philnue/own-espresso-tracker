@@ -21,19 +21,18 @@ struct SettingsView: View {
     @State private var exportURL: URL?
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.backgroundPrimary.ignoresSafeArea()
+        ZStack {
+            Color.backgroundPrimary.ignoresSafeArea()
 
-                Form {
-                    // Equipment
-                    Section(header: Text(LocalizedString.get("equipment")).foregroundColor(.espressoBrown)) {
-                        NavigationLink(destination: EquipmentView()) {
-                            HStack {
-                                Image(systemName: "wrench.and.screwdriver.fill")
-                                    .foregroundColor(.espressoBrown)
-                                Text(LocalizedString.get("equipment"))
-                                    .foregroundColor(.textPrimary)
+            Form {
+            // Equipment
+            Section(header: Text(LocalizedString.get("equipment")).foregroundColor(.espressoBrown)) {
+                    NavigationLink(destination: EquipmentView()) {
+                        HStack {
+                            Image(systemName: "wrench.and.screwdriver.fill")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("equipment"))
+                                .foregroundColor(.textPrimary)
                             }
                         }
                     }

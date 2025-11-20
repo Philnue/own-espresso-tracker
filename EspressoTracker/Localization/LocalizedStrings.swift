@@ -18,10 +18,25 @@ struct LocalizedString {
         var result: [String: [String: String]] = [:]
 
         print("🌍 [LocalizedString] Starting to load translations...")
+        print("🌍 [LocalizedString] Bundle path: \(Bundle.main.bundlePath)")
 
-        // Load English translations
-        print("🌍 [LocalizedString] Looking for en.json in Localization subdirectory...")
-        if let enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization") {
+        // List all resources in bundle for debugging
+        if let resourcePath = Bundle.main.resourcePath {
+            print("🌍 [LocalizedString] Resource path: \(resourcePath)")
+            if let contents = try? FileManager.default.contentsOfDirectory(atPath: resourcePath) {
+                print("🌍 [LocalizedString] Bundle contents: \(contents.filter { $0.contains("json") || $0.contains("Localization") })")
+            }
+        }
+
+        // Load English translations - try multiple locations
+        print("🌍 [LocalizedString] Looking for en.json...")
+        var enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization")
+        if enURL == nil {
+            print("🌍 [LocalizedString] Not in Localization subdirectory, trying bundle root...")
+            enURL = Bundle.main.url(forResource: "en", withExtension: "json")
+        }
+
+        if let enURL = enURL {
             print("🌍 [LocalizedString] ✅ Found en.json at: \(enURL.path)")
             if let enData = try? Data(contentsOf: enURL) {
                 print("🌍 [LocalizedString] ✅ Loaded en.json data (\(enData.count) bytes)")
@@ -38,9 +53,15 @@ struct LocalizedString {
             print("🌍 [LocalizedString] ❌ Could not find en.json in bundle")
         }
 
-        // Load German translations
-        print("🌍 [LocalizedString] Looking for de.json in Localization subdirectory...")
-        if let deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization") {
+        // Load German translations - try multiple locations
+        print("🌍 [LocalizedString] Looking for de.json...")
+        var deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization")
+        if deURL == nil {
+            print("🌍 [LocalizedString] Not in Localization subdirectory, trying bundle root...")
+            deURL = Bundle.main.url(forResource: "de", withExtension: "json")
+        }
+
+        if let deURL = deURL {
             print("🌍 [LocalizedString] ✅ Found de.json at: \(deURL.path)")
             if let deData = try? Data(contentsOf: deURL) {
                 print("🌍 [LocalizedString] ✅ Loaded de.json data (\(deData.count) bytes)")

@@ -214,10 +214,10 @@ struct SettingsView: View {
                                 Spacer()
                                 Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
                                     .foregroundColor(.textSecondary)
-                            }
                         }
-                        .listRowBackground(Color.cardBackground)
                     }
+                    .listRowBackground(Color.cardBackground)
+                }
                 .scrollContentBackground(.hidden)
                 .id(settings.appLanguage) // Force refresh when language changes
             }

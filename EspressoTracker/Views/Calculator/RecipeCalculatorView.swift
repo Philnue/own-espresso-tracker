@@ -6,13 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RecipeCalculatorView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(filter: #Predicate<BrewingMethodModel> { $0.isActive }, sort: \BrewingMethodModel.sortOrder) private var brewingMethods: [BrewingMethodModel]
     @ObservedObject private var settings = UserSettings.shared
-    @State private var selectedMethod: BrewMethod = .espresso
+    @State private var selectedMethodIndex: Int = 0
     @State private var doseIn: String = "18"
     @State private var ratio: String = "2.0"
     @State private var targetYield: Double = 36.0
+
+    var selectedMethod: BrewingMethodModel? {
+        guard !brewingMethods.isEmpty, selectedMethodIndex < brewingMethods.count else { return nil }
+        return brewingMethods[selectedMethodIndex]
+    }
 
     var body: some View {
         NavigationView {
@@ -32,33 +40,41 @@ struct RecipeCalculatorView: View {
 
                         // Brewing Guide
                         brewingGuideCard
-
-                        // Common Recipes
-                        commonRecipesCard
                     }
                     .padding()
                 }
             }
-            .navigationTitle("Recipe Calculator")
+            .navigationTitle(LocalizedString.get("recipe_calculator"))
+            .onAppear {
+                if let firstMethod = brewingMethods.first {
+                    updateDefaults(for: firstMethod)
+                }
+            }
         }
     }
 
     private var methodSelectorCard: some View {
         CustomCard {
             VStack(alignment: .leading, spacing: 16) {
-                Text("Brewing Method")
+                Text(LocalizedString.get("brewing_method"))
                     .font(.headline)
                     .foregroundColor(.textPrimary)
 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(BrewMethod.allCases, id: \.self) { method in
-                            MethodButton(
-                                method: method,
-                                isSelected: selectedMethod == method
-                            ) {
-                                selectedMethod = method
-                                updateDefaults(for: method)
+                if brewingMethods.isEmpty {
+                    Text(LocalizedString.get("no_brewing_methods"))
+                        .font(.subheadline)
+                        .foregroundColor(.textSecondary)
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(Array(brewingMethods.enumerated()), id: \.element.id) { index, method in
+                                MethodCardButton(
+                                    method: method,
+                                    isSelected: selectedMethodIndex == index
+                                ) {
+                                    selectedMethodIndex = index
+                                    updateDefaults(for: method)
+                                }
                             }
                         }
                     }
@@ -122,12 +138,14 @@ struct RecipeCalculatorView: View {
                 }
 
                 // Typical Range
-                HStack {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.espressoBrown)
-                    Text("Typical ratio: 1:\(String(format: "%.0f", selectedMethod.typicalRatio.lowerBound)) - 1:\(String(format: "%.0f", selectedMethod.typicalRatio.upperBound))")
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
+                if let method = selectedMethod {
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.espressoBrown)
+                        Text(LocalizedString.get("typical_ratio") + ": 1:\(String(format: "%.1f", method.defaultRatioMin)) - 1:\(String(format: "%.1f", method.defaultRatioMax))")
+                            .font(.caption)
+                            .foregroundColor(.textSecondary)
+                    }
                 }
             }
         }
@@ -173,66 +191,50 @@ struct RecipeCalculatorView: View {
 
     private var brewingGuideCard: some View {
         CustomCard {
-            VStack(alignment: .leading, spacing: 16) {
-                HStack {
-                    Image(systemName: selectedMethod.icon)
-                        .foregroundColor(.espressoBrown)
-                        .font(.title2)
-                    Text("\(selectedMethod.rawValue) Guide")
-                        .font(.headline)
-                        .foregroundColor(.textPrimary)
-                }
-
-                Divider()
-                    .background(Color.dividerColor)
-
-                InfoRow(
-                    icon: "timer",
-                    label: "Brew Time",
-                    value: formatBrewTime(selectedMethod.typicalBrewTime)
-                )
-
-                InfoRow(
-                    icon: "drop.fill",
-                    label: "Typical Ratio",
-                    value: "1:\(String(format: "%.0f", selectedMethod.typicalRatio.lowerBound))-\(String(format: "%.0f", selectedMethod.typicalRatio.upperBound))"
-                )
-
-                // Method-specific tips
-                VStack(alignment: .leading, spacing: 8) {
+            if let method = selectedMethod {
+                VStack(alignment: .leading, spacing: 16) {
                     HStack {
-                        Image(systemName: "lightbulb.fill")
+                        Image(systemName: method.icon)
                             .foregroundColor(.espressoBrown)
-                        Text("Tips")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.textSecondary)
+                            .font(.title2)
+                        Text("\(method.name) " + LocalizedString.get("brewing_guide"))
+                            .font(.headline)
+                            .foregroundColor(.textPrimary)
                     }
 
-                    Text(getTipsForMethod(selectedMethod))
-                        .font(.caption)
-                        .foregroundColor(.textPrimary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-        }
-    }
+                    Divider()
+                        .background(Color.dividerColor)
 
-    private var commonRecipesCard: some View {
-        CustomCard {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Common Recipes")
-                    .font(.headline)
-                    .foregroundColor(.textPrimary)
+                    InfoRow(
+                        icon: "timer",
+                        label: LocalizedString.get("brew_time"),
+                        value: formatBrewTime(method.defaultBrewTimeMin...method.defaultBrewTimeMax)
+                    )
 
-                Divider()
-                    .background(Color.dividerColor)
+                    InfoRow(
+                        icon: "drop.fill",
+                        label: LocalizedString.get("typical_ratio"),
+                        value: "1:\(String(format: "%.1f", method.defaultRatioMin))-\(String(format: "%.1f", method.defaultRatioMax))"
+                    )
 
-                ForEach(getCommonRecipes(for: selectedMethod), id: \.name) { recipe in
-                    RecipeRow(recipe: recipe) {
-                        applyRecipe(recipe)
+                    InfoRow(
+                        icon: "thermometer",
+                        label: LocalizedString.get("water_temp"),
+                        value: "\(String(format: "%.0f", method.defaultWaterTemp))°C"
+                    )
+
+                    if method.defaultPressure > 0 {
+                        InfoRow(
+                            icon: "gauge",
+                            label: LocalizedString.get("pressure"),
+                            value: "\(String(format: "%.1f", method.defaultPressure)) bar"
+                        )
                     }
                 }
+            } else {
+                Text(LocalizedString.get("no_brewing_methods"))
+                    .font(.subheadline)
+                    .foregroundColor(.textSecondary)
             }
         }
     }
@@ -246,27 +248,9 @@ struct RecipeCalculatorView: View {
         targetYield = dose * ratioValue
     }
 
-    private func updateDefaults(for method: BrewMethod) {
-        switch method {
-        case .espresso:
-            doseIn = "18"
-            ratio = "2.0"
-        case .aeropress:
-            doseIn = "15"
-            ratio = "16.0"
-        case .frenchPress:
-            doseIn = "30"
-            ratio = "16.0"
-        case .coldBrew:
-            doseIn = "100"
-            ratio = "5.0"
-        case .pourOver:
-            doseIn = "20"
-            ratio = "16.0"
-        case .moka:
-            doseIn = "20"
-            ratio = "8.0"
-        }
+    private func updateDefaults(for method: BrewingMethodModel) {
+        doseIn = String(format: "%.0f", method.defaultDoseGrams)
+        ratio = String(format: "%.1f", (method.defaultRatioMin + method.defaultRatioMax) / 2.0)
         calculateYield()
     }
 
@@ -282,81 +266,10 @@ struct RecipeCalculatorView: View {
             return "\(Int(lower))-\(Int(upper)) sec"
         }
     }
-
-    private func getTipsForMethod(_ method: BrewMethod) -> String {
-        switch method {
-        case .espresso:
-            return "Aim for 25-30 seconds extraction time. Adjust grind size if too fast (<20s) or too slow (>35s)."
-        case .aeropress:
-            return "Use medium-fine grind. Experiment with inverted method for more control. Stir 10 seconds before plunging."
-        case .frenchPress:
-            return "Use coarse grind to prevent over-extraction. Stir after 4 minutes, let settle 1 minute before plunging."
-        case .coldBrew:
-            return "Use coarse grind. Brew in refrigerator for 12-24 hours. Dilute concentrate 1:1 with water or milk."
-        case .pourOver:
-            return "Use medium grind. Bloom for 30-45 seconds with 2x coffee weight in water. Pour in circles."
-        case .moka:
-            return "Use medium-fine grind. Fill water to valve level. Use medium heat and remove from heat when coffee starts sputtering."
-        }
-    }
-
-    private func getCommonRecipes(for method: BrewMethod) -> [CommonRecipe] {
-        switch method {
-        case .espresso:
-            return [
-                CommonRecipe(name: "Ristretto", dose: 18, ratio: 1.5, description: "Short, intense shot"),
-                CommonRecipe(name: "Normale", dose: 18, ratio: 2.0, description: "Standard espresso"),
-                CommonRecipe(name: "Lungo", dose: 18, ratio: 2.5, description: "Longer extraction")
-            ]
-        case .aeropress:
-            return [
-                CommonRecipe(name: "Classic", dose: 15, ratio: 16.0, description: "Standard Aeropress"),
-                CommonRecipe(name: "Concentrated", dose: 18, ratio: 12.0, description: "Strong brew"),
-                CommonRecipe(name: "Diluted", dose: 12, ratio: 18.0, description: "Lighter brew")
-            ]
-        case .frenchPress:
-            return [
-                CommonRecipe(name: "Standard", dose: 30, ratio: 16.0, description: "Balanced brew"),
-                CommonRecipe(name: "Strong", dose: 35, ratio: 14.0, description: "Full-bodied"),
-                CommonRecipe(name: "Light", dose: 25, ratio: 18.0, description: "Milder flavor")
-            ]
-        case .coldBrew:
-            return [
-                CommonRecipe(name: "Concentrate", dose: 100, ratio: 5.0, description: "Strong concentrate"),
-                CommonRecipe(name: "Ready to Drink", dose: 80, ratio: 8.0, description: "Pre-diluted"),
-                CommonRecipe(name: "Extra Strong", dose: 120, ratio: 4.0, description: "Maximum flavor")
-            ]
-        case .pourOver:
-            return [
-                CommonRecipe(name: "Hario V60", dose: 20, ratio: 16.0, description: "Classic V60"),
-                CommonRecipe(name: "Stronger", dose: 22, ratio: 15.0, description: "Full-bodied"),
-                CommonRecipe(name: "Lighter", dose: 18, ratio: 17.0, description: "Bright & clean")
-            ]
-        case .moka:
-            return [
-                CommonRecipe(name: "Classic", dose: 20, ratio: 8.0, description: "Traditional moka"),
-                CommonRecipe(name: "Strong", dose: 22, ratio: 7.0, description: "Intense flavor"),
-                CommonRecipe(name: "Light", dose: 18, ratio: 9.0, description: "Mild brew")
-            ]
-        }
-    }
-
-    private func applyRecipe(_ recipe: CommonRecipe) {
-        doseIn = String(format: "%.0f", recipe.dose)
-        ratio = String(format: "%.1f", recipe.ratio)
-        calculateYield()
-    }
 }
 
-struct CommonRecipe {
-    let name: String
-    let dose: Double
-    let ratio: Double
-    let description: String
-}
-
-struct MethodButton: View {
-    let method: BrewMethod
+struct MethodCardButton: View {
+    let method: BrewingMethodModel
     let isSelected: Bool
     let action: () -> Void
 
@@ -365,47 +278,13 @@ struct MethodButton: View {
             VStack(spacing: 8) {
                 Image(systemName: method.icon)
                     .font(.title2)
-                Text(method.rawValue)
+                Text(method.name)
                     .font(.caption)
             }
             .frame(width: 80, height: 80)
             .foregroundColor(isSelected ? .white : .textSecondary)
             .background(isSelected ? Color.espressoBrown : Color.backgroundSecondary)
             .cornerRadius(12)
-        }
-    }
-}
-
-struct RecipeRow: View {
-    let recipe: CommonRecipe
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(recipe.name)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.textPrimary)
-                    Text(recipe.description)
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(String(format: "%.0f", recipe.dose))g")
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundColor(.espressoBrown)
-                    Text("1:\(String(format: "%.1f", recipe.ratio))")
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
-                }
-            }
-            .padding(.vertical, 8)
         }
     }
 }

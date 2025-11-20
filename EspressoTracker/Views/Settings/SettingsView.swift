@@ -28,213 +28,213 @@ struct SettingsView: View {
             Form {
                 // Equipment
                 Section(header: Text(LocalizedString.get("equipment")).foregroundColor(.espressoBrown)) {
-                        NavigationLink(destination: EquipmentView()) {
-                            HStack {
-                                Image(systemName: "wrench.and.screwdriver.fill")
-                                    .foregroundColor(.espressoBrown)
-                                Text(LocalizedString.get("equipment"))
-                                    .foregroundColor(.textPrimary)
-                                }
-                            }
+                    NavigationLink(destination: EquipmentView()) {
+                        HStack {
+                            Image(systemName: "wrench.and.screwdriver.fill")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("equipment"))
+                                .foregroundColor(.textPrimary)
                         }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Brewing Methods
-                        Section(header: Text(LocalizedString.get("brewing_methods")).foregroundColor(.espressoBrown)) {
-                            NavigationLink(destination: BrewingMethodsView()) {
-                                HStack {
-                                    Image(systemName: "cup.and.saucer.fill")
-                                        .foregroundColor(.espressoBrown)
-                                    Text(LocalizedString.get("manage_brewing_methods"))
-                                        .foregroundColor(.textPrimary)
-                                }
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Brewing Defaults
-                        Section(header: Text(LocalizedString.get("brewing_defaults")).foregroundColor(.espressoBrown)) {
-                            HStack {
-                                Text(LocalizedString.get("default_dose"))
-                                Spacer()
-                                TextField("18.0", value: $settings.defaultDoseIn, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 80)
-                                Text("g")
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            HStack {
-                                Text(LocalizedString.get("default_ratio"))
-                                Spacer()
-                                TextField("2.0", value: $settings.defaultRatio, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 80)
-                                Text("1:x")
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            HStack {
-                                Text(LocalizedString.get("water_temperature"))
-                                Spacer()
-                                TextField("93", value: $settings.defaultWaterTemp, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 80)
-                                Text("°C")
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            HStack {
-                                Text(LocalizedString.get("pressure_espresso"))
-                                Spacer()
-                                TextField("9.0", value: $settings.defaultPressure, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 80)
-                                Text("bar")
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            Picker(LocalizedString.get("default_method"), selection: $settings.defaultBrewMethod) {
-                                ForEach(BrewMethod.allCases, id: \.rawValue) { method in
-                                    HStack {
-                                        Image(systemName: method.icon)
-                                        Text(method.rawValue)
-                                    }
-                                    .tag(method.rawValue.lowercased())
-                                }
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Units
-                        Section(header: Text(LocalizedString.get("units")).foregroundColor(.espressoBrown)) {
-                            Picker(LocalizedString.get("weight"), selection: $settings.weightUnit) {
-                                Text(LocalizedString.get("grams")).tag("grams")
-                                Text(LocalizedString.get("ounces")).tag("ounces")
-                            }
-
-                            Picker(LocalizedString.get("temperature"), selection: $settings.temperatureUnit) {
-                                Text(LocalizedString.get("celsius")).tag("celsius")
-                                Text(LocalizedString.get("fahrenheit")).tag("fahrenheit")
-                            }
-
-                            Picker(LocalizedString.get("volume"), selection: $settings.volumeUnit) {
-                                Text(LocalizedString.get("milliliters")).tag("ml")
-                                Text(LocalizedString.get("fluid_ounces")).tag("oz")
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Appearance
-                        Section(header: Text(LocalizedString.get("appearance")).foregroundColor(.espressoBrown)) {
-                            Picker(LocalizedString.get("theme"), selection: $settings.colorScheme) {
-                                Text(LocalizedString.get("dark")).tag("dark")
-                                Text(LocalizedString.get("light")).tag("light")
-                                Text(LocalizedString.get("system")).tag("system")
-                            }
-                            .pickerStyle(.segmented)
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Language
-                        Section(header: Text(LocalizedString.get("language")).foregroundColor(.espressoBrown)) {
-                            Picker(LocalizedString.get("app_language"), selection: $settings.appLanguage) {
-                                HStack {
-                                    Text(LocalizedString.get("english"))
-                                    Text("🇺🇸")
-                                }
-                                .tag("en")
-
-                                HStack {
-                                    Text(LocalizedString.get("german"))
-                                    Text("🇩🇪")
-                                }
-                                .tag("de")
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // Data Management
-                        Section(header: Text(LocalizedString.get("data_management")).foregroundColor(.espressoBrown)) {
-                            Button(action: { showingTestDataAlert = true }) {
-                                HStack {
-                                    Image(systemName: "wand.and.stars")
-                                        .foregroundColor(.warningOrange)
-                                    Text(LocalizedString.get("add_test_data"))
-                                        .foregroundColor(.textPrimary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.textTertiary)
-                                        .font(.caption)
-                                }
-                            }
-
-                            Button(action: exportData) {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.up")
-                                        .foregroundColor(.espressoBrown)
-                                    Text(LocalizedString.get("export_data"))
-                                        .foregroundColor(.textPrimary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.textTertiary)
-                                        .font(.caption)
-                                }
-                            }
-
-                            Button(action: { showingImport = true }) {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.down")
-                                        .foregroundColor(.espressoBrown)
-                                    Text(LocalizedString.get("import_data"))
-                                        .foregroundColor(.textPrimary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.textTertiary)
-                                        .font(.caption)
-                                }
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
-
-                        // About
-                        Section(header: Text(LocalizedString.get("about")).foregroundColor(.espressoBrown)) {
-                            Button(action: { showingTutorial = true }) {
-                                HStack {
-                                    Image(systemName: "questionmark.circle")
-                                        .foregroundColor(.espressoBrown)
-                                    Text(LocalizedString.get("view_tutorial"))
-                                        .foregroundColor(.textPrimary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.textTertiary)
-                                        .font(.caption)
-                                }
-                            }
-
-                            HStack {
-                                Text(LocalizedString.get("version"))
-                                Spacer()
-                                Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
-                                    .foregroundColor(.textSecondary)
-                            }
-
-                            HStack {
-                                Text(LocalizedString.get("build"))
-                                Spacer()
-                                Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
-                                    .foregroundColor(.textSecondary)
-                            }
-                        }
-                        .listRowBackground(Color.cardBackground)
+                    }
                 }
-                .scrollContentBackground(.hidden)
-                .id(settings.appLanguage) // Force refresh when language changes
+                .listRowBackground(Color.cardBackground)
+
+                // Brewing Methods
+                Section(header: Text(LocalizedString.get("brewing_methods")).foregroundColor(.espressoBrown)) {
+                    NavigationLink(destination: BrewingMethodsView()) {
+                        HStack {
+                            Image(systemName: "cup.and.saucer.fill")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("manage_brewing_methods"))
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Brewing Defaults
+                Section(header: Text(LocalizedString.get("brewing_defaults")).foregroundColor(.espressoBrown)) {
+                    HStack {
+                        Text(LocalizedString.get("default_dose"))
+                        Spacer()
+                        TextField("18.0", value: $settings.defaultDoseIn, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("g")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("default_ratio"))
+                        Spacer()
+                        TextField("2.0", value: $settings.defaultRatio, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("1:x")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("water_temperature"))
+                        Spacer()
+                        TextField("93", value: $settings.defaultWaterTemp, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("°C")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("pressure_espresso"))
+                        Spacer()
+                        TextField("9.0", value: $settings.defaultPressure, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("bar")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    Picker(LocalizedString.get("default_method"), selection: $settings.defaultBrewMethod) {
+                        ForEach(BrewMethod.allCases, id: \.rawValue) { method in
+                            HStack {
+                                Image(systemName: method.icon)
+                                Text(method.rawValue)
+                            }
+                            .tag(method.rawValue.lowercased())
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Units
+                Section(header: Text(LocalizedString.get("units")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("weight"), selection: $settings.weightUnit) {
+                        Text(LocalizedString.get("grams")).tag("grams")
+                        Text(LocalizedString.get("ounces")).tag("ounces")
+                    }
+
+                    Picker(LocalizedString.get("temperature"), selection: $settings.temperatureUnit) {
+                        Text(LocalizedString.get("celsius")).tag("celsius")
+                        Text(LocalizedString.get("fahrenheit")).tag("fahrenheit")
+                    }
+
+                    Picker(LocalizedString.get("volume"), selection: $settings.volumeUnit) {
+                        Text(LocalizedString.get("milliliters")).tag("ml")
+                        Text(LocalizedString.get("fluid_ounces")).tag("oz")
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Appearance
+                Section(header: Text(LocalizedString.get("appearance")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("theme"), selection: $settings.colorScheme) {
+                        Text(LocalizedString.get("dark")).tag("dark")
+                        Text(LocalizedString.get("light")).tag("light")
+                        Text(LocalizedString.get("system")).tag("system")
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Language
+                Section(header: Text(LocalizedString.get("language")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("app_language"), selection: $settings.appLanguage) {
+                        HStack {
+                            Text(LocalizedString.get("english"))
+                            Text("🇺🇸")
+                        }
+                        .tag("en")
+
+                        HStack {
+                            Text(LocalizedString.get("german"))
+                            Text("🇩🇪")
+                        }
+                        .tag("de")
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Data Management
+                Section(header: Text(LocalizedString.get("data_management")).foregroundColor(.espressoBrown)) {
+                    Button(action: { showingTestDataAlert = true }) {
+                        HStack {
+                            Image(systemName: "wand.and.stars")
+                                .foregroundColor(.warningOrange)
+                            Text(LocalizedString.get("add_test_data"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.textTertiary)
+                                .font(.caption)
+                        }
+                    }
+
+                    Button(action: exportData) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("export_data"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.textTertiary)
+                                .font(.caption)
+                        }
+                    }
+
+                    Button(action: { showingImport = true }) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("import_data"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.textTertiary)
+                                .font(.caption)
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // About
+                Section(header: Text(LocalizedString.get("about")).foregroundColor(.espressoBrown)) {
+                    Button(action: { showingTutorial = true }) {
+                        HStack {
+                            Image(systemName: "questionmark.circle")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("view_tutorial"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.textTertiary)
+                                .font(.caption)
+                        }
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("version"))
+                        Spacer()
+                        Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("build"))
+                        Spacer()
+                        Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
             }
+            .scrollContentBackground(.hidden)
+            .id(settings.appLanguage) // Force refresh when language changes
+        }
             .navigationTitle(LocalizedString.get("tab_settings"))
             .fileImporter(
                 isPresented: $showingImport,

@@ -17,73 +17,33 @@ struct LocalizedString {
     private static func loadTranslations() -> [String: [String: String]] {
         var result: [String: [String: String]] = [:]
 
-        print("🌍 [LocalizedString] Starting to load translations...")
-        print("🌍 [LocalizedString] Bundle path: \(Bundle.main.bundlePath)")
-
-        // List all resources in bundle for debugging
-        if let resourcePath = Bundle.main.resourcePath {
-            print("🌍 [LocalizedString] Resource path: \(resourcePath)")
-            if let contents = try? FileManager.default.contentsOfDirectory(atPath: resourcePath) {
-                print("🌍 [LocalizedString] Bundle contents: \(contents.filter { $0.contains("json") || $0.contains("Localization") })")
-            }
-        }
-
-        // Load English translations - try multiple locations
-        print("🌍 [LocalizedString] Looking for en.json...")
+        // Load English translations - try multiple locations for robustness
         var enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization")
         if enURL == nil {
-            print("🌍 [LocalizedString] Not in Localization subdirectory, trying bundle root...")
             enURL = Bundle.main.url(forResource: "en", withExtension: "json")
         }
 
-        if let enURL = enURL {
-            print("🌍 [LocalizedString] ✅ Found en.json at: \(enURL.path)")
-            if let enData = try? Data(contentsOf: enURL) {
-                print("🌍 [LocalizedString] ✅ Loaded en.json data (\(enData.count) bytes)")
-                if let enDict = try? JSONDecoder().decode([String: String].self, from: enData) {
-                    print("🌍 [LocalizedString] ✅ Decoded en.json with \(enDict.count) keys")
-                    result["en"] = enDict
-                } else {
-                    print("🌍 [LocalizedString] ❌ Failed to decode en.json")
-                }
-            } else {
-                print("🌍 [LocalizedString] ❌ Failed to load data from en.json")
-            }
-        } else {
-            print("🌍 [LocalizedString] ❌ Could not find en.json in bundle")
+        if let enURL = enURL,
+           let enData = try? Data(contentsOf: enURL),
+           let enDict = try? JSONDecoder().decode([String: String].self, from: enData) {
+            result["en"] = enDict
         }
 
-        // Load German translations - try multiple locations
-        print("🌍 [LocalizedString] Looking for de.json...")
+        // Load German translations - try multiple locations for robustness
         var deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization")
         if deURL == nil {
-            print("🌍 [LocalizedString] Not in Localization subdirectory, trying bundle root...")
             deURL = Bundle.main.url(forResource: "de", withExtension: "json")
         }
 
-        if let deURL = deURL {
-            print("🌍 [LocalizedString] ✅ Found de.json at: \(deURL.path)")
-            if let deData = try? Data(contentsOf: deURL) {
-                print("🌍 [LocalizedString] ✅ Loaded de.json data (\(deData.count) bytes)")
-                if let deDict = try? JSONDecoder().decode([String: String].self, from: deData) {
-                    print("🌍 [LocalizedString] ✅ Decoded de.json with \(deDict.count) keys")
-                    result["de"] = deDict
-                } else {
-                    print("🌍 [LocalizedString] ❌ Failed to decode de.json")
-                }
-            } else {
-                print("🌍 [LocalizedString] ❌ Failed to load data from de.json")
-            }
-        } else {
-            print("🌍 [LocalizedString] ❌ Could not find de.json in bundle")
+        if let deURL = deURL,
+           let deData = try? Data(contentsOf: deURL),
+           let deDict = try? JSONDecoder().decode([String: String].self, from: deData) {
+            result["de"] = deDict
         }
 
         // Fallback to embedded translations if JSON files not found
         if result.isEmpty {
-            print("🌍 [LocalizedString] ⚠️ No JSON files loaded, using embedded fallback translations")
             result = embeddedTranslations()
-        } else {
-            print("🌍 [LocalizedString] ✅ Successfully loaded translations from JSON files")
         }
 
         return result

@@ -183,22 +183,45 @@ struct BrewingMethodEditView: View {
 
     private var availableIcons: [String] {
         [
+            // Coffee & Beverages
             "cup.and.saucer.fill",
             "cup.and.saucer",
             "mug.fill",
             "takeoutbag.and.cup.and.straw.fill",
+
+            // Temperature & Elements
             "drop.fill",
+            "drop",
             "flame.fill",
+            "flame",
             "snowflake",
-            "thermometer",
+            "thermometer.medium",
+            "thermometer.sun.fill",
+
+            // Time
             "timer",
             "clock.fill",
+            "clock",
+            "hourglass",
+
+            // Nature & Origin
             "leaf.fill",
+            "leaf",
             "sparkles",
+
+            // Pressure & Flow
+            "wind",
+            "tornado",
+            "water.waves",
+
+            // Shapes & Markers
             "star.fill",
+            "star",
             "circle.fill",
             "square.fill",
-            "triangle.fill"
+            "triangle.fill",
+            "hexagon.fill",
+            "diamond.fill"
         ]
     }
 

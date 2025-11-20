@@ -182,6 +182,7 @@
 
   "basic_information": "Grundinformationen",
   "name": "Name",
+  "brand": "Marke",
   "bean_details": "Bohnendetails",
   "roast_level": "Röstgrad",
   "roast_date": "Röstdatum",
@@ -192,6 +193,7 @@
   "purchase_date": "Kaufdatum",
   "image": "Bild",
   "select_image": "Bild auswählen",
+  "change_image": "Bild ändern",
   "additional_notes": "Zusätzliche Notizen",
 
   "add_beans": "Bohnen hinzufügen",
@@ -261,6 +263,7 @@
   "model": "Modell",
   "statistics": "Statistiken",
   "purchase_information": "Kaufinformationen",
+  "track_purchase_date": "Kaufdatum verfolgen",
   "boiler_type": "Kesseltyp",
   "group_head": "Brühgruppe",
   "pressure_bar": "Druck (bar)",

@@ -29,21 +29,21 @@ struct EditGrinderView: View {
             Color.backgroundPrimary.ignoresSafeArea()
 
             Form {
-                Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
-                    TextField("Name", text: $name)
-                    TextField("Brand", text: $brand)
+                Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                    TextField(LocalizedString.get("name"), text: $name)
+                    TextField(LocalizedString.get("brand"), text: $brand)
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Specifications").foregroundColor(.espressoBrown)) {
-                    Picker("Burr Type", selection: $burrType) {
+                Section(header: Text(LocalizedString.get("specifications")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("burr_type"), selection: $burrType) {
                         ForEach(burrTypes, id: \.self) { type in
                             Text(type).tag(type)
                         }
                     }
 
                     HStack {
-                        Text("Burr Size (mm)")
+                        Text(LocalizedString.get("burr_size_mm"))
                         Spacer()
                         TextField("63", text: $burrSize)
                             .keyboardType(.numberPad)
@@ -53,7 +53,7 @@ struct EditGrinderView: View {
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Image").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("image")).foregroundColor(.espressoBrown)) {
                     PhotosPicker(selection: $selectedImage, matching: .images) {
                         HStack {
                             if let imageData = imageData,
@@ -72,7 +72,7 @@ struct EditGrinderView: View {
                                     .cornerRadius(8)
                             }
 
-                            Text("Change Image")
+                            Text(LocalizedString.get("change_image"))
                                 .foregroundColor(.espressoBrown)
 
                             Spacer()
@@ -88,7 +88,7 @@ struct EditGrinderView: View {
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Notes").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("notes")).foregroundColor(.espressoBrown)) {
                     TextEditor(text: $notes)
                         .frame(height: 100)
                         .foregroundColor(.textPrimary)
@@ -97,18 +97,18 @@ struct EditGrinderView: View {
             }
             .scrollContentBackground(.hidden)
         }
-        .navigationTitle("Edit Grinder")
+        .navigationTitle(LocalizedString.get("edit_grinder"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
+                Button(LocalizedString.get("cancel")) {
                     dismiss()
                 }
                 .foregroundColor(.textSecondary)
             }
 
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Save") {
+                Button(LocalizedString.get("save")) {
                     saveChanges()
                 }
                 .foregroundColor(.espressoBrown)

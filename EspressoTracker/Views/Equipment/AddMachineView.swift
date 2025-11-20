@@ -33,28 +33,28 @@ struct AddMachineView: View {
             Color.backgroundPrimary.ignoresSafeArea()
 
             Form {
-                Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
-                    TextField("Name", text: $name)
-                    TextField("Brand", text: $brand)
-                    TextField("Model", text: $model)
+                Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                    TextField(LocalizedString.get("name"), text: $name)
+                    TextField(LocalizedString.get("brand"), text: $brand)
+                    TextField(LocalizedString.get("model"), text: $model)
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Specifications").foregroundColor(.espressoBrown)) {
-                    Picker("Boiler Type", selection: $boilerType) {
+                Section(header: Text(LocalizedString.get("specifications")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("boiler_type"), selection: $boilerType) {
                         ForEach(boilerTypes, id: \.self) { type in
                             Text(type).tag(type)
                         }
                     }
 
-                    Picker("Group Head", selection: $groupHeadType) {
+                    Picker(LocalizedString.get("group_head"), selection: $groupHeadType) {
                         ForEach(groupHeadTypes, id: \.self) { type in
                             Text(type).tag(type)
                         }
                     }
 
                     HStack {
-                        Text("Pressure (bar)")
+                        Text(LocalizedString.get("pressure_bar"))
                         Spacer()
                         TextField("9.0", text: $pressure)
                             .keyboardType(.decimalPad)
@@ -64,16 +64,16 @@ struct AddMachineView: View {
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Purchase Information").foregroundColor(.espressoBrown)) {
-                    Toggle("Track Purchase Date", isOn: $hasPurchaseDate)
+                Section(header: Text(LocalizedString.get("purchase_information")).foregroundColor(.espressoBrown)) {
+                    Toggle(LocalizedString.get("track_purchase_date"), isOn: $hasPurchaseDate)
 
                     if hasPurchaseDate {
-                        DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
+                        DatePicker(LocalizedString.get("purchase_date"), selection: $purchaseDate, displayedComponents: .date)
                     }
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Image").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("image")).foregroundColor(.espressoBrown)) {
                     PhotosPicker(selection: $selectedImage, matching: .images) {
                         HStack {
                             if let imageData = imageData,
@@ -92,7 +92,7 @@ struct AddMachineView: View {
                                     .cornerRadius(8)
                             }
 
-                            Text("Select Image")
+                            Text(LocalizedString.get("select_image"))
                                 .foregroundColor(.espressoBrown)
 
                             Spacer()
@@ -108,7 +108,7 @@ struct AddMachineView: View {
                 }
                 .listRowBackground(Color.cardBackground)
 
-                Section(header: Text("Notes").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("notes")).foregroundColor(.espressoBrown)) {
                     TextEditor(text: $notes)
                         .frame(height: 100)
                         .foregroundColor(.textPrimary)
@@ -117,18 +117,18 @@ struct AddMachineView: View {
             }
             .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Add Machine")
+            .navigationTitle(LocalizedString.get("add_machine"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveMachine()
                     }
                     .foregroundColor(.espressoBrown)

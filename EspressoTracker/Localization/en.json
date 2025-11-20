@@ -182,6 +182,7 @@
 
   "basic_information": "Basic Information",
   "name": "Name",
+  "brand": "Brand",
   "bean_details": "Bean Details",
   "roast_level": "Roast Level",
   "roast_date": "Roast Date",
@@ -192,6 +193,7 @@
   "purchase_date": "Purchase Date",
   "image": "Image",
   "select_image": "Select Image",
+  "change_image": "Change Image",
   "additional_notes": "Additional Notes",
 
   "add_beans": "Add Beans",
@@ -261,6 +263,7 @@
   "model": "Model",
   "statistics": "Statistics",
   "purchase_information": "Purchase Information",
+  "track_purchase_date": "Track Purchase Date",
   "boiler_type": "Boiler Type",
   "group_head": "Group Head",
   "pressure_bar": "Pressure (bar)",

@@ -18,14 +18,14 @@ struct LocalizedString {
         var result: [String: [String: String]] = [:]
 
         // Load English translations
-        if let enURL = Bundle.main.url(forResource: "en", withExtension: "json"),
+        if let enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization"),
            let enData = try? Data(contentsOf: enURL),
            let enDict = try? JSONDecoder().decode([String: String].self, from: enData) {
             result["en"] = enDict
         }
 
         // Load German translations
-        if let deURL = Bundle.main.url(forResource: "de", withExtension: "json"),
+        if let deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization"),
            let deData = try? Data(contentsOf: deURL),
            let deDict = try? JSONDecoder().decode([String: String].self, from: deData) {
             result["de"] = deDict

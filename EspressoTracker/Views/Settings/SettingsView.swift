@@ -235,40 +235,39 @@ struct SettingsView: View {
             .scrollContentBackground(.hidden)
             .id(settings.appLanguage) // Force refresh when language changes
         }
-            .navigationTitle(LocalizedString.get("tab_settings"))
-            .fileImporter(
-                isPresented: $showingImport,
-                allowedContentTypes: [.json],
-                allowsMultipleSelection: false
-            ) { result in
-                handleImport(result)
-            }
-            .alert(LocalizedString.get("export_success"), isPresented: $showingExportSuccess) {
-                Button(LocalizedString.get("ok"), role: .cancel) { }
-                if let url = exportURL {
-                    Button(LocalizedString.get("share")) {
-                        shareFile(url)
-                    }
+        .navigationTitle(LocalizedString.get("tab_settings"))
+        .fileImporter(
+            isPresented: $showingImport,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false
+        ) { result in
+            handleImport(result)
+        }
+        .alert(LocalizedString.get("export_success"), isPresented: $showingExportSuccess) {
+            Button(LocalizedString.get("ok"), role: .cancel) { }
+            if let url = exportURL {
+                Button(LocalizedString.get("share")) {
+                    shareFile(url)
                 }
-            } message: {
-                Text(LocalizedString.get("export_success_message"))
             }
-            .alert(LocalizedString.get("add_test_data"), isPresented: $showingTestDataAlert) {
-                Button(LocalizedString.get("cancel"), role: .cancel) { }
-                Button(LocalizedString.get("add")) {
-                    populateTestData()
-                }
-            } message: {
-                Text(LocalizedString.get("add_test_data_message"))
+        } message: {
+            Text(LocalizedString.get("export_success_message"))
+        }
+        .alert(LocalizedString.get("add_test_data"), isPresented: $showingTestDataAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("add")) {
+                populateTestData()
             }
-            .alert(LocalizedString.get("test_data_added"), isPresented: $showingTestDataSuccess) {
-                Button(LocalizedString.get("ok"), role: .cancel) { }
-            } message: {
-                Text(LocalizedString.get("test_data_added_message"))
-            }
-            .fullScreenCover(isPresented: $showingTutorial) {
-                TutorialView()
-            }
+        } message: {
+            Text(LocalizedString.get("add_test_data_message"))
+        }
+        .alert(LocalizedString.get("test_data_added"), isPresented: $showingTestDataSuccess) {
+            Button(LocalizedString.get("ok"), role: .cancel) { }
+        } message: {
+            Text(LocalizedString.get("test_data_added_message"))
+        }
+        .fullScreenCover(isPresented: $showingTutorial) {
+            TutorialView()
         }
     }
 

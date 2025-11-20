@@ -22,10 +22,11 @@ struct SettingsView: View {
     @State private var exportURL: URL?
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationView {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
+                Form {
                 // Equipment
                 Section(header: Text(LocalizedString.get("equipment")).foregroundColor(.espressoBrown)) {
                     NavigationLink(destination: EquipmentView()) {
@@ -268,6 +269,7 @@ struct SettingsView: View {
         }
         .fullScreenCover(isPresented: $showingTutorial) {
             TutorialView()
+        }
         }
     }
 

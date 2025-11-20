@@ -36,12 +36,12 @@ struct ContentView: View {
 
                 EquipmentView()
                     .tabItem {
-                        Label(LocalizedString.get("tab_equipment"), systemImage: "gearshape.fill")
+                        Label(LocalizedString.get("tab_equipment"), systemImage: "wrench.and.screwdriver.fill")
                     }
 
                 SettingsView()
                     .tabItem {
-                        Label(LocalizedString.get("tab_settings"), systemImage: "gear")
+                        Label(LocalizedString.get("tab_settings"), systemImage: "gearshape.fill")
                     }
             }
             .accentColor(.espressoBrown)

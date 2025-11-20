@@ -26,6 +26,19 @@ struct SettingsView: View {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
+                    // Equipment
+                    Section(header: Text(LocalizedString.get("equipment")).foregroundColor(.espressoBrown)) {
+                        NavigationLink(destination: EquipmentView()) {
+                            HStack {
+                                Image(systemName: "wrench.and.screwdriver.fill")
+                                    .foregroundColor(.espressoBrown)
+                                Text(LocalizedString.get("equipment"))
+                                    .foregroundColor(.textPrimary)
+                            }
+                        }
+                    }
+                    .listRowBackground(Color.cardBackground)
+
                     // Brewing Methods
                     Section(header: Text(LocalizedString.get("brewing_methods")).foregroundColor(.espressoBrown)) {
                         NavigationLink(destination: BrewingMethodsView()) {
@@ -131,14 +144,14 @@ struct SettingsView: View {
                     Section(header: Text(LocalizedString.get("language")).foregroundColor(.espressoBrown)) {
                         Picker(LocalizedString.get("app_language"), selection: $settings.appLanguage) {
                             HStack {
-                                Text("🇺🇸")
                                 Text(LocalizedString.get("english"))
+                                Text("🇺🇸")
                             }
                             .tag("en")
 
                             HStack {
-                                Text("🇩🇪")
                                 Text(LocalizedString.get("german"))
+                                Text("🇩🇪")
                             }
                             .tag("de")
                         }

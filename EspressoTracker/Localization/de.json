@@ -268,13 +268,18 @@
   "no_machines_yet": "Noch keine Maschinen",
   "no_machines_description": "Fügen Sie Ihre Espressomaschine hinzu",
   "delete_machine_confirm": "Möchten Sie diese Maschine wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "delete_grinder_confirm": "Möchten Sie diese Mühle wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
   "delete_session_confirm": "Möchten Sie diese Brühsitzung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 
   "weight_g": "Gewicht (g)",
   "price_currency": "Preis (€)",
 
   "add_grinder": "Mühle hinzufügen",
+  "edit_grinder": "Mühle bearbeiten",
+  "delete_grinder": "Mühle löschen",
   "add_machine": "Maschine hinzufügen",
+  "edit_machine": "Maschine bearbeiten",
+  "delete_machine": "Maschine löschen",
   "grinders": "Mühlen",
   "machines": "Maschinen",
 

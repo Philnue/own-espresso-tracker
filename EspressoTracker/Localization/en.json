@@ -268,13 +268,18 @@
   "no_machines_yet": "No Machines Yet",
   "no_machines_description": "Add your espresso machine to start brewing",
   "delete_machine_confirm": "Are you sure you want to delete this machine? This action cannot be undone.",
+  "delete_grinder_confirm": "Are you sure you want to delete this grinder? This action cannot be undone.",
   "delete_session_confirm": "Are you sure you want to delete this brewing session? This action cannot be undone.",
 
   "weight_g": "Weight (g)",
   "price_currency": "Price ($)",
 
   "add_grinder": "Add Grinder",
+  "edit_grinder": "Edit Grinder",
+  "delete_grinder": "Delete Grinder",
   "add_machine": "Add Machine",
+  "edit_machine": "Edit Machine",
+  "delete_machine": "Delete Machine",
   "grinders": "Grinders",
   "machines": "Machines",
 

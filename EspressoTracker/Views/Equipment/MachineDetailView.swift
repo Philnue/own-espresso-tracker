@@ -141,11 +141,11 @@ struct MachineDetailView: View {
 
                     // Action buttons
                     VStack(spacing: 12) {
-                        PrimaryButton(title: "Edit Machine") {
+                        PrimaryButton(title: LocalizedString.get("edit_machine")) {
                             showingEditView = true
                         }
 
-                        PrimaryButton(title: "Delete Machine", action: {
+                        PrimaryButton(title: LocalizedString.get("delete_machine"), action: {
                             showingDeleteAlert = true
                         }, isDestructive: true)
                     }
@@ -157,13 +157,13 @@ struct MachineDetailView: View {
         .sheet(isPresented: $showingEditView) {
             EditMachineView(machine: machine)
         }
-        .alert("Delete Machine", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert(LocalizedString.get("delete_machine"), isPresented: $showingDeleteAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("delete"), role: .destructive) {
                 deleteMachine()
             }
         } message: {
-            Text("Are you sure you want to delete this machine? This action cannot be undone.")
+            Text(LocalizedString.get("delete_machine_confirm"))
         }
     }
 

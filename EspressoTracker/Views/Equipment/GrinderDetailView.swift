@@ -119,11 +119,11 @@ struct GrinderDetailView: View {
 
                     // Action buttons
                     VStack(spacing: 12) {
-                        PrimaryButton(title: "Edit Grinder") {
+                        PrimaryButton(title: LocalizedString.get("edit_grinder")) {
                             showingEditView = true
                         }
 
-                        PrimaryButton(title: "Delete Grinder", action: {
+                        PrimaryButton(title: LocalizedString.get("delete_grinder"), action: {
                             showingDeleteAlert = true
                         }, isDestructive: true)
                     }
@@ -135,13 +135,13 @@ struct GrinderDetailView: View {
         .sheet(isPresented: $showingEditView) {
             EditGrinderView(grinder: grinder)
         }
-        .alert("Delete Grinder", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert(LocalizedString.get("delete_grinder"), isPresented: $showingDeleteAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("delete"), role: .destructive) {
                 deleteGrinder()
             }
         } message: {
-            Text("Are you sure you want to delete this grinder? This action cannot be undone.")
+            Text(LocalizedString.get("delete_grinder_confirm"))
         }
     }
 

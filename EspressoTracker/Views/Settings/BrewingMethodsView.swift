@@ -186,117 +186,116 @@ struct BrewingMethodEditView: View {
             Color.backgroundPrimary.ignoresSafeArea()
 
             Form {
-                    Section(header: Text(LocalizedString.get("basic_information"))) {
-                        TextField(LocalizedString.get("method_name"), text: $name)
+                Section(header: Text(LocalizedString.get("basic_information"))) {
+                    TextField(LocalizedString.get("method_name"), text: $name)
 
-                        HStack {
-                            Text(LocalizedString.get("icon"))
-                            Spacer()
-                            Image(systemName: icon)
-                                .foregroundColor(.espressoBrown)
-                        }
+                    HStack {
+                        Text(LocalizedString.get("icon"))
+                        Spacer()
+                        Image(systemName: icon)
+                            .foregroundColor(.espressoBrown)
                     }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text(LocalizedString.get("default_parameters"))) {
-                        HStack {
-                            Text(LocalizedString.get("default_dose"))
-                            Spacer()
-                            TextField("18.0", value: $defaultDoseGrams, format: .number)
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 80)
-                            Text("g")
-                                .foregroundColor(.textSecondary)
-                        }
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(LocalizedString.get("ratio_range"))
-                                .font(.subheadline)
-                            HStack {
-                                Text(LocalizedString.get("min"))
-                                    .foregroundColor(.textSecondary)
-                                TextField("2.0", value: $defaultRatioMin, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 60)
-
-                                Text("-")
-                                    .foregroundColor(.textSecondary)
-
-                                Text(LocalizedString.get("max"))
-                                    .foregroundColor(.textSecondary)
-                                TextField("2.5", value: $defaultRatioMax, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 60)
-                            }
-                        }
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(LocalizedString.get("brew_time_range"))
-                                .font(.subheadline)
-                            HStack {
-                                Text(LocalizedString.get("min"))
-                                    .foregroundColor(.textSecondary)
-                                TextField("25", value: $defaultBrewTimeMin, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 60)
-
-                                Text("-")
-                                    .foregroundColor(.textSecondary)
-
-                                Text(LocalizedString.get("max"))
-                                    .foregroundColor(.textSecondary)
-                                TextField("30", value: $defaultBrewTimeMax, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .multilineTextAlignment(.trailing)
-                                    .frame(width: 60)
-                            }
-                        }
-
-                        HStack {
-                            Text(LocalizedString.get("water_temperature"))
-                            Spacer()
-                            TextField("93", value: $defaultWaterTemp, format: .number)
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 80)
-                            Text("°C")
-                                .foregroundColor(.textSecondary)
-                        }
-
-                        HStack {
-                            Text(LocalizedString.get("pressure"))
-                            Spacer()
-                            TextField("9.0", value: $defaultPressure, format: .number)
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 80)
-                            Text("bar")
-                                .foregroundColor(.textSecondary)
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
                 }
-                .scrollContentBackground(.hidden)
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text(LocalizedString.get("default_parameters"))) {
+                    HStack {
+                        Text(LocalizedString.get("default_dose"))
+                        Spacer()
+                        TextField("18.0", value: $defaultDoseGrams, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("g")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(LocalizedString.get("ratio_range"))
+                            .font(.subheadline)
+                        HStack {
+                            Text(LocalizedString.get("min"))
+                                .foregroundColor(.textSecondary)
+                            TextField("2.0", value: $defaultRatioMin, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 60)
+
+                            Text("-")
+                                .foregroundColor(.textSecondary)
+
+                            Text(LocalizedString.get("max"))
+                                .foregroundColor(.textSecondary)
+                            TextField("2.5", value: $defaultRatioMax, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 60)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(LocalizedString.get("brew_time_range"))
+                            .font(.subheadline)
+                        HStack {
+                            Text(LocalizedString.get("min"))
+                                .foregroundColor(.textSecondary)
+                            TextField("25", value: $defaultBrewTimeMin, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 60)
+
+                            Text("-")
+                                .foregroundColor(.textSecondary)
+
+                            Text(LocalizedString.get("max"))
+                                .foregroundColor(.textSecondary)
+                            TextField("30", value: $defaultBrewTimeMax, format: .number)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 60)
+                        }
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("water_temperature"))
+                        Spacer()
+                        TextField("93", value: $defaultWaterTemp, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("°C")
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    HStack {
+                        Text(LocalizedString.get("pressure"))
+                        Spacer()
+                        TextField("9.0", value: $defaultPressure, format: .number)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                        Text("bar")
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
             }
-            .navigationTitle(isNew ? LocalizedString.get("add_method") : LocalizedString.get("edit_method"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(LocalizedString.get("cancel")) {
-                        dismiss()
-                    }
+            .scrollContentBackground(.hidden)
+        }
+        .navigationTitle(isNew ? LocalizedString.get("add_method") : LocalizedString.get("edit_method"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(LocalizedString.get("cancel")) {
+                    dismiss()
                 }
+            }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(LocalizedString.get("save")) {
-                        saveMethod()
-                    }
-                    .disabled(name.isEmpty)
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(LocalizedString.get("save")) {
+                    saveMethod()
                 }
+                .disabled(name.isEmpty)
             }
         }
     }

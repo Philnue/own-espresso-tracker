@@ -80,7 +80,9 @@ struct LocalizedString {
                 "recommendations": "Recommendations",
                 "great_shot": "Great shot! Current parameters are working well",
                 "import_data": "Import Data",
-                "export_data": "Export Data"
+                "export_data": "Export Data",
+                "no_history_yet": "No Brewing History",
+                "no_history_description": "Your brewing sessions will appear here"
             ],
             "de": [
                 "tab_brew": "Brühen",
@@ -120,7 +122,9 @@ struct LocalizedString {
                 "recommendations": "Empfehlungen",
                 "great_shot": "Perfekter Shot! Die aktuellen Parameter funktionieren gut",
                 "import_data": "Daten importieren",
-                "export_data": "Daten exportieren"
+                "export_data": "Daten exportieren",
+                "no_history_yet": "Keine Brühhistorie",
+                "no_history_description": "Ihre Brühsitzungen erscheinen hier"
             ]
         ]
     }

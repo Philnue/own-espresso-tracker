@@ -189,6 +189,11 @@ struct BrewingMethodEditView: View {
             "mug.fill",
             "takeoutbag.and.cup.and.straw.fill",
 
+            // Brewing Equipment
+            "arrow.down.circle.fill", // Aeropress
+            "cylinder.fill", // French Press
+            "cone.fill",
+
             // Temperature & Elements
             "drop.fill",
             "drop",

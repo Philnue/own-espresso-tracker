@@ -18,6 +18,7 @@ struct SettingsView: View {
     @State private var showingExportSuccess = false
     @State private var showingTestDataAlert = false
     @State private var showingTestDataSuccess = false
+    @State private var showingTutorial = false
     @State private var exportURL: URL?
 
     var body: some View {
@@ -202,6 +203,19 @@ struct SettingsView: View {
 
                         // About
                         Section(header: Text(LocalizedString.get("about")).foregroundColor(.espressoBrown)) {
+                            Button(action: { showingTutorial = true }) {
+                                HStack {
+                                    Image(systemName: "questionmark.circle")
+                                        .foregroundColor(.espressoBrown)
+                                    Text(LocalizedString.get("view_tutorial"))
+                                        .foregroundColor(.textPrimary)
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.textTertiary)
+                                        .font(.caption)
+                                }
+                            }
+
                             HStack {
                                 Text(LocalizedString.get("version"))
                                 Spacer()
@@ -251,6 +265,9 @@ struct SettingsView: View {
                 Button(LocalizedString.get("ok"), role: .cancel) { }
             } message: {
                 Text(LocalizedString.get("test_data_added_message"))
+            }
+            .fullScreenCover(isPresented: $showingTutorial) {
+                TutorialView()
             }
         }
     }

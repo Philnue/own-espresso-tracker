@@ -302,5 +302,35 @@
   "brew_time_range": "Brühzeitbereich (Sekunden)",
   "water_temperature": "Wassertemperatur",
   "min": "Min",
-  "max": "Max"
+  "max": "Max",
+
+  "skip": "Überspringen",
+  "next": "Weiter",
+  "previous": "Zurück",
+  "get_started": "Los geht's",
+  "view_tutorial": "Tutorial anzeigen",
+
+  "welcome_to_brew_diary": "Willkommen bei Brew Diary!",
+  "tutorial_welcome_desc": "Verfolgen Sie Ihre Espresso-Reise, perfektionieren Sie Ihre Rezepte und entdecken Sie, was eine großartige Tasse ausmacht. Lassen Sie uns die Funktionen gemeinsam erkunden.",
+
+  "tutorial_beans_title": "Bohnen verwalten",
+  "tutorial_beans_desc": "Fügen Sie Ihre Kaffeebohnen mit Röstdatum, Herkunft und Verkostungsnotizen hinzu. Verfolgen Sie Frische und Bestand, um immer zu wissen, was vorrätig ist.",
+
+  "tutorial_equipment_title": "Ausrüstung verfolgen",
+  "tutorial_equipment_desc": "Fügen Sie Ihre Espressomaschinen und Mühlen hinzu. Notieren Sie Einstellungen und Modifikationen, um sich zu merken, was am besten funktioniert.",
+
+  "tutorial_brewing_title": "Brühvorgänge protokollieren",
+  "tutorial_brewing_desc": "Zeichnen Sie jeden Shot mit Dosis, Ertrag, Zeit und Verkostungsnotizen auf. Bewerten Sie Ihre Shots und verfolgen Sie, welche Parameter die besten Ergebnisse liefern.",
+
+  "tutorial_methods_title": "Brühmethoden anpassen",
+  "tutorial_methods_desc": "Erstellen und bearbeiten Sie Brühmethoden mit benutzerdefinierten Verhältnisbereichen, Temperaturen und Zeiten. Passen Sie die App an Ihren Brühstil an.",
+
+  "tutorial_history_title": "Verlauf überprüfen",
+  "tutorial_history_desc": "Durchsuchen Sie vergangene Brühvorgänge, sehen Sie Trends im Laufe der Zeit und lernen Sie aus Ihren besten (und schlechtesten) Shots.",
+
+  "tutorial_calculator_title": "Rezeptrechner",
+  "tutorial_calculator_desc": "Berechnen Sie perfekte Brühverhältnisse für jede Methode. Erhalten Sie Brühanleitungen mit empfohlenen Parametern für Ihre benutzerdefinierten Methoden.",
+
+  "tutorial_ready_title": "Sie sind startklar!",
+  "tutorial_ready_desc": "Beginnen Sie, indem Sie Ihre Bohnen und Ausrüstung hinzufügen, dann protokollieren Sie Ihren ersten Shot. Viel Spaß beim Brühen!"
 }

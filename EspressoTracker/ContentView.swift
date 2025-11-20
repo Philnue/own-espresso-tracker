@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @ObservedObject private var settings = UserSettings.shared
+    @State private var showingTutorial = !UserDefaults.standard.bool(forKey: "hasSeenTutorial")
 
     var body: some View {
         Group {
@@ -48,6 +49,11 @@ struct ContentView: View {
         }
         .preferredColorScheme(settings.colorScheme == "dark" ? .dark : settings.colorScheme == "light" ? .light : nil)
         .id("\(settings.appLanguage)_\(settings.colorScheme)") // Force refresh when language or theme changes
+        .fullScreenCover(isPresented: $showingTutorial, onDismiss: {
+            UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
+        }) {
+            TutorialView()
+        }
     }
 }
 

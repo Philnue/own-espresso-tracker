@@ -84,12 +84,12 @@ struct HistoryView: View {
                 .font(.system(size: 64))
                 .foregroundColor(.textSecondary)
 
-            Text("No Brewing History")
+            Text(LocalizedString.get("no_history_yet"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
 
-            Text("Your brewing sessions will appear here")
+            Text(LocalizedString.get("no_history_description"))
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)

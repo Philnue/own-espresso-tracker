@@ -23,6 +23,7 @@ struct BrewingView: View {
     @State private var selectedMethod: BrewMethod = .espresso
     @State private var showingFinishSheet = false
     @State private var showArchivedBeans = false
+    @State private var showingBeanPicker = false
 
     // Filtered beans based on archive status
     private var beans: [Bean] {
@@ -71,6 +72,14 @@ struct BrewingView: View {
                     bean: selectedBean
                 )
             }
+            .sheet(isPresented: $showingBeanPicker) {
+                SearchableBeanPicker(
+                    selectedBean: $selectedBean,
+                    beans: allBeans,
+                    showArchivedBeans: $showArchivedBeans,
+                    onDismiss: { showingBeanPicker = false }
+                )
+            }
             .onAppear {
                 // Load default settings
                 viewModel.doseIn = String(settings.defaultDoseIn)
@@ -78,6 +87,24 @@ struct BrewingView: View {
                 viewModel.waterTemp = String(settings.defaultWaterTemp)
                 viewModel.pressure = String(settings.defaultPressure)
                 if let method = BrewMethod.allCases.first(where: { $0.rawValue.lowercased() == settings.defaultBrewMethod }) {
+                    selectedMethod = method
+                }
+            }
+            // Update when settings change
+            .onChange(of: settings.defaultDoseIn) { _, newValue in
+                viewModel.doseIn = String(newValue)
+            }
+            .onChange(of: settings.defaultRatio) { _, newValue in
+                viewModel.targetRatio = newValue
+            }
+            .onChange(of: settings.defaultWaterTemp) { _, newValue in
+                viewModel.waterTemp = String(newValue)
+            }
+            .onChange(of: settings.defaultPressure) { _, newValue in
+                viewModel.pressure = String(newValue)
+            }
+            .onChange(of: settings.defaultBrewMethod) { _, newValue in
+                if let method = BrewMethod.allCases.first(where: { $0.rawValue.lowercased() == newValue }) {
                     selectedMethod = method
                 }
             }
@@ -102,8 +129,10 @@ struct BrewingView: View {
                                         .font(.title3)
                                     Text(method.rawValue)
                                         .font(.caption2)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
                                 }
-                                .frame(width: 70, height: 60)
+                                .frame(width: 80, height: 60)
                                 .foregroundColor(selectedMethod == method ? .white : .textSecondary)
                                 .background(selectedMethod == method ? Color.espressoBrown : Color.backgroundSecondary)
                                 .cornerRadius(10)
@@ -210,132 +239,111 @@ struct BrewingView: View {
                 .foregroundColor(.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Grinder selection
-            Menu {
-                ForEach(grinders) { grinder in
-                    Button(grinder.wrappedName) {
-                        selectedGrinder = grinder
-                    }
-                }
-            } label: {
-                CustomCard {
-                    HStack {
-                        Image(systemName: "slider.horizontal.3")
-                            .font(.title2)
-                            .foregroundColor(.espressoBrown)
-                            .frame(width: 40)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Grinder")
-                                .font(.caption)
-                                .foregroundColor(.textSecondary)
-
-                            if let grinder = selectedGrinder {
-                                Text(grinder.wrappedName)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.textPrimary)
-                            } else {
-                                Text("Select grinder")
-                                    .font(.body)
-                                    .foregroundColor(.textTertiary)
-                            }
-                        }
-
-                        Spacer()
-
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
-                    }
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-
-            // Machine selection
-            Menu {
-                ForEach(machines) { machine in
-                    Button(machine.wrappedName) {
-                        selectedMachine = machine
-                    }
-                }
-            } label: {
-                CustomCard {
-                    HStack {
-                        Image(systemName: "refrigerator")
-                            .font(.title2)
-                            .foregroundColor(.espressoBrown)
-                            .frame(width: 40)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Machine")
-                                .font(.caption)
-                                .foregroundColor(.textSecondary)
-
-                            if let machine = selectedMachine {
-                                Text(machine.wrappedName)
-                                    .font(.body)
-                                    .fontWeight(.medium)
-                                    .foregroundColor(.textPrimary)
-                            } else {
-                                Text("Select machine")
-                                    .font(.body)
-                                    .foregroundColor(.textTertiary)
-                            }
-                        }
-
-                        Spacer()
-
-                        Image(systemName: "chevron.down")
-                            .foregroundColor(.espressoBrown)
-                    }
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-
-            // Bean selection
-            Menu {
-                // Show archived toggle
-                Button(action: {
-                    showArchivedBeans.toggle()
-                }) {
-                    Label(
-                        showArchivedBeans ? "Hide Archived" : "Show Archived",
-                        systemImage: showArchivedBeans ? "eye.slash" : "eye"
-                    )
-                }
-
-                Divider()
-
-                ForEach(beans) { bean in
-                    Button(action: {
-                        selectedBean = bean
-                    }) {
-                        VStack(alignment: .leading, spacing: 2) {
+            // Grinder and Machine in a horizontal layout
+            HStack(spacing: 12) {
+                // Grinder selection
+                Menu {
+                    ForEach(grinders) { grinder in
+                        Button(action: {
+                            selectedGrinder = grinder
+                        }) {
                             HStack {
-                                Text(bean.wrappedName)
-                                if bean.isArchived {
-                                    Image(systemName: "archivebox")
-                                        .font(.caption)
+                                Text(grinder.wrappedName)
+                                if selectedGrinder?.id == grinder.id {
+                                    Image(systemName: "checkmark")
                                 }
                             }
-
-                            HStack(spacing: 4) {
-                                Text(bean.wrappedRoaster)
-                                    .font(.caption)
-                                Text("•")
-                                if bean.weight > 0 {
-                                    Text("\(Int(bean.remainingWeight))g")
-                                        .foregroundColor(bean.isLowStock ? .warningOrange : .primary)
-                                    Text("•")
-                                }
-                                Text("\(bean.freshnessIndicator)")
-                                    .font(.caption)
-                            }
-                            .foregroundColor(.secondary)
                         }
                     }
+                } label: {
+                    VStack(spacing: 8) {
+                        Image(systemName: "gearshape.2.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.espressoBrown)
+                            .frame(height: 32)
+
+                        Text("Grinder")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.textSecondary)
+
+                        if let grinder = selectedGrinder {
+                            Text(grinder.wrappedName)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
+                        } else {
+                            Text("Select")
+                                .font(.subheadline)
+                                .foregroundColor(.textTertiary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                    .padding(.horizontal, 8)
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selectedGrinder != nil ? Color.espressoBrown : Color.dividerColor, lineWidth: selectedGrinder != nil ? 2 : 1)
+                    )
+                    .cardShadow()
                 }
-            } label: {
+
+                // Machine selection
+                Menu {
+                    ForEach(machines) { machine in
+                        Button(action: {
+                            selectedMachine = machine
+                        }) {
+                            HStack {
+                                Text(machine.wrappedName)
+                                if selectedMachine?.id == machine.id {
+                                    Image(systemName: "checkmark")
+                                }
+                            }
+                        }
+                    }
+                } label: {
+                    VStack(spacing: 8) {
+                        Image(systemName: "cup.and.saucer.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.espressoBrown)
+                            .frame(height: 32)
+
+                        Text("Machine")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.textSecondary)
+
+                        if let machine = selectedMachine {
+                            Text(machine.wrappedName)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
+                        } else {
+                            Text("Select")
+                                .font(.subheadline)
+                                .foregroundColor(.textTertiary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                    .padding(.horizontal, 8)
+                    .background(Color.cardBackground)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selectedMachine != nil ? Color.espressoBrown : Color.dividerColor, lineWidth: selectedMachine != nil ? 2 : 1)
+                    )
+                    .cardShadow()
+                }
+            }
+
+            // Bean selection - opens searchable picker
+            Button(action: { showingBeanPicker = true }) {
                 CustomCard {
                     VStack(spacing: 12) {
                         HStack {
@@ -350,23 +358,23 @@ struct BrewingView: View {
                                     .foregroundColor(.textSecondary)
 
                                 if let bean = selectedBean {
-                                    Text(bean.wrappedName)
-                                        .font(.body)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.textPrimary)
+                                    HStack {
+                                        Text(bean.displayName)
+                                            .font(.body)
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.textPrimary)
+
+                                        if bean.isArchived {
+                                            Image(systemName: "archivebox.fill")
+                                                .font(.caption)
+                                                .foregroundColor(.textTertiary)
+                                        }
+                                    }
 
                                     HStack(spacing: 8) {
                                         Text(bean.wrappedRoaster)
                                             .font(.caption2)
                                             .foregroundColor(.textSecondary)
-
-                                        if bean.weight > 0 {
-                                            Text("•")
-                                                .foregroundColor(.textTertiary)
-                                            Text("\(Int(bean.remainingWeight))g left")
-                                                .font(.caption2)
-                                                .foregroundColor(bean.isLowStock ? .warningOrange : .textSecondary)
-                                        }
 
                                         Text("•")
                                             .foregroundColor(.textTertiary)
@@ -383,8 +391,81 @@ struct BrewingView: View {
 
                             Spacer()
 
-                            Image(systemName: "chevron.down")
+                            Image(systemName: "chevron.right")
                                 .foregroundColor(.espressoBrown)
+                        }
+
+                        // Prominent remaining weight display
+                        if let bean = selectedBean, bean.weight > 0 {
+                            VStack(spacing: 8) {
+                                Divider()
+                                    .background(Color.dividerColor)
+
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("Remaining")
+                                            .font(.caption2)
+                                            .foregroundColor(.textTertiary)
+                                        HStack(alignment: .firstTextBaseline, spacing: 2) {
+                                            Text("\(Int(bean.remainingWeight))")
+                                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .espressoBrown))
+                                            Text("g")
+                                                .font(.caption)
+                                                .foregroundColor(.textSecondary)
+                                        }
+                                    }
+
+                                    Spacer()
+
+                                    VStack(alignment: .trailing, spacing: 2) {
+                                        Text("Used")
+                                            .font(.caption2)
+                                            .foregroundColor(.textTertiary)
+                                        HStack(alignment: .firstTextBaseline, spacing: 2) {
+                                            Text("\(Int(bean.totalGramsUsed))")
+                                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                                .foregroundColor(.textSecondary)
+                                            Text("g")
+                                                .font(.caption)
+                                                .foregroundColor(.textSecondary)
+                                        }
+                                    }
+                                }
+
+                                // Progress bar
+                                GeometryReader { geometry in
+                                    ZStack(alignment: .leading) {
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(Color.backgroundSecondary)
+                                            .frame(height: 8)
+
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(bean.isLowStock ? Color.warningOrange : Color.espressoBrown)
+                                            .frame(width: geometry.size.width * CGFloat(bean.usagePercentage / 100), height: 8)
+                                    }
+                                }
+                                .frame(height: 8)
+
+                                // Stock warning
+                                if bean.isLowStock {
+                                    HStack {
+                                        Image(systemName: "exclamationmark.triangle.fill")
+                                            .font(.caption2)
+                                        Text("Low stock - consider reordering")
+                                            .font(.caption2)
+                                    }
+                                    .foregroundColor(.warningOrange)
+                                } else if bean.isFinished {
+                                    HStack {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.caption2)
+                                        Text("Finished - no beans remaining")
+                                            .font(.caption2)
+                                    }
+                                    .foregroundColor(.errorRed)
+                                }
+                            }
                         }
                     }
                 }
@@ -540,7 +621,7 @@ struct BrewingView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 12) {
-            PrimaryButton(title: "Finish & Save Shot") {
+            PrimaryButton(title: LocalizedString.get("finish_save_shot")) {
                 if !viewModel.isRunning {
                     showingFinishSheet = true
                 }
@@ -549,7 +630,7 @@ struct BrewingView: View {
 
             // Show helpful message when equipment is missing
             if selectedGrinder == nil || selectedMachine == nil || selectedBean == nil {
-                Text("Please select grinder, machine, and beans to continue")
+                Text(LocalizedString.get("please_select_equipment"))
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)

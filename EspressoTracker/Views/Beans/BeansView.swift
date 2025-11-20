@@ -62,10 +62,10 @@ struct BeansView: View {
                             HStack(spacing: 4) {
                                 Image(systemName: showArchivedBeans ? "eye.slash" : "eye")
                                 if showArchivedBeans {
-                                    Text("Hide Archived")
+                                    Text(LocalizedString.get("hide_archived"))
                                         .font(.caption)
                                 } else {
-                                    Text("Show Archived (\(archivedBeanCount))")
+                                    Text("\(LocalizedString.get("show_archived")) (\(archivedBeanCount))")
                                         .font(.caption)
                                 }
                             }
@@ -93,19 +93,19 @@ struct BeansView: View {
                 .font(.system(size: 64))
                 .foregroundColor(.textSecondary)
 
-            Text("No Beans Yet")
+            Text(LocalizedString.get("no_beans_yet"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
 
-            Text("Add your coffee beans to track freshness and flavor profiles")
+            Text(LocalizedString.get("no_beans_description"))
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
             Button(action: { showingAddBean = true }) {
-                Label("Add Beans", systemImage: "plus")
+                Label(LocalizedString.get("add_beans"), systemImage: "plus")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding(.horizontal, 24)
@@ -147,6 +147,17 @@ struct BeanCardView: View {
                             Text(bean.wrappedName)
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
+
+                            if bean.batchNumber > 1 {
+                                Text("#\(bean.batchNumber)")
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 2)
+                                    .background(Color.espressoBrown)
+                                    .cornerRadius(4)
+                            }
 
                             if bean.isArchived {
                                 Image(systemName: "archivebox.fill")

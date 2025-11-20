@@ -70,7 +70,25 @@ class UserSettings: ObservableObject {
         self.defaultPressure = defaults.double(forKey: "defaultPressure") != 0 ? defaults.double(forKey: "defaultPressure") : 9.0
         self.defaultGrindSetting = defaults.string(forKey: "defaultGrindSetting") ?? ""
         self.colorScheme = defaults.string(forKey: "colorScheme") ?? "dark"
-        self.appLanguage = defaults.string(forKey: "appLanguage") ?? "en"
+
+        // Detect device language and set as default on first launch
+        let detectedLanguage: String
+        if let savedLanguage = defaults.string(forKey: "appLanguage") {
+            detectedLanguage = savedLanguage
+        } else {
+            // Get device's preferred language from system settings
+            let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+            // Check if it starts with "de" (e.g., "de", "de-DE", "de-AT")
+            if preferredLanguage.hasPrefix("de") {
+                detectedLanguage = "de"
+            } else {
+                detectedLanguage = "en"
+            }
+            // Save the detected language
+            defaults.set(detectedLanguage, forKey: "appLanguage")
+        }
+        self.appLanguage = detectedLanguage
+
         self.weightUnit = defaults.string(forKey: "weightUnit") ?? "grams"
         self.temperatureUnit = defaults.string(forKey: "temperatureUnit") ?? "celsius"
         self.volumeUnit = defaults.string(forKey: "volumeUnit") ?? "ml"

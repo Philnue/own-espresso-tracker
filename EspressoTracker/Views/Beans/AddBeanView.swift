@@ -26,6 +26,7 @@ struct AddBeanView: View {
     @State private var notes = ""
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
+    @State private var purchaseDate = Date()
 
     let roastLevels = ["Light", "Medium-Light", "Medium", "Medium-Dark", "Dark"]
     let processes = ["Washed", "Natural", "Honey", "Anaerobic", "Other"]
@@ -90,6 +91,8 @@ struct AddBeanView: View {
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
                         }
+
+                        DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
                     }
                     .listRowBackground(Color.cardBackground)
 
@@ -175,7 +178,8 @@ struct AddBeanView: View {
             price: priceValue,
             weight: weightValue,
             notes: notes,
-            imageData: imageData
+            imageData: imageData,
+            purchaseDate: purchaseDate
         )
         dismiss()
     }

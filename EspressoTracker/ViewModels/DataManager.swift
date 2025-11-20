@@ -87,7 +87,7 @@ class DataManager {
     }
 
     // MARK: - Bean Operations
-    func createBean(name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?, isArchived: Bool = false) {
+    func createBean(name: String, roaster: String, origin: String, roastLevel: String, roastDate: Date, process: String, variety: String, tastingNotes: String, price: Double, weight: Double, notes: String, imageData: Data?, isArchived: Bool = false, batchNumber: Int = 1, purchaseDate: Date = Date()) {
         let bean = Bean(
             name: name,
             roaster: roaster,
@@ -101,9 +101,48 @@ class DataManager {
             weight: weight,
             isArchived: isArchived,
             imageData: imageData,
-            notes: notes
+            notes: notes,
+            batchNumber: batchNumber,
+            purchaseDate: purchaseDate
         )
         modelContext.insert(bean)
+        saveContext()
+    }
+
+    // Create a new batch of an existing bean
+    func createBatchFromBean(_ existingBean: Bean, weight: Double, roastDate: Date, purchaseDate: Date = Date(), price: Double) {
+        // Find the highest batch number for this bean name/roaster combo
+        // Capture values as local constants for the predicate
+        let beanName = existingBean.name
+        let beanRoaster = existingBean.roaster
+
+        let descriptor = FetchDescriptor<Bean>(
+            predicate: #Predicate { bean in
+                bean.name == beanName && bean.roaster == beanRoaster
+            }
+        )
+
+        let existingBeans = (try? modelContext.fetch(descriptor)) ?? []
+        let maxBatchNumber = existingBeans.map { $0.batchNumber }.max() ?? 0
+
+        let newBean = Bean(
+            name: existingBean.name,
+            roaster: existingBean.roaster,
+            origin: existingBean.origin,
+            roastLevel: existingBean.roastLevel,
+            roastDate: roastDate,
+            process: existingBean.process,
+            variety: existingBean.variety,
+            tastingNotes: existingBean.tastingNotes,
+            price: price,
+            weight: weight,
+            isArchived: false,
+            imageData: existingBean.imageData,
+            notes: existingBean.notes,
+            batchNumber: maxBatchNumber + 1,
+            purchaseDate: purchaseDate
+        )
+        modelContext.insert(newBean)
         saveContext()
     }
 

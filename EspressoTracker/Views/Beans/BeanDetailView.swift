@@ -15,6 +15,7 @@ struct BeanDetailView: View {
 
     @State private var showingEditView = false
     @State private var showingDeleteAlert = false
+    @State private var showingAddBatch = false
 
     var body: some View {
         ZStack {
@@ -107,10 +108,25 @@ struct BeanDetailView: View {
                     // Info card
                     CustomCard {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text(bean.wrappedName)
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.textPrimary)
+                            HStack {
+                                Text(bean.displayName)
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.textPrimary)
+
+                                Spacer()
+
+                                if bean.batchNumber > 1 {
+                                    Text("Batch #\(bean.batchNumber)")
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(Color.espressoBrown)
+                                        .cornerRadius(6)
+                                }
+                            }
 
                             Text(bean.wrappedRoaster)
                                 .font(.title3)
@@ -187,6 +203,12 @@ struct BeanDetailView: View {
                                     value: String(format: "%.0fg", bean.weight)
                                 )
                             }
+
+                            InfoRow(
+                                icon: "bag",
+                                label: "Purchase Date",
+                                value: bean.formattedPurchaseDate
+                            )
 
                             if !bean.wrappedNotes.isEmpty {
                                 VStack(alignment: .leading, spacing: 8) {
@@ -301,6 +323,24 @@ struct BeanDetailView: View {
 
                     // Action buttons
                     VStack(spacing: 12) {
+                        // Buy Again button
+                        Button(action: {
+                            showingAddBatch = true
+                        }) {
+                            HStack {
+                                Image(systemName: "cart.badge.plus")
+                                Text("Buy Again (New Batch)")
+                            }
+                            .font(.body)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .background(Color.successGreen)
+                            .cornerRadius(16)
+                        }
+                        .buttonShadow()
+
                         PrimaryButton(title: "Edit Bean") {
                             showingEditView = true
                         }
@@ -333,6 +373,9 @@ struct BeanDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingEditView) {
             EditBeanView(bean: bean)
+        }
+        .sheet(isPresented: $showingAddBatch) {
+            AddBatchView(existingBean: bean)
         }
         .alert("Delete Bean", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }

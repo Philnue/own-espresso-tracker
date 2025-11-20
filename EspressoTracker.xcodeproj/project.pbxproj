@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		782168B42EC29001005238D5 /* EspressoTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracker.xcodeproj; sourceTree = "<group>"; };
+		782595FA2ECE4ED70069A30C /* EspressoTracke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracke.xcodeproj; sourceTree = "<group>"; };
 		7833AAA92EC2891500149BA6 /* EspressoTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EspressoTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		788FC54B2EC28ABE00319697 /* EspressoTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracker.xcodeproj; sourceTree = "<group>"; };
 		78A43DA52EC4849000571E2C /* EspressoTracke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = EspressoTracke.xcodeproj; sourceTree = "<group>"; };
@@ -51,6 +52,11 @@
 			isa = PBXGroup;
 			children = (
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		782595FD2ECE4ED70069A30C /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -147,6 +153,10 @@
 			productRefGroup = 7833AAAA2EC2891500149BA6 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 782595FD2ECE4ED70069A30C /* Products */;
+					ProjectRef = 782595FA2ECE4ED70069A30C /* EspressoTracke.xcodeproj */;
+				},
 				{
 					ProductGroup = 78D87E6D2EC486E200501B05 /* Products */;
 					ProjectRef = 78D87E6A2EC486E200501B05 /* EspressoTracke.xcodeproj */;
@@ -323,7 +333,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 45SAAL8UAA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -358,7 +368,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 45SAAL8UAA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;

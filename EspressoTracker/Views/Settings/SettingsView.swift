@@ -51,7 +51,7 @@ struct SettingsView: View {
                         }
 
                         HStack {
-                            Text("Water Temperature")
+                            Text(LocalizedString.get("water_temperature"))
                             Spacer()
                             TextField("93", value: $settings.defaultWaterTemp, format: .number)
                                 .keyboardType(.decimalPad)
@@ -62,7 +62,7 @@ struct SettingsView: View {
                         }
 
                         HStack {
-                            Text("Pressure (Espresso)")
+                            Text(LocalizedString.get("pressure_espresso"))
                             Spacer()
                             TextField("9.0", value: $settings.defaultPressure, format: .number)
                                 .keyboardType(.decimalPad)
@@ -72,7 +72,7 @@ struct SettingsView: View {
                                 .foregroundColor(.textSecondary)
                         }
 
-                        Picker("Default Method", selection: $settings.defaultBrewMethod) {
+                        Picker(LocalizedString.get("default_method"), selection: $settings.defaultBrewMethod) {
                             ForEach(BrewMethod.allCases, id: \.rawValue) { method in
                                 HStack {
                                     Image(systemName: method.icon)
@@ -87,18 +87,18 @@ struct SettingsView: View {
                     // Units
                     Section(header: Text(LocalizedString.get("units")).foregroundColor(.espressoBrown)) {
                         Picker(LocalizedString.get("weight"), selection: $settings.weightUnit) {
-                            Text("Grams").tag("grams")
-                            Text("Ounces").tag("ounces")
+                            Text(LocalizedString.get("grams")).tag("grams")
+                            Text(LocalizedString.get("ounces")).tag("ounces")
                         }
 
                         Picker(LocalizedString.get("temperature"), selection: $settings.temperatureUnit) {
-                            Text("Celsius").tag("celsius")
-                            Text("Fahrenheit").tag("fahrenheit")
+                            Text(LocalizedString.get("celsius")).tag("celsius")
+                            Text(LocalizedString.get("fahrenheit")).tag("fahrenheit")
                         }
 
                         Picker(LocalizedString.get("volume"), selection: $settings.volumeUnit) {
-                            Text("Milliliters").tag("ml")
-                            Text("Fluid Ounces").tag("oz")
+                            Text(LocalizedString.get("milliliters")).tag("ml")
+                            Text(LocalizedString.get("fluid_ounces")).tag("oz")
                         }
                     }
                     .listRowBackground(Color.cardBackground)
@@ -106,9 +106,9 @@ struct SettingsView: View {
                     // Appearance
                     Section(header: Text(LocalizedString.get("appearance")).foregroundColor(.espressoBrown)) {
                         Picker(LocalizedString.get("theme"), selection: $settings.colorScheme) {
-                            Text("Dark").tag("dark")
-                            Text("Light").tag("light")
-                            Text("System").tag("system")
+                            Text(LocalizedString.get("dark")).tag("dark")
+                            Text(LocalizedString.get("light")).tag("light")
+                            Text(LocalizedString.get("system")).tag("system")
                         }
                         .pickerStyle(.segmented)
                     }
@@ -116,16 +116,16 @@ struct SettingsView: View {
 
                     // Language
                     Section(header: Text(LocalizedString.get("language")).foregroundColor(.espressoBrown)) {
-                        Picker("App Language", selection: $settings.appLanguage) {
+                        Picker(LocalizedString.get("app_language"), selection: $settings.appLanguage) {
                             HStack {
                                 Text("🇺🇸")
-                                Text("English")
+                                Text(LocalizedString.get("english"))
                             }
                             .tag("en")
 
                             HStack {
                                 Text("🇩🇪")
-                                Text("Deutsch")
+                                Text(LocalizedString.get("german"))
                             }
                             .tag("de")
                         }
@@ -133,12 +133,12 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // Data Management
-                    Section(header: Text("Data Management").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("data_management")).foregroundColor(.espressoBrown)) {
                         Button(action: { showingTestDataAlert = true }) {
                             HStack {
                                 Image(systemName: "wand.and.stars")
                                     .foregroundColor(.warningOrange)
-                                Text("Add Test Data")
+                                Text(LocalizedString.get("add_test_data"))
                                     .foregroundColor(.textPrimary)
                                 Spacer()
                                 Image(systemName: "chevron.right")
@@ -151,7 +151,7 @@ struct SettingsView: View {
                             HStack {
                                 Image(systemName: "square.and.arrow.up")
                                     .foregroundColor(.espressoBrown)
-                                Text("Export All Data")
+                                Text(LocalizedString.get("export_data"))
                                     .foregroundColor(.textPrimary)
                                 Spacer()
                                 Image(systemName: "chevron.right")
@@ -164,7 +164,7 @@ struct SettingsView: View {
                             HStack {
                                 Image(systemName: "square.and.arrow.down")
                                     .foregroundColor(.espressoBrown)
-                                Text("Import Data")
+                                Text(LocalizedString.get("import_data"))
                                     .foregroundColor(.textPrimary)
                                 Spacer()
                                 Image(systemName: "chevron.right")
@@ -176,18 +176,18 @@ struct SettingsView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // About
-                    Section(header: Text("About").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("about")).foregroundColor(.espressoBrown)) {
                         HStack {
-                            Text("Version")
+                            Text(LocalizedString.get("version"))
                             Spacer()
-                            Text("1.0.0")
+                            Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                                 .foregroundColor(.textSecondary)
                         }
 
                         HStack {
-                            Text("Build")
+                            Text(LocalizedString.get("build"))
                             Spacer()
-                            Text("2024.1")
+                            Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1")
                                 .foregroundColor(.textSecondary)
                         }
                     }
@@ -204,28 +204,28 @@ struct SettingsView: View {
             ) { result in
                 handleImport(result)
             }
-            .alert("Export Successful", isPresented: $showingExportSuccess) {
-                Button("OK", role: .cancel) { }
+            .alert(LocalizedString.get("export_success"), isPresented: $showingExportSuccess) {
+                Button(LocalizedString.get("ok"), role: .cancel) { }
                 if let url = exportURL {
-                    Button("Share") {
+                    Button(LocalizedString.get("share")) {
                         shareFile(url)
                     }
                 }
             } message: {
-                Text("Your data has been exported successfully.")
+                Text(LocalizedString.get("export_success_message"))
             }
-            .alert("Add Test Data", isPresented: $showingTestDataAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Add") {
+            .alert(LocalizedString.get("add_test_data"), isPresented: $showingTestDataAlert) {
+                Button(LocalizedString.get("cancel"), role: .cancel) { }
+                Button(LocalizedString.get("add")) {
                     populateTestData()
                 }
             } message: {
-                Text("This will add sample grinders, machines, and beans to your database. This is helpful for testing the app.")
+                Text(LocalizedString.get("add_test_data_message"))
             }
-            .alert("Test Data Added", isPresented: $showingTestDataSuccess) {
-                Button("OK", role: .cancel) { }
+            .alert(LocalizedString.get("test_data_added"), isPresented: $showingTestDataSuccess) {
+                Button(LocalizedString.get("ok"), role: .cancel) { }
             } message: {
-                Text("Successfully added 3 grinders, 3 machines, and 4 beans. Check the Equipment and Beans tabs!")
+                Text(LocalizedString.get("test_data_added_message"))
             }
         }
     }

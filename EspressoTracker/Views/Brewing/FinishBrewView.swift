@@ -90,6 +90,11 @@ struct FinishBrewView: View {
                         Text("Target: \(viewModel.targetYieldString)g")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
+
+                        Text("ℹ️ Espresso: 1g ≈ 1ml (water + extracted coffee)")
+                            .font(.caption2)
+                            .foregroundColor(.textTertiary)
+                            .italic()
                     }
                     .listRowBackground(Color.cardBackground)
 

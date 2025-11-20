@@ -354,6 +354,7 @@ struct BrewingView: View {
                     )
                     .cardShadow()
                 }
+                }
             }
 
             // Bean selection - opens searchable picker

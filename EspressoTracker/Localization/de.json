@@ -276,5 +276,23 @@
   "add_grinder": "Mühle hinzufügen",
   "add_machine": "Maschine hinzufügen",
   "grinders": "Mühlen",
-  "machines": "Maschinen"
+  "machines": "Maschinen",
+
+  "brewing_methods": "Brühmethoden",
+  "manage_brewing_methods": "Brühmethoden verwalten",
+  "no_brewing_methods": "Keine Brühmethoden",
+  "add_brewing_methods_description": "Fügen Sie Brühmethoden mit eigenen Parametern hinzu",
+  "add_default_methods": "Standard-Methoden hinzufügen",
+  "add_method": "Methode hinzufügen",
+  "edit_method": "Methode bearbeiten",
+  "method_name": "Methodenname",
+  "icon": "Symbol",
+  "basic_information": "Grundinformationen",
+  "default_parameters": "Standardparameter",
+  "default_dose": "Standard-Dosis",
+  "ratio_range": "Verhältnisbereich (1:x)",
+  "brew_time_range": "Brühzeitbereich (Sekunden)",
+  "water_temperature": "Wassertemperatur",
+  "min": "Min",
+  "max": "Max"
 }

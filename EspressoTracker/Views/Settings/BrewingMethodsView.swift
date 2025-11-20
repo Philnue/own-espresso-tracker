@@ -39,7 +39,7 @@ struct BrewingMethodsView: View {
                 }
             }
         }
-        .navigationTitle("Brewing Methods")
+        .navigationTitle(LocalizedString.get("brewing_methods"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { showingAddMethod = true }) {
@@ -64,12 +64,12 @@ struct BrewingMethodsView: View {
                 .font(.system(size: 64))
                 .foregroundColor(.textSecondary)
 
-            Text("No Brewing Methods")
+            Text(LocalizedString.get("no_brewing_methods"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
 
-            Text("Add brewing methods with custom parameters")
+            Text(LocalizedString.get("add_brewing_methods_description"))
                 .font(.body)
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
@@ -78,7 +78,7 @@ struct BrewingMethodsView: View {
             Button(action: { initializeDefaultMethods() }) {
                 HStack {
                     Image(systemName: "plus.circle.fill")
-                    Text("Add Default Methods")
+                    Text(LocalizedString.get("add_default_methods"))
                 }
                 .font(.headline)
                 .foregroundColor(.white)
@@ -187,11 +187,11 @@ struct BrewingMethodEditView: View {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
-                    Section(header: Text("Basic Information")) {
-                        TextField("Method Name", text: $name)
+                    Section(header: Text(LocalizedString.get("basic_information"))) {
+                        TextField(LocalizedString.get("method_name"), text: $name)
 
                         HStack {
-                            Text("Icon")
+                            Text(LocalizedString.get("icon"))
                             Spacer()
                             Image(systemName: icon)
                                 .foregroundColor(.espressoBrown)
@@ -199,9 +199,9 @@ struct BrewingMethodEditView: View {
                     }
                     .listRowBackground(Color.cardBackground)
 
-                    Section(header: Text("Default Parameters")) {
+                    Section(header: Text(LocalizedString.get("default_parameters"))) {
                         HStack {
-                            Text("Default Dose")
+                            Text(LocalizedString.get("default_dose"))
                             Spacer()
                             TextField("18.0", value: $defaultDoseGrams, format: .number)
                                 .keyboardType(.decimalPad)
@@ -212,10 +212,10 @@ struct BrewingMethodEditView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Ratio Range (1:x)")
+                            Text(LocalizedString.get("ratio_range"))
                                 .font(.subheadline)
                             HStack {
-                                Text("Min")
+                                Text(LocalizedString.get("min"))
                                     .foregroundColor(.textSecondary)
                                 TextField("2.0", value: $defaultRatioMin, format: .number)
                                     .keyboardType(.decimalPad)
@@ -225,7 +225,7 @@ struct BrewingMethodEditView: View {
                                 Text("-")
                                     .foregroundColor(.textSecondary)
 
-                                Text("Max")
+                                Text(LocalizedString.get("max"))
                                     .foregroundColor(.textSecondary)
                                 TextField("2.5", value: $defaultRatioMax, format: .number)
                                     .keyboardType(.decimalPad)
@@ -235,10 +235,10 @@ struct BrewingMethodEditView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Brew Time Range (seconds)")
+                            Text(LocalizedString.get("brew_time_range"))
                                 .font(.subheadline)
                             HStack {
-                                Text("Min")
+                                Text(LocalizedString.get("min"))
                                     .foregroundColor(.textSecondary)
                                 TextField("25", value: $defaultBrewTimeMin, format: .number)
                                     .keyboardType(.decimalPad)
@@ -248,7 +248,7 @@ struct BrewingMethodEditView: View {
                                 Text("-")
                                     .foregroundColor(.textSecondary)
 
-                                Text("Max")
+                                Text(LocalizedString.get("max"))
                                     .foregroundColor(.textSecondary)
                                 TextField("30", value: $defaultBrewTimeMax, format: .number)
                                     .keyboardType(.decimalPad)
@@ -258,7 +258,7 @@ struct BrewingMethodEditView: View {
                         }
 
                         HStack {
-                            Text("Water Temperature")
+                            Text(LocalizedString.get("water_temperature"))
                             Spacer()
                             TextField("93", value: $defaultWaterTemp, format: .number)
                                 .keyboardType(.decimalPad)
@@ -269,7 +269,7 @@ struct BrewingMethodEditView: View {
                         }
 
                         HStack {
-                            Text("Pressure")
+                            Text(LocalizedString.get("pressure"))
                             Spacer()
                             TextField("9.0", value: $defaultPressure, format: .number)
                                 .keyboardType(.decimalPad)
@@ -283,17 +283,17 @@ struct BrewingMethodEditView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle(isNew ? "Add Method" : "Edit Method")
+            .navigationTitle(isNew ? LocalizedString.get("add_method") : LocalizedString.get("edit_method"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveMethod()
                     }
                     .disabled(name.isEmpty)

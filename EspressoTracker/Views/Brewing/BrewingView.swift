@@ -34,6 +34,19 @@ struct BrewingView: View {
         }
     }
 
+    // Check if selected brewing method requires a machine
+    private var requiresMachine: Bool {
+        return selectedMethod == .espresso || selectedMethod == .moka
+    }
+
+    // Check if all required equipment is selected
+    private var isEquipmentComplete: Bool {
+        let hasGrinder = selectedGrinder != nil
+        let hasBean = selectedBean != nil
+        let hasMachine = selectedMachine != nil || !requiresMachine
+        return hasGrinder && hasBean && hasMachine
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -291,8 +304,9 @@ struct BrewingView: View {
                     .cardShadow()
                 }
 
-                // Machine selection
-                Menu {
+                // Machine selection (only for espresso and moka pot)
+                if requiresMachine {
+                    Menu {
                     ForEach(machines) { machine in
                         Button(action: {
                             selectedMachine = machine
@@ -626,15 +640,38 @@ struct BrewingView: View {
                     showingFinishSheet = true
                 }
             }
-            .disabled(viewModel.isRunning || viewModel.elapsedTime == 0 || selectedGrinder == nil || selectedMachine == nil || selectedBean == nil)
+            .disabled(viewModel.isRunning || viewModel.elapsedTime == 0 || !isEquipmentComplete)
 
             // Show helpful message when equipment is missing
-            if selectedGrinder == nil || selectedMachine == nil || selectedBean == nil {
-                Text(LocalizedString.get("please_select_equipment"))
+            if !isEquipmentComplete {
+                Text(getEquipmentMessage())
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
             }
+        }
+    }
+
+    private func getEquipmentMessage() -> String {
+        var missing: [String] = []
+
+        if selectedGrinder == nil {
+            missing.append(LocalizedString.get("grinder").lowercased())
+        }
+        if requiresMachine && selectedMachine == nil {
+            missing.append(LocalizedString.get("machine").lowercased())
+        }
+        if selectedBean == nil {
+            missing.append(LocalizedString.get("beans").lowercased())
+        }
+
+        if missing.isEmpty {
+            return ""
+        } else if missing.count == 1 {
+            return "Please select \(missing[0])"
+        } else {
+            let lastItem = missing.removeLast()
+            return "Please select \(missing.joined(separator: ", ")) and \(lastItem)"
         }
     }
 

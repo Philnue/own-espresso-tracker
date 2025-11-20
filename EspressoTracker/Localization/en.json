@@ -276,5 +276,23 @@
   "add_grinder": "Add Grinder",
   "add_machine": "Add Machine",
   "grinders": "Grinders",
-  "machines": "Machines"
+  "machines": "Machines",
+
+  "brewing_methods": "Brewing Methods",
+  "manage_brewing_methods": "Manage Brewing Methods",
+  "no_brewing_methods": "No Brewing Methods",
+  "add_brewing_methods_description": "Add brewing methods with custom parameters",
+  "add_default_methods": "Add Default Methods",
+  "add_method": "Add Method",
+  "edit_method": "Edit Method",
+  "method_name": "Method Name",
+  "icon": "Icon",
+  "basic_information": "Basic Information",
+  "default_parameters": "Default Parameters",
+  "default_dose": "Default Dose",
+  "ratio_range": "Ratio Range (1:x)",
+  "brew_time_range": "Brew Time Range (seconds)",
+  "water_temperature": "Water Temperature",
+  "min": "Min",
+  "max": "Max"
 }

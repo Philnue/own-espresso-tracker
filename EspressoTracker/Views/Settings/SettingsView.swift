@@ -27,12 +27,12 @@ struct SettingsView: View {
 
                 Form {
                     // Brewing Methods
-                    Section(header: Text("Brewing Methods").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("brewing_methods")).foregroundColor(.espressoBrown)) {
                         NavigationLink(destination: BrewingMethodsView()) {
                             HStack {
                                 Image(systemName: "cup.and.saucer.fill")
                                     .foregroundColor(.espressoBrown)
-                                Text("Manage Brewing Methods")
+                                Text(LocalizedString.get("manage_brewing_methods"))
                                     .foregroundColor(.textPrimary)
                             }
                         }

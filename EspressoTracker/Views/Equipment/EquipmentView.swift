@@ -41,7 +41,8 @@ struct EquipmentView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
         }
-        .navigationBarHidden(true)
+        .navigationTitle(LocalizedString.get("equipment"))
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -181,6 +181,27 @@ struct BrewingMethodEditView: View {
         _defaultPressure = State(initialValue: method?.defaultPressure ?? 9.0)
     }
 
+    private var availableIcons: [String] {
+        [
+            "cup.and.saucer.fill",
+            "cup.and.saucer",
+            "mug.fill",
+            "takeoutbag.and.cup.and.straw.fill",
+            "drop.fill",
+            "flame.fill",
+            "snowflake",
+            "thermometer",
+            "timer",
+            "clock.fill",
+            "leaf.fill",
+            "sparkles",
+            "star.fill",
+            "circle.fill",
+            "square.fill",
+            "triangle.fill"
+        ]
+    }
+
     var body: some View {
         ZStack {
             Color.backgroundPrimary.ignoresSafeArea()
@@ -189,11 +210,14 @@ struct BrewingMethodEditView: View {
                 Section(header: Text(LocalizedString.get("basic_information"))) {
                     TextField(LocalizedString.get("method_name"), text: $name)
 
-                    HStack {
-                        Text(LocalizedString.get("icon"))
-                        Spacer()
-                        Image(systemName: icon)
-                            .foregroundColor(.espressoBrown)
+                    Picker(LocalizedString.get("icon"), selection: $icon) {
+                        ForEach(availableIcons, id: \.self) { iconName in
+                            HStack {
+                                Image(systemName: iconName)
+                                Text(iconName.replacingOccurrences(of: ".fill", with: ""))
+                            }
+                            .tag(iconName)
+                        }
                     }
                 }
                 .listRowBackground(Color.cardBackground)

@@ -30,116 +30,114 @@ struct EditMachineView: View {
     let groupHeadTypes = ["Standard", "E61", "Saturated", "Semi-Saturated", "Other"]
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.backgroundPrimary.ignoresSafeArea()
+        ZStack {
+            Color.backgroundPrimary.ignoresSafeArea()
 
-                Form {
-                    Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
-                        TextField("Name", text: $name)
-                        TextField("Brand", text: $brand)
-                        TextField("Model", text: $model)
+            Form {
+                Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
+                    TextField("Name", text: $name)
+                    TextField("Brand", text: $brand)
+                    TextField("Model", text: $model)
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Specifications").foregroundColor(.espressoBrown)) {
+                    Picker("Boiler Type", selection: $boilerType) {
+                        ForEach(boilerTypes, id: \.self) { type in
+                            Text(type).tag(type)
+                        }
                     }
-                    .listRowBackground(Color.cardBackground)
 
-                    Section(header: Text("Specifications").foregroundColor(.espressoBrown)) {
-                        Picker("Boiler Type", selection: $boilerType) {
-                            ForEach(boilerTypes, id: \.self) { type in
-                                Text(type).tag(type)
-                            }
+                    Picker("Group Head", selection: $groupHeadType) {
+                        ForEach(groupHeadTypes, id: \.self) { type in
+                            Text(type).tag(type)
                         }
+                    }
 
-                        Picker("Group Head", selection: $groupHeadType) {
-                            ForEach(groupHeadTypes, id: \.self) { type in
-                                Text(type).tag(type)
-                            }
-                        }
+                    HStack {
+                        Text("Pressure (bar)")
+                        Spacer()
+                        TextField("9.0", text: $pressure)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
 
+                Section(header: Text("Purchase Information").foregroundColor(.espressoBrown)) {
+                    Toggle("Track Purchase Date", isOn: $hasPurchaseDate)
+
+                    if hasPurchaseDate {
+                        DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Image").foregroundColor(.espressoBrown)) {
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
                         HStack {
-                            Text("Pressure (bar)")
+                            if let imageData = imageData,
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(8)
+                            } else {
+                                Image(systemName: "photo")
+                                    .font(.title2)
+                                    .foregroundColor(.textSecondary)
+                                    .frame(width: 60, height: 60)
+                                    .background(Color.backgroundSecondary)
+                                    .cornerRadius(8)
+                            }
+
+                            Text("Change Image")
+                                .foregroundColor(.espressoBrown)
+
                             Spacer()
-                            TextField("9.0", text: $pressure)
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 80)
                         }
                     }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Purchase Information").foregroundColor(.espressoBrown)) {
-                        Toggle("Track Purchase Date", isOn: $hasPurchaseDate)
-
-                        if hasPurchaseDate {
-                            DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Image").foregroundColor(.espressoBrown)) {
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            HStack {
-                                if let imageData = imageData,
-                                   let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(8)
-                                } else {
-                                    Image(systemName: "photo")
-                                        .font(.title2)
-                                        .foregroundColor(.textSecondary)
-                                        .frame(width: 60, height: 60)
-                                        .background(Color.backgroundSecondary)
-                                        .cornerRadius(8)
-                                }
-
-                                Text("Change Image")
-                                    .foregroundColor(.espressoBrown)
-
-                                Spacer()
-                            }
-                        }
-                        .onChange(of: selectedImage) { oldValue, newValue in
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    imageData = data
-                                }
+                    .onChange(of: selectedImage) { oldValue, newValue in
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                imageData = data
                             }
                         }
                     }
-                    .listRowBackground(Color.cardBackground)
+                }
+                .listRowBackground(Color.cardBackground)
 
-                    Section(header: Text("Notes").foregroundColor(.espressoBrown)) {
-                        TextEditor(text: $notes)
-                            .frame(height: 100)
-                            .foregroundColor(.textPrimary)
-                    }
-                    .listRowBackground(Color.cardBackground)
+                Section(header: Text("Notes").foregroundColor(.espressoBrown)) {
+                    TextEditor(text: $notes)
+                        .frame(height: 100)
+                        .foregroundColor(.textPrimary)
                 }
-                .scrollContentBackground(.hidden)
+                .listRowBackground(Color.cardBackground)
             }
-            .navigationTitle("Edit Machine")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    .foregroundColor(.textSecondary)
+            .scrollContentBackground(.hidden)
+        }
+        .navigationTitle("Edit Machine")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Cancel") {
+                    dismiss()
                 }
+                .foregroundColor(.textSecondary)
+            }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        saveChanges()
-                    }
-                    .foregroundColor(.espressoBrown)
-                    .disabled(name.isEmpty)
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Save") {
+                    saveChanges()
                 }
+                .foregroundColor(.espressoBrown)
+                .disabled(name.isEmpty)
             }
-            .onAppear {
-                loadMachineData()
-            }
+        }
+        .onAppear {
+            loadMachineData()
         }
     }
 

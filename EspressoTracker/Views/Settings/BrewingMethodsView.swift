@@ -182,11 +182,10 @@ struct BrewingMethodEditView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.backgroundPrimary.ignoresSafeArea()
+        ZStack {
+            Color.backgroundPrimary.ignoresSafeArea()
 
-                Form {
+            Form {
                     Section(header: Text(LocalizedString.get("basic_information"))) {
                         TextField(LocalizedString.get("method_name"), text: $name)
 

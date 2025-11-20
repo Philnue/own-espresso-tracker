@@ -33,112 +33,111 @@ struct AddBeanView: View {
     let varieties = ["Arabica", "Robusta", "Blend", "Other"]
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.backgroundPrimary.ignoresSafeArea()
+        ZStack {
+            Color.backgroundPrimary.ignoresSafeArea()
 
-                Form {
-                    Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
-                        TextField("Name", text: $name)
-                        TextField("Roaster", text: $roaster)
-                        TextField("Origin", text: $origin)
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Bean Details").foregroundColor(.espressoBrown)) {
-                        Picker("Roast Level", selection: $roastLevel) {
-                            ForEach(roastLevels, id: \.self) { level in
-                                Text(level).tag(level)
-                            }
-                        }
-
-                        DatePicker("Roast Date", selection: $roastDate, displayedComponents: .date)
-
-                        Picker("Process", selection: $process) {
-                            ForEach(processes, id: \.self) { proc in
-                                Text(proc).tag(proc)
-                            }
-                        }
-
-                        Picker("Variety", selection: $variety) {
-                            ForEach(varieties, id: \.self) { v in
-                                Text(v).tag(v)
-                            }
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Tasting Notes").foregroundColor(.espressoBrown)) {
-                        TextField("e.g., Chocolate, Caramel, Citrus", text: $tastingNotes)
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Purchase Details").foregroundColor(.espressoBrown)) {
-                        HStack {
-                            Text("Price ($)")
-                            Spacer()
-                            TextField("18.00", text: $price)
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 100)
-                        }
-
-                        HStack {
-                            Text("Weight (g)")
-                            Spacer()
-                            TextField("250", text: $weight)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 100)
-                        }
-
-                        DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Image").foregroundColor(.espressoBrown)) {
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            HStack {
-                                if let imageData = imageData,
-                                   let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(8)
-                                } else {
-                                    Image(systemName: "photo")
-                                        .font(.title2)
-                                        .foregroundColor(.textSecondary)
-                                        .frame(width: 60, height: 60)
-                                        .background(Color.backgroundSecondary)
-                                        .cornerRadius(8)
-                                }
-
-                                Text("Select Image")
-                                    .foregroundColor(.espressoBrown)
-
-                                Spacer()
-                            }
-                        }
-                        .onChange(of: selectedImage) { oldValue, newValue in
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    imageData = data
-                                }
-                            }
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Additional Notes").foregroundColor(.espressoBrown)) {
-                        TextEditor(text: $notes)
-                            .frame(height: 100)
-                            .foregroundColor(.textPrimary)
-                    }
-                    .listRowBackground(Color.cardBackground)
+            Form {
+                Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
+                    TextField("Name", text: $name)
+                    TextField("Roaster", text: $roaster)
+                    TextField("Origin", text: $origin)
                 }
-                .scrollContentBackground(.hidden)
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Bean Details").foregroundColor(.espressoBrown)) {
+                    Picker("Roast Level", selection: $roastLevel) {
+                        ForEach(roastLevels, id: \.self) { level in
+                            Text(level).tag(level)
+                        }
+                    }
+
+                    DatePicker("Roast Date", selection: $roastDate, displayedComponents: .date)
+
+                    Picker("Process", selection: $process) {
+                        ForEach(processes, id: \.self) { proc in
+                            Text(proc).tag(proc)
+                        }
+                    }
+
+                    Picker("Variety", selection: $variety) {
+                        ForEach(varieties, id: \.self) { v in
+                            Text(v).tag(v)
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Tasting Notes").foregroundColor(.espressoBrown)) {
+                    TextField("e.g., Chocolate, Caramel, Citrus", text: $tastingNotes)
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Purchase Details").foregroundColor(.espressoBrown)) {
+                    HStack {
+                        Text("Price ($)")
+                        Spacer()
+                        TextField("18.00", text: $price)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+
+                    HStack {
+                        Text("Weight (g)")
+                        Spacer()
+                        TextField("250", text: $weight)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+
+                    DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Image").foregroundColor(.espressoBrown)) {
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
+                        HStack {
+                            if let imageData = imageData,
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(8)
+                            } else {
+                                Image(systemName: "photo")
+                                    .font(.title2)
+                                    .foregroundColor(.textSecondary)
+                                    .frame(width: 60, height: 60)
+                                    .background(Color.backgroundSecondary)
+                                    .cornerRadius(8)
+                            }
+
+                            Text("Select Image")
+                                .foregroundColor(.espressoBrown)
+
+                            Spacer()
+                        }
+                    }
+                    .onChange(of: selectedImage) { oldValue, newValue in
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                imageData = data
+                            }
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text("Additional Notes").foregroundColor(.espressoBrown)) {
+                    TextEditor(text: $notes)
+                        .frame(height: 100)
+                        .foregroundColor(.textPrimary)
+                }
+                .listRowBackground(Color.cardBackground)
+            }
+            .scrollContentBackground(.hidden)
             }
             .navigationTitle("Add Beans")
             .navigationBarTitleDisplayMode(.inline)
@@ -158,7 +157,6 @@ struct AddBeanView: View {
                     .disabled(name.isEmpty)
                 }
             }
-        }
     }
 
     private func saveBean() {

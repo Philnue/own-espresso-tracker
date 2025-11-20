@@ -35,11 +35,6 @@ struct ContentView: View {
                         Label(LocalizedString.get("tab_recipes"), systemImage: "book.fill")
                     }
 
-                EquipmentView()
-                    .tabItem {
-                        Label(LocalizedString.get("tab_equipment"), systemImage: "wrench.and.screwdriver.fill")
-                    }
-
                 SettingsView()
                     .tabItem {
                         Label(LocalizedString.get("tab_settings"), systemImage: "gearshape.fill")

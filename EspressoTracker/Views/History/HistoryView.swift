@@ -127,15 +127,26 @@ struct SessionCardView: View {
     var body: some View {
         CustomCard {
             VStack(alignment: .leading, spacing: 12) {
-                // Header with date and rating
+                // Header with date, brewing method and rating
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(session.startTime.formatted(date: .abbreviated, time: .omitted))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
-                        Text(session.startTime.formatted(date: .omitted, time: .shortened))
-                            .font(.caption)
-                            .foregroundColor(.textTertiary)
+                        HStack(spacing: 6) {
+                            Image(systemName: brewMethodIcon(for: session.brewMethod))
+                                .font(.caption2)
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get(session.brewMethod.lowercased()))
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+                            Text("•")
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
+                            Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
+                        }
                     }
 
                     Spacer()
@@ -243,6 +254,18 @@ struct SessionCardView: View {
                         .foregroundColor(.textTertiary)
                 }
             }
+        }
+    }
+
+    private func brewMethodIcon(for method: String) -> String {
+        switch method.lowercased() {
+        case "espresso": return "cup.and.saucer.fill"
+        case "aeropress": return "arrow.down.circle.fill"
+        case "frenchpress", "french_press": return "cylinder.fill"
+        case "coldbrew", "cold_brew": return "snowflake"
+        case "pourover", "pour_over": return "drop.fill"
+        case "moka", "moka_pot": return "flame.fill"
+        default: return "cup.and.saucer.fill"
         }
     }
 }

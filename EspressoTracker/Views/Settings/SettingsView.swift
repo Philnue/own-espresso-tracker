@@ -26,6 +26,19 @@ struct SettingsView: View {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
+                    // Brewing Methods
+                    Section(header: Text("Brewing Methods").foregroundColor(.espressoBrown)) {
+                        NavigationLink(destination: BrewingMethodsView()) {
+                            HStack {
+                                Image(systemName: "cup.and.saucer.fill")
+                                    .foregroundColor(.espressoBrown)
+                                Text("Manage Brewing Methods")
+                                    .foregroundColor(.textPrimary)
+                            }
+                        }
+                    }
+                    .listRowBackground(Color.cardBackground)
+
                     // Brewing Defaults
                     Section(header: Text(LocalizedString.get("brewing_defaults")).foregroundColor(.espressoBrown)) {
                         HStack {
@@ -232,6 +245,15 @@ struct SettingsView: View {
 
     private func populateTestData() {
         let dataManager = DataManager(modelContext: modelContext)
+
+        // Add default brewing methods if none exist
+        let descriptor = FetchDescriptor<BrewingMethodModel>()
+        let existingMethods = (try? modelContext.fetch(descriptor)) ?? []
+        if existingMethods.isEmpty {
+            for method in BrewingMethodModel.allDefaultMethods() {
+                modelContext.insert(method)
+            }
+        }
 
         // Add test grinders
         dataManager.createGrinder(

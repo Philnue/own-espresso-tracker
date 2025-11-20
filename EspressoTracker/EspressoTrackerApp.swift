@@ -14,6 +14,6 @@ struct EspressoTrackerApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Bean.self, Grinder.self, Machine.self, BrewingSession.self])
+        .modelContainer(for: [Bean.self, Grinder.self, Machine.self, BrewingSession.self, BrewingMethodModel.self])
     }
 }

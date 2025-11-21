@@ -332,5 +332,9 @@
   "tutorial_calculator_desc": "Calculate perfect brew ratios for any method. Get brewing guides with recommended parameters for your custom methods.",
 
   "tutorial_ready_title": "You're All Set!",
-  "tutorial_ready_desc": "Start by adding your beans and equipment, then log your first shot. Happy brewing!"
+  "tutorial_ready_desc": "Start by adding your beans and equipment, then log your first shot. Happy brewing!",
+
+  "hours": "hours",
+  "minutes": "min",
+  "seconds": "sec"
 }

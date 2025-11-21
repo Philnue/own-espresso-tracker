@@ -52,7 +52,7 @@ struct BeansView: View {
                     }
                 }
             }
-            .navigationTitle(showArchivedBeans ? "All Beans" : "Active Beans")
+            .navigationTitle(showArchivedBeans ? LocalizedString.get("all_beans") : LocalizedString.get("active_beans"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if archivedBeanCount > 0 {
@@ -244,13 +244,13 @@ struct BeanCardView: View {
                         .padding(.top, 12)
 
                         HStack {
-                            Text("\(String(format: "%.1f%%", bean.usagePercentage)) used")
+                            Text("\(String(format: "%.1f%%", bean.usagePercentage)) \(LocalizedString.get("used").lowercased())")
                                 .font(.caption2)
                                 .foregroundColor(.textSecondary)
 
                             Spacer()
 
-                            Text("\(bean.sessionsArray.count) shots")
+                            Text("\(bean.sessionsArray.count) \(LocalizedString.get("shots"))")
                                 .font(.caption2)
                                 .foregroundColor(.textSecondary)
                         }

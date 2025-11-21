@@ -86,7 +86,7 @@ struct RecipeCalculatorView: View {
     private var inputCard: some View {
         CustomCard {
             VStack(alignment: .leading, spacing: 20) {
-                Text("Recipe Parameters")
+                Text(LocalizedString.get("recipe_parameters"))
                     .font(.headline)
                     .foregroundColor(.textPrimary)
 
@@ -95,7 +95,7 @@ struct RecipeCalculatorView: View {
 
                 // Coffee Dose
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Coffee Dose")
+                    Text(LocalizedString.get("coffee_dose"))
                         .font(.subheadline)
                         .foregroundColor(.textSecondary)
 
@@ -108,7 +108,7 @@ struct RecipeCalculatorView: View {
                                 calculateYield()
                             }
 
-                        Text("grams")
+                        Text(LocalizedString.get("grams"))
                             .foregroundColor(.textSecondary)
 
                         Spacer()
@@ -117,7 +117,7 @@ struct RecipeCalculatorView: View {
 
                 // Brew Ratio
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Brew Ratio (1:x)")
+                    Text(LocalizedString.get("brew_ratio_1x"))
                         .font(.subheadline)
                         .foregroundColor(.textSecondary)
 
@@ -130,7 +130,7 @@ struct RecipeCalculatorView: View {
                                 calculateYield()
                             }
 
-                        Text("ratio")
+                        Text(LocalizedString.get("ratio"))
                             .foregroundColor(.textSecondary)
 
                         Spacer()
@@ -154,7 +154,7 @@ struct RecipeCalculatorView: View {
     private var resultsCard: some View {
         CustomCard {
             VStack(spacing: 20) {
-                Text("Results")
+                Text(LocalizedString.get("results"))
                     .font(.headline)
                     .foregroundColor(.textPrimary)
 
@@ -164,7 +164,7 @@ struct RecipeCalculatorView: View {
                         Text(String(format: "%.1f", targetYield))
                             .font(.system(size: 42, weight: .bold))
                             .foregroundColor(.espressoBrown)
-                        Text("Target Yield (g)")
+                        Text("\(LocalizedString.get("target_yield")) (g)")
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -179,7 +179,7 @@ struct RecipeCalculatorView: View {
                         Text(String(format: "%.0f", waterAmount))
                             .font(.system(size: 42, weight: .bold))
                             .foregroundColor(.espressoBrown)
-                        Text("Water (ml)")
+                        Text(LocalizedString.get("water_ml"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -259,11 +259,11 @@ struct RecipeCalculatorView: View {
         let upper = range.upperBound
 
         if upper >= 3600 {
-            return "\(Int(lower/3600))-\(Int(upper/3600)) hours"
+            return "\(Int(lower/3600))-\(Int(upper/3600)) \(LocalizedString.get("hours"))"
         } else if upper >= 60 {
-            return "\(Int(lower/60))-\(Int(upper/60)) min"
+            return "\(Int(lower/60))-\(Int(upper/60)) \(LocalizedString.get("minutes"))"
         } else {
-            return "\(Int(lower))-\(Int(upper)) sec"
+            return "\(Int(lower))-\(Int(upper)) \(LocalizedString.get("seconds"))"
         }
     }
 }

@@ -332,5 +332,9 @@
   "tutorial_calculator_desc": "Berechnen Sie perfekte Brühverhältnisse für jede Methode. Erhalten Sie Brühanleitungen mit empfohlenen Parametern für Ihre benutzerdefinierten Methoden.",
 
   "tutorial_ready_title": "Sie sind startklar!",
-  "tutorial_ready_desc": "Beginnen Sie, indem Sie Ihre Bohnen und Ausrüstung hinzufügen, dann protokollieren Sie Ihren ersten Shot. Viel Spaß beim Brühen!"
+  "tutorial_ready_desc": "Beginnen Sie, indem Sie Ihre Bohnen und Ausrüstung hinzufügen, dann protokollieren Sie Ihren ersten Shot. Viel Spaß beim Brühen!",
+
+  "hours": "Stunden",
+  "minutes": "Min",
+  "seconds": "Sek"
 }

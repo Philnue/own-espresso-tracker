@@ -101,6 +101,7 @@
   "rating": "Rating",
   "quality": "Quality",
   "tasting_notes": "Tasting Notes",
+  "tasting_notes_placeholder": "e.g., Chocolate, Caramel, Citrus",
   "notes": "Notes",
   "shot_photo": "Shot Photo (Optional)",
   "add_photo": "Add Photo",

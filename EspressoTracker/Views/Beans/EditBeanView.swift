@@ -33,130 +33,132 @@ struct EditBeanView: View {
     let varieties = ["Arabica", "Robusta", "Blend", "Other"]
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
-                Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
-                    TextField(LocalizedString.get("name"), text: $name)
-                    TextField(LocalizedString.get("roaster"), text: $roaster)
-                    TextField(LocalizedString.get("origin"), text: $origin)
-                }
-                .listRowBackground(Color.cardBackground)
+                Form {
+                    Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                        TextField(LocalizedString.get("name"), text: $name)
+                        TextField(LocalizedString.get("roaster"), text: $roaster)
+                        TextField(LocalizedString.get("origin"), text: $origin)
+                    }
+                    .listRowBackground(Color.cardBackground)
 
-                Section(header: Text(LocalizedString.get("bean_details")).foregroundColor(.espressoBrown)) {
-                    Picker(LocalizedString.get("roast_level"), selection: $roastLevel) {
-                        ForEach(roastLevels, id: \.self) { level in
-                            Text(level).tag(level)
+                    Section(header: Text(LocalizedString.get("bean_details")).foregroundColor(.espressoBrown)) {
+                        Picker(LocalizedString.get("roast_level"), selection: $roastLevel) {
+                            ForEach(roastLevels, id: \.self) { level in
+                                Text(level).tag(level)
+                            }
+                        }
+
+                        DatePicker(LocalizedString.get("roast_date"), selection: $roastDate, displayedComponents: .date)
+
+                        Picker(LocalizedString.get("process"), selection: $process) {
+                            ForEach(processes, id: \.self) { proc in
+                                Text(proc).tag(proc)
+                            }
+                        }
+
+                        Picker(LocalizedString.get("variety"), selection: $variety) {
+                            ForEach(varieties, id: \.self) { v in
+                                Text(v).tag(v)
+                            }
                         }
                     }
+                    .listRowBackground(Color.cardBackground)
 
-                    DatePicker(LocalizedString.get("roast_date"), selection: $roastDate, displayedComponents: .date)
-
-                    Picker(LocalizedString.get("process"), selection: $process) {
-                        ForEach(processes, id: \.self) { proc in
-                            Text(proc).tag(proc)
-                        }
+                    Section(header: Text(LocalizedString.get("tasting_notes")).foregroundColor(.espressoBrown)) {
+                        TextField(LocalizedString.get("tasting_notes_placeholder"), text: $tastingNotes)
                     }
+                    .listRowBackground(Color.cardBackground)
 
-                    Picker(LocalizedString.get("variety"), selection: $variety) {
-                        ForEach(varieties, id: \.self) { v in
-                            Text(v).tag(v)
-                        }
-                    }
-                }
-                .listRowBackground(Color.cardBackground)
-
-                Section(header: Text(LocalizedString.get("tasting_notes")).foregroundColor(.espressoBrown)) {
-                    TextField("e.g., Chocolate, Caramel, Citrus", text: $tastingNotes)
-                }
-                .listRowBackground(Color.cardBackground)
-
-                Section(header: Text(LocalizedString.get("purchase_details")).foregroundColor(.espressoBrown)) {
-                    HStack {
-                        Text(LocalizedString.get("price_currency"))
-                        Spacer()
-                        TextField("18.00", text: $price)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                    }
-
-                    HStack {
-                        Text(LocalizedString.get("weight_g"))
-                        Spacer()
-                        TextField("250", text: $weight)
-                            .keyboardType(.numberPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                    }
-                }
-                .listRowBackground(Color.cardBackground)
-
-                Section(header: Text(LocalizedString.get("image")).foregroundColor(.espressoBrown)) {
-                    PhotosPicker(selection: $selectedImage, matching: .images) {
+                    Section(header: Text(LocalizedString.get("purchase_details")).foregroundColor(.espressoBrown)) {
                         HStack {
-                            if let imageData = imageData,
-                               let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 60, height: 60)
-                                    .cornerRadius(8)
-                            } else {
-                                Image(systemName: "photo")
-                                    .font(.title2)
-                                    .foregroundColor(.textSecondary)
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.backgroundSecondary)
-                                    .cornerRadius(8)
-                            }
-
-                            Text(LocalizedString.get("change_image"))
-                                .foregroundColor(.espressoBrown)
-
+                            Text(LocalizedString.get("price_currency"))
                             Spacer()
+                            TextField("18.00", text: $price)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text(LocalizedString.get("weight_g"))
+                            Spacer()
+                            TextField("250", text: $weight)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
                         }
                     }
-                    .onChange(of: selectedImage) { oldValue, newValue in
-                        Task {
-                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                imageData = data
+                    .listRowBackground(Color.cardBackground)
+
+                    Section(header: Text(LocalizedString.get("image")).foregroundColor(.espressoBrown)) {
+                        PhotosPicker(selection: $selectedImage, matching: .images) {
+                            HStack {
+                                if let imageData = imageData,
+                                   let uiImage = UIImage(data: imageData) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 60)
+                                        .cornerRadius(8)
+                                } else {
+                                    Image(systemName: "photo")
+                                        .font(.title2)
+                                        .foregroundColor(.textSecondary)
+                                        .frame(width: 60, height: 60)
+                                        .background(Color.backgroundSecondary)
+                                        .cornerRadius(8)
+                                }
+
+                                Text(LocalizedString.get("change_image"))
+                                    .foregroundColor(.espressoBrown)
+
+                                Spacer()
+                            }
+                        }
+                        .onChange(of: selectedImage) { oldValue, newValue in
+                            Task {
+                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                    imageData = data
+                                }
                             }
                         }
                     }
-                }
-                .listRowBackground(Color.cardBackground)
+                    .listRowBackground(Color.cardBackground)
 
-                Section(header: Text(LocalizedString.get("additional_notes")).foregroundColor(.espressoBrown)) {
-                    TextEditor(text: $notes)
-                        .frame(height: 100)
-                        .foregroundColor(.textPrimary)
+                    Section(header: Text(LocalizedString.get("additional_notes")).foregroundColor(.espressoBrown)) {
+                        TextEditor(text: $notes)
+                            .frame(height: 100)
+                            .foregroundColor(.textPrimary)
+                    }
+                    .listRowBackground(Color.cardBackground)
                 }
-                .listRowBackground(Color.cardBackground)
+                .scrollContentBackground(.hidden)
             }
-            .scrollContentBackground(.hidden)
-        }
-        .navigationTitle(LocalizedString.get("edit_bean"))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(LocalizedString.get("cancel")) {
-                    dismiss()
+            .navigationTitle(LocalizedString.get("edit_bean"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(LocalizedString.get("cancel")) {
+                        dismiss()
+                    }
+                    .foregroundColor(.textSecondary)
                 }
-                .foregroundColor(.textSecondary)
-            }
 
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(LocalizedString.get("save")) {
-                    saveChanges()
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LocalizedString.get("save")) {
+                        saveChanges()
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .disabled(name.isEmpty)
                 }
-                .foregroundColor(.espressoBrown)
-                .disabled(name.isEmpty)
             }
-        }
-        .onAppear {
-            loadBeanData()
+            .onAppear {
+                loadBeanData()
+            }
         }
     }
 

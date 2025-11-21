@@ -123,30 +123,32 @@ struct BeanCardView: View {
 
     var body: some View {
         CustomCard {
-            VStack(spacing: 0) {
-                HStack(spacing: 16) {
+            VStack(spacing: 12) {
+                HStack(alignment: .top, spacing: 12) {
                     // Image or placeholder
                     if let imageData = bean.imageData,
                        let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80)
-                            .cornerRadius(12)
+                            .frame(width: 70, height: 70)
+                            .cornerRadius(10)
                     } else {
                         Image(systemName: "leaf.fill")
-                            .font(.system(size: 32))
+                            .font(.system(size: 28))
                             .foregroundColor(.textSecondary)
-                            .frame(width: 80, height: 80)
+                            .frame(width: 70, height: 70)
                             .background(Color.backgroundSecondary)
-                            .cornerRadius(12)
+                            .cornerRadius(10)
                     }
 
-                    VStack(alignment: .leading, spacing: 8) {
+                    // Bean info
+                    VStack(alignment: .leading, spacing: 6) {
                         HStack {
                             Text(bean.wrappedName)
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
+                                .lineLimit(1)
 
                             if bean.batchNumber > 1 {
                                 Text("#\(bean.batchNumber)")
@@ -164,68 +166,78 @@ struct BeanCardView: View {
                                     .font(.caption)
                                     .foregroundColor(.warningOrange)
                             }
+
+                            Spacer()
+
+                            // Freshness badge
+                            Text(bean.freshnessIndicator)
+                                .font(.caption2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(
+                                    bean.isStale ? Color.warningOrange : Color.successGreen
+                                )
+                                .cornerRadius(6)
                         }
 
                         Text(bean.wrappedRoaster)
                             .font(.subheadline)
                             .foregroundColor(.espressoBrown)
+                            .lineLimit(1)
+                    }
+                }
 
-                        HStack(spacing: 8) {
-                            // Origin
-                            if !bean.wrappedOrigin.isEmpty {
-                                HStack(spacing: 2) {
-                                    Image(systemName: "globe")
-                                        .font(.caption2)
-                                    Text(bean.wrappedOrigin)
-                                        .font(.caption)
-                                        .lineLimit(1)
-                                }
-                            }
+                // Details row - vertical layout
+                Divider()
+                    .background(Color.dividerColor)
 
-                            // Freshness indicator
-                            HStack(spacing: 2) {
-                                Image(systemName: "calendar")
-                                    .font(.caption2)
-                                Text("\(bean.daysFromRoast)d")
-                                    .font(.caption)
-                            }
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-
-                            // Remaining weight
-                            if bean.weight > 0 {
-                                HStack(spacing: 2) {
-                                    Image(systemName: "scalemass")
-                                        .font(.caption2)
-                                    Text("\(Int(bean.remainingWeight))g")
-                                        .font(.caption)
-                                }
-                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textSecondary))
-                            }
+                HStack(spacing: 0) {
+                    // Origin
+                    if !bean.wrappedOrigin.isEmpty {
+                        VStack(spacing: 4) {
+                            Image(systemName: "globe")
+                                .font(.caption)
+                                .foregroundColor(.espressoBrown)
+                            Text(bean.wrappedOrigin)
+                                .font(.caption)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
                         }
-                        .foregroundColor(.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity)
                     }
 
-                    Spacer()
-
-                    // Freshness badge
-                    VStack {
-                        Text(bean.freshnessIndicator)
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(
-                                bean.isStale ? Color.warningOrange : Color.successGreen
-                            )
-                            .cornerRadius(6)
-
-                        Spacer()
-
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.textTertiary)
+                    // Freshness
+                    VStack(spacing: 4) {
+                        Image(systemName: "calendar")
+                            .font(.caption)
+                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                        Text("\(bean.daysFromRoast) \(LocalizedString.get("days_from_roast"))")
+                            .font(.caption)
+                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                            .lineLimit(1)
                     }
+                    .frame(maxWidth: .infinity)
+
+                    // Remaining weight
+                    if bean.weight > 0 {
+                        VStack(spacing: 4) {
+                            Image(systemName: "scalemass")
+                                .font(.caption)
+                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .espressoBrown))
+                            Text("\(Int(bean.remainingWeight))g")
+                                .font(.caption)
+                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textPrimary))
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+
+                    // Arrow
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundColor(.textTertiary)
+                        .frame(width: 20)
                 }
 
                 // Usage progress bar
@@ -243,7 +255,6 @@ struct BeanCardView: View {
                             }
                         }
                         .frame(height: 4)
-                        .padding(.top, 12)
 
                         HStack {
                             Text("\(String(format: "%.1f%%", bean.usagePercentage)) \(LocalizedString.get("used").lowercased())")
@@ -256,7 +267,6 @@ struct BeanCardView: View {
                                 .font(.caption2)
                                 .foregroundColor(.textSecondary)
                         }
-                        .padding(.top, 4)
                     }
                 }
             }

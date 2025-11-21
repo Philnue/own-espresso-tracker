@@ -41,13 +41,17 @@ struct InfoRow: View {
             Text(label)
                 .font(.subheadline)
                 .foregroundColor(.textSecondary)
+                .lineLimit(1)
+                .layoutPriority(1)
 
-            Spacer()
+            Spacer(minLength: 8)
 
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundColor(valueColor)
+                .multilineTextAlignment(.trailing)
+                .lineLimit(2)
         }
         .padding(.vertical, 4)
     }

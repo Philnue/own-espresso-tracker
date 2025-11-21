@@ -20,101 +20,102 @@ struct AddBatchView: View {
     @State private var price = ""
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
-                // Bean info (read-only)
-                Section(header: Text("Bean Details").foregroundColor(.espressoBrown)) {
-                    HStack {
-                        Text("Name")
+                Form {
+                    // Bean info (read-only)
+                    Section(header: Text(LocalizedString.get("bean_details")).foregroundColor(.espressoBrown)) {
+                        HStack {
+                            Text(LocalizedString.get("name"))
                         Spacer()
                         Text(existingBean.wrappedName)
                             .foregroundColor(.textSecondary)
                     }
 
                     HStack {
-                        Text("Roaster")
-                        Spacer()
-                        Text(existingBean.wrappedRoaster)
-                            .foregroundColor(.textSecondary)
-                    }
+                            Text(LocalizedString.get("roaster"))
+                            Spacer()
+                            Text(existingBean.wrappedRoaster)
+                                .foregroundColor(.textSecondary)
+                        }
 
-                    HStack {
-                        Text("Origin")
-                        Spacer()
-                        Text(existingBean.wrappedOrigin)
-                            .foregroundColor(.textSecondary)
-                    }
+                        HStack {
+                            Text(LocalizedString.get("origin"))
+                            Spacer()
+                            Text(existingBean.wrappedOrigin)
+                                .foregroundColor(.textSecondary)
+                        }
 
-                    HStack {
-                        Text("Roast Level")
-                        Spacer()
-                        Text(existingBean.roastLevel)
-                            .foregroundColor(.textSecondary)
-                    }
+                        HStack {
+                            Text(LocalizedString.get("roast_level"))
+                            Spacer()
+                            Text(existingBean.roastLevel)
+                                .foregroundColor(.textSecondary)
+                        }
 
-                    HStack {
-                        Text("Process")
-                        Spacer()
-                        Text(existingBean.process)
-                            .foregroundColor(.textSecondary)
+                        HStack {
+                            Text(LocalizedString.get("process"))
+                            Spacer()
+                            Text(existingBean.process)
+                                .foregroundColor(.textSecondary)
+                        }
                     }
+                    .listRowBackground(Color.cardBackground)
+
+                    // Batch-specific info
+                    Section(header: Text(LocalizedString.get("new_batch_details")).foregroundColor(.espressoBrown)) {
+                        DatePicker(LocalizedString.get("roast_date"), selection: $roastDate, displayedComponents: .date)
+
+                        DatePicker(LocalizedString.get("purchase_date"), selection: $purchaseDate, displayedComponents: .date)
+
+                        HStack {
+                            Text(LocalizedString.get("weight_g"))
+                            Spacer()
+                            TextField("250", text: $weight)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+
+                        HStack {
+                            Text(LocalizedString.get("price_currency"))
+                            Spacer()
+                            TextField(String(format: "%.2f", existingBean.price), text: $price)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 100)
+                        }
+                    }
+                    .listRowBackground(Color.cardBackground)
+
+                    // Info section
+                    Section {
+                        HStack {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get("new_batch_info"))
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+                        }
+                    }
+                    .listRowBackground(Color.cardBackground)
                 }
-                .listRowBackground(Color.cardBackground)
-
-                // Batch-specific info
-                Section(header: Text("New Batch Details").foregroundColor(.espressoBrown)) {
-                    DatePicker("Roast Date", selection: $roastDate, displayedComponents: .date)
-
-                    DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
-
-                    HStack {
-                        Text("Weight (g)")
-                        Spacer()
-                        TextField("250", text: $weight)
-                            .keyboardType(.numberPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                    }
-
-                    HStack {
-                        Text("Price ($)")
-                        Spacer()
-                        TextField(String(format: "%.2f", existingBean.price), text: $price)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                    }
-                }
-                .listRowBackground(Color.cardBackground)
-
-                // Info section
-                Section {
-                    HStack {
-                        Image(systemName: "info.circle")
-                            .foregroundColor(.espressoBrown)
-                        Text("This will create a new batch with its own inventory tracking. The original bean will remain unchanged.")
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-                    }
-                }
-                .listRowBackground(Color.cardBackground)
+                .scrollContentBackground(.hidden)
             }
-            .scrollContentBackground(.hidden)
-            }
-            .navigationTitle("New Batch")
+            .navigationTitle(LocalizedString.get("new_batch"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveBatch()
                     }
                     .foregroundColor(.espressoBrown)
@@ -124,6 +125,7 @@ struct AddBatchView: View {
                 // Pre-fill with existing bean's price
                 price = String(format: "%.2f", existingBean.price)
             }
+        }
     }
 
     private func saveBatch() {

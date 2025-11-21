@@ -24,15 +24,16 @@ struct AddGrinderView: View {
     let burrTypes = ["Flat", "Conical", "Other"]
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
-                Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
-                    TextField(LocalizedString.get("name"), text: $name)
-                    TextField(LocalizedString.get("brand"), text: $brand)
-                }
-                .listRowBackground(Color.cardBackground)
+                Form {
+                    Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                        TextField(LocalizedString.get("name"), text: $name)
+                        TextField(LocalizedString.get("brand"), text: $brand)
+                    }
+                    .listRowBackground(Color.cardBackground)
 
                 Section(header: Text(LocalizedString.get("specifications")).foregroundColor(.espressoBrown)) {
                     Picker(LocalizedString.get("burr_type"), selection: $burrType) {
@@ -113,6 +114,7 @@ struct AddGrinderView: View {
                 .foregroundColor(.espressoBrown)
                 .disabled(name.isEmpty)
             }
+        }
         }
     }
 

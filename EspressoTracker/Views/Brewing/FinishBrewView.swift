@@ -44,20 +44,21 @@ struct FinishBrewView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
-                // Summary section
-                Section(header: Text(LocalizedString.get("brew_summary")).foregroundColor(.espressoBrown)) {
-                    InfoRow(
-                        icon: "timer",
-                        label: LocalizedString.get("brew_time"),
-                        value: String(format: "%.1fs", viewModel.elapsedTime)
-                    )
+                Form {
+                    // Summary section
+                    Section(header: Text(LocalizedString.get("brew_summary")).foregroundColor(.espressoBrown)) {
+                        InfoRow(
+                            icon: "timer",
+                            label: LocalizedString.get("brew_time"),
+                            value: String(format: "%.1fs", viewModel.elapsedTime)
+                        )
 
-                    InfoRow(
-                        icon: "scalemass",
+                        InfoRow(
+                            icon: "scalemass",
                         label: LocalizedString.get("dose_in"),
                         value: "\(viewModel.doseIn)g"
                     )
@@ -260,7 +261,7 @@ struct FinishBrewView: View {
                 }
                 .listRowBackground(Color.cardBackground)
             }
-            .scrollContentBackground(.hidden)
+                .scrollContentBackground(.hidden)
             }
             .navigationTitle(LocalizedString.get("finish_shot"))
             .navigationBarTitleDisplayMode(.inline)
@@ -280,6 +281,7 @@ struct FinishBrewView: View {
                     .disabled(yieldOut.isEmpty)
                 }
             }
+        }
     }
 
     private func saveBrewingSession() {

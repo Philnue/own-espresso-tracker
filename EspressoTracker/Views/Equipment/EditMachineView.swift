@@ -30,15 +30,16 @@ struct EditMachineView: View {
     let groupHeadTypes = ["Standard", "E61", "Saturated", "Semi-Saturated", "Other"]
 
     var body: some View {
-        ZStack {
-            Color.backgroundPrimary.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color.backgroundPrimary.ignoresSafeArea()
 
-            Form {
-                Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
-                    TextField(LocalizedString.get("name"), text: $name)
-                    TextField(LocalizedString.get("brand"), text: $brand)
-                    TextField(LocalizedString.get("model"), text: $model)
-                }
+                Form {
+                    Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                        TextField(LocalizedString.get("name"), text: $name)
+                        TextField(LocalizedString.get("brand"), text: $brand)
+                        TextField(LocalizedString.get("model"), text: $model)
+                    }
                 .listRowBackground(Color.cardBackground)
 
                 Section(header: Text(LocalizedString.get("specifications")).foregroundColor(.espressoBrown)) {
@@ -138,6 +139,7 @@ struct EditMachineView: View {
         }
         .onAppear {
             loadMachineData()
+        }
         }
     }
 

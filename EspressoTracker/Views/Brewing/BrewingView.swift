@@ -75,7 +75,7 @@ struct BrewingView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Brew")
+            .navigationTitle(LocalizedString.get("tab_brew"))
             .sheet(isPresented: $showingFinishSheet) {
                 FinishBrewView(
                     viewModel: viewModel,
@@ -127,7 +127,7 @@ struct BrewingView: View {
     private var methodSelector: some View {
         CustomCard {
             VStack(alignment: .leading, spacing: 12) {
-                Text("Brewing Method")
+                Text(LocalizedString.get("brewing_method"))
                     .font(.headline)
                     .foregroundColor(.textPrimary)
 
@@ -175,7 +175,7 @@ struct BrewingView: View {
                     }) {
                         HStack {
                             Image(systemName: viewModel.isRunning ? "pause.fill" : "play.fill")
-                            Text(viewModel.isRunning ? "Stop" : "Start")
+                            Text(viewModel.isRunning ? LocalizedString.get("stop") : LocalizedString.get("start"))
                         }
                         .font(.title3)
                         .fontWeight(.semibold)
@@ -194,7 +194,7 @@ struct BrewingView: View {
                     }) {
                         HStack {
                             Image(systemName: "arrow.counterclockwise")
-                            Text("Reset")
+                            Text(LocalizedString.get("reset"))
                         }
                         .font(.title3)
                         .fontWeight(.semibold)
@@ -213,7 +213,7 @@ struct BrewingView: View {
                 if viewModel.elapsedTime > 0 {
                     VStack(spacing: 8) {
                         HStack {
-                            Text("Extraction")
+                            Text(LocalizedString.get("extraction"))
                                 .font(.subheadline)
                                 .foregroundColor(.textSecondary)
 
@@ -246,7 +246,7 @@ struct BrewingView: View {
 
     private var equipmentSection: some View {
         VStack(spacing: 16) {
-            Text("Equipment")
+            Text(LocalizedString.get("equipment"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
@@ -275,7 +275,7 @@ struct BrewingView: View {
                             .foregroundColor(.espressoBrown)
                             .frame(height: 32)
 
-                        Text("Grinder")
+                        Text(LocalizedString.get("grinder"))
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundColor(.textSecondary)
@@ -287,7 +287,7 @@ struct BrewingView: View {
                                 .foregroundColor(.textPrimary)
                                 .lineLimit(1)
                         } else {
-                            Text("Select")
+                            Text(LocalizedString.get("select_grinder"))
                                 .font(.subheadline)
                                 .foregroundColor(.textTertiary)
                         }
@@ -326,7 +326,7 @@ struct BrewingView: View {
                             .foregroundColor(.espressoBrown)
                             .frame(height: 32)
 
-                        Text("Machine")
+                        Text(LocalizedString.get("machine"))
                             .font(.caption)
                             .fontWeight(.medium)
                             .foregroundColor(.textSecondary)
@@ -338,7 +338,7 @@ struct BrewingView: View {
                                 .foregroundColor(.textPrimary)
                                 .lineLimit(1)
                         } else {
-                            Text("Select")
+                            Text(LocalizedString.get("select_machine"))
                                 .font(.subheadline)
                                 .foregroundColor(.textTertiary)
                         }
@@ -368,7 +368,7 @@ struct BrewingView: View {
                                 .frame(width: 40)
 
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Beans")
+                                Text(LocalizedString.get("beans"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
 
@@ -398,7 +398,7 @@ struct BrewingView: View {
                                             .foregroundColor(.textSecondary)
                                     }
                                 } else {
-                                    Text("Select beans")
+                                    Text(LocalizedString.get("select_beans"))
                                         .font(.body)
                                         .foregroundColor(.textTertiary)
                                 }
@@ -418,7 +418,7 @@ struct BrewingView: View {
 
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text("Remaining")
+                                        Text(LocalizedString.get("remaining"))
                                             .font(.caption2)
                                             .foregroundColor(.textTertiary)
                                         HStack(alignment: .firstTextBaseline, spacing: 2) {
@@ -434,7 +434,7 @@ struct BrewingView: View {
                                     Spacer()
 
                                     VStack(alignment: .trailing, spacing: 2) {
-                                        Text("Used")
+                                        Text(LocalizedString.get("used"))
                                             .font(.caption2)
                                             .foregroundColor(.textTertiary)
                                         HStack(alignment: .firstTextBaseline, spacing: 2) {
@@ -467,7 +467,7 @@ struct BrewingView: View {
                                     HStack {
                                         Image(systemName: "exclamationmark.triangle.fill")
                                             .font(.caption2)
-                                        Text("Low stock - consider reordering")
+                                        Text(LocalizedString.get("low_stock_warning"))
                                             .font(.caption2)
                                     }
                                     .foregroundColor(.warningOrange)
@@ -475,7 +475,7 @@ struct BrewingView: View {
                                     HStack {
                                         Image(systemName: "xmark.circle.fill")
                                             .font(.caption2)
-                                        Text("Finished - no beans remaining")
+                                        Text(LocalizedString.get("finished_warning"))
                                             .font(.caption2)
                                     }
                                     .foregroundColor(.errorRed)
@@ -491,7 +491,7 @@ struct BrewingView: View {
 
     private var parametersSection: some View {
         VStack(spacing: 16) {
-            Text("Parameters")
+            Text(LocalizedString.get("parameters"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
@@ -501,7 +501,7 @@ struct BrewingView: View {
                 VStack(spacing: 16) {
                     // Grind setting
                     HStack {
-                        Text("Grind Setting")
+                        Text(LocalizedString.get("grind_setting"))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
                         Spacer()
@@ -516,7 +516,7 @@ struct BrewingView: View {
 
                     // Water temperature
                     HStack {
-                        Text("Water Temp (°C)")
+                        Text(LocalizedString.get("water_temp"))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
                         Spacer()
@@ -532,7 +532,7 @@ struct BrewingView: View {
 
                     // Pressure
                     HStack {
-                        Text("Pressure (bar)")
+                        Text(LocalizedString.get("pressure_bar"))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
                         Spacer()
@@ -549,7 +549,7 @@ struct BrewingView: View {
 
     private var ratioSection: some View {
         VStack(spacing: 16) {
-            Text("Brew Ratio")
+            Text(LocalizedString.get("brew_ratio"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.textPrimary)
@@ -592,7 +592,7 @@ struct BrewingView: View {
                 VStack(spacing: 20) {
                     // Dose input
                     VStack(spacing: 8) {
-                        Text("Dose In")
+                        Text(LocalizedString.get("dose_in"))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
 
@@ -615,7 +615,7 @@ struct BrewingView: View {
 
                     // Target yield (calculated)
                     VStack(spacing: 8) {
-                        Text("Target Yield (1:\(String(format: "%.1f", viewModel.targetRatio)))")
+                        Text("\(LocalizedString.get("target_yield")) (1:\(String(format: "%.1f", viewModel.targetRatio)))")
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
 
@@ -668,24 +668,21 @@ struct BrewingView: View {
 
         if missing.isEmpty {
             return ""
-        } else if missing.count == 1 {
-            return "Please select \(missing[0])"
         } else {
-            let lastItem = missing.removeLast()
-            return "Please select \(missing.joined(separator: ", ")) and \(lastItem)"
+            return LocalizedString.get("please_select_equipment")
         }
     }
 
     private var extractionStatus: String {
         let time = viewModel.elapsedTime
         if time < 20 {
-            return "Under-extracted"
+            return LocalizedString.get("under_extracted")
         } else if time <= 30 {
-            return "Optimal"
+            return LocalizedString.get("optimal")
         } else if time <= 35 {
-            return "Good"
+            return LocalizedString.get("good")
         } else {
-            return "Over-extracted"
+            return LocalizedString.get("over_extracted")
         }
     }
 

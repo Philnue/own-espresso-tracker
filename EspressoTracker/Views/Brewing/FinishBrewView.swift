@@ -20,6 +20,8 @@ struct FinishBrewView: View {
     let bean: Bean?
 
     @State private var yieldOut: String = ""
+    @State private var doseIn: String = ""
+    @State private var brewTime: String = ""
     @State private var rating: Int = 3
     @State private var notes: String = ""
     @State private var selectedImage: PhotosPickerItem?
@@ -36,8 +38,15 @@ struct FinishBrewView: View {
     @State private var puckPrepWDT: Bool = false
     @State private var puckPrepRDT: Bool = false
 
+    // Focus state for keyboard
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case yield, dose, brewTime
+    }
+
     var actualRatio: Double {
-        guard let dose = Double(viewModel.doseIn),
+        guard let dose = Double(doseIn),
               let yield = Double(yieldOut),
               dose > 0 else { return 0 }
         return yield / dose
@@ -49,54 +58,80 @@ struct FinishBrewView: View {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
-                    // Summary section
+                    // Editable brew parameters section
                     Section(header: Text(LocalizedString.get("brew_summary")).foregroundColor(.espressoBrown)) {
-                        InfoRow(
-                            icon: "timer",
-                            label: LocalizedString.get("brew_time"),
-                            value: String(format: "%.1fs", viewModel.elapsedTime)
-                        )
+                        // Dose In - editable
+                        HStack {
+                            Image(systemName: "scalemass")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("dose_in"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            TextField("18", text: $doseIn)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .dose)
+                            Text("g")
+                                .foregroundColor(.textSecondary)
+                        }
 
-                        InfoRow(
-                            icon: "scalemass",
-                        label: LocalizedString.get("dose_in"),
-                        value: "\(viewModel.doseIn)g"
-                    )
+                        // Brew Time - editable
+                        HStack {
+                            Image(systemName: "timer")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("brew_time"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            TextField("25", text: $brewTime)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .brewTime)
+                            Text("s")
+                                .foregroundColor(.textSecondary)
+                        }
 
-                    if !yieldOut.isEmpty, let yield = Double(yieldOut) {
-                        InfoRow(
-                            icon: "drop.fill",
-                            label: LocalizedString.get("actual_ratio"),
-                            value: String(format: "1:%.2f", actualRatio),
-                            valueColor: actualRatio >= 1.5 && actualRatio <= 3.0 ? .successGreen : .warningOrange
-                        )
+                        // Yield Out - editable
+                        HStack {
+                            Image(systemName: "drop.fill")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("yield_out_g"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            TextField(viewModel.targetYieldString, text: $yieldOut)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .yield)
+                            Text("g")
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        // Calculated ratio
+                        if !yieldOut.isEmpty && !doseIn.isEmpty {
+                            HStack {
+                                Image(systemName: "percent")
+                                    .foregroundColor(.espressoBrown)
+                                    .frame(width: 24)
+                                Text(LocalizedString.get("actual_ratio"))
+                                    .foregroundColor(.textPrimary)
+                                Spacer()
+                                Text(String(format: "1:%.2f", actualRatio))
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(actualRatio >= 1.5 && actualRatio <= 3.0 ? .successGreen : .warningOrange)
+                            }
+                        }
+
+                        Text("ℹ️ \(LocalizedString.get("espresso_info"))")
+                            .font(.caption2)
+                            .foregroundColor(.textTertiary)
+                            .italic()
                     }
-                }
-                .listRowBackground(Color.cardBackground)
-
-                // Yield output
-                Section(header: Text(LocalizedString.get("output")).foregroundColor(.espressoBrown)) {
-                    HStack {
-                        Text(LocalizedString.get("yield_out_g"))
-                            .foregroundColor(.textPrimary)
-                        Spacer()
-                        TextField(viewModel.targetYieldString, text: $yieldOut)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .frame(width: 100)
-                            .foregroundColor(.textPrimary)
-                    }
-
-                    Text("\(LocalizedString.get("target")): \(viewModel.targetYieldString)g")
-                        .font(.caption)
-                        .foregroundColor(.textSecondary)
-
-                    Text("ℹ️ \(LocalizedString.get("espresso_info"))")
-                        .font(.caption2)
-                        .foregroundColor(.textTertiary)
-                        .italic()
-                }
-                .listRowBackground(Color.cardBackground)
+                    .listRowBackground(Color.cardBackground)
 
                 // Rating
                 Section(header: Text(LocalizedString.get("rating")).foregroundColor(.espressoBrown)) {
@@ -278,16 +313,33 @@ struct FinishBrewView: View {
                         saveBrewingSession()
                     }
                     .foregroundColor(.espressoBrown)
-                    .disabled(yieldOut.isEmpty)
+                    .fontWeight(.semibold)
+                    .disabled(yieldOut.isEmpty || doseIn.isEmpty)
                 }
+
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            focusedField = nil
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
+                }
+            }
+            .onAppear {
+                doseIn = viewModel.doseIn
+                brewTime = String(format: "%.1f", viewModel.elapsedTime)
             }
         }
     }
 
     private func saveBrewingSession() {
         guard let yield = Double(yieldOut),
-              let dose = Double(viewModel.doseIn) else { return }
+              let dose = Double(doseIn) else { return }
 
+        let brewTimeValue = Double(brewTime) ?? viewModel.elapsedTime
         let waterTemp = Double(viewModel.waterTemp) ?? 93.0
         let pressure = Double(viewModel.pressure) ?? 9.0
 
@@ -300,7 +352,7 @@ struct FinishBrewView: View {
             grindSetting: viewModel.grindSetting,
             doseIn: dose,
             yieldOut: yield,
-            brewTime: viewModel.elapsedTime,
+            brewTime: brewTimeValue,
             waterTemp: waterTemp,
             pressure: pressure,
             rating: rating,

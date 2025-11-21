@@ -176,9 +176,7 @@ struct BeanCardView: View {
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
-                                .background(
-                                    bean.isStale ? Color.warningOrange : Color.successGreen
-                                )
+                                .background(freshnessColor(for: bean.freshnessLevel))
                                 .cornerRadius(6)
                         }
 
@@ -213,10 +211,10 @@ struct BeanCardView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "calendar")
                             .font(.caption2)
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                            .foregroundColor(freshnessColor(for: bean.freshnessLevel))
                         Text("\(bean.daysFromRoast)d")
                             .font(.caption)
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                            .foregroundColor(freshnessColor(for: bean.freshnessLevel))
                     }
 
                     // Remaining weight
@@ -267,6 +265,16 @@ struct BeanCardView: View {
                     }
                 }
             }
+        }
+    }
+
+    private func freshnessColor(for level: Int) -> Color {
+        switch level {
+        case 0: return .successGreen      // Very Fresh - bright green
+        case 1: return .successGreen      // Fresh - green
+        case 2: return .espressoBrown     // Good - brown
+        case 3: return .warningOrange     // Aging - orange
+        default: return .errorRed         // Stale - red
         }
     }
 }

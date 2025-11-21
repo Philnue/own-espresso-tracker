@@ -193,51 +193,48 @@ struct BeanCardView: View {
                 Divider()
                     .background(Color.dividerColor)
 
-                HStack(spacing: 0) {
+                HStack(spacing: 8) {
                     // Origin
                     if !bean.wrappedOrigin.isEmpty {
-                        VStack(spacing: 4) {
+                        HStack(spacing: 4) {
                             Image(systemName: "globe")
-                                .font(.caption)
+                                .font(.caption2)
                                 .foregroundColor(.espressoBrown)
                             Text(bean.wrappedOrigin)
                                 .font(.caption)
                                 .foregroundColor(.textPrimary)
                                 .lineLimit(1)
                         }
-                        .frame(maxWidth: .infinity)
                     }
 
+                    Spacer()
+
                     // Freshness
-                    VStack(spacing: 4) {
+                    HStack(spacing: 4) {
                         Image(systemName: "calendar")
+                            .font(.caption2)
+                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                        Text("\(bean.daysFromRoast)d")
                             .font(.caption)
                             .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-                        Text("\(bean.daysFromRoast) \(LocalizedString.get("days_from_roast"))")
-                            .font(.caption)
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-                            .lineLimit(1)
                     }
-                    .frame(maxWidth: .infinity)
 
                     // Remaining weight
                     if bean.weight > 0 {
-                        VStack(spacing: 4) {
+                        HStack(spacing: 4) {
                             Image(systemName: "scalemass")
-                                .font(.caption)
+                                .font(.caption2)
                                 .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .espressoBrown))
                             Text("\(Int(bean.remainingWeight))g")
                                 .font(.caption)
                                 .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textPrimary))
                         }
-                        .frame(maxWidth: .infinity)
                     }
 
                     // Arrow
                     Image(systemName: "chevron.right")
                         .font(.caption)
                         .foregroundColor(.textTertiary)
-                        .frame(width: 20)
                 }
 
                 // Usage progress bar

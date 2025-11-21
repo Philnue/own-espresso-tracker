@@ -191,6 +191,9 @@ struct BrewingView: View {
                     // Reset button
                     Button(action: {
                         viewModel.resetTimer()
+                        selectedGrinder = nil
+                        selectedMachine = nil
+                        selectedBean = nil
                     }) {
                         HStack {
                             Image(systemName: "arrow.counterclockwise")

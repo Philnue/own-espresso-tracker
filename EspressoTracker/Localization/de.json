@@ -267,6 +267,7 @@
   "boiler_type": "Kesseltyp",
   "group_head": "Brühgruppe",
   "pressure_bar": "Druck (bar)",
+  "purchased": "Gekauft",
 
   "no_machines_yet": "Noch keine Maschinen",
   "no_machines_description": "Fügen Sie Ihre Espressomaschine hinzu",

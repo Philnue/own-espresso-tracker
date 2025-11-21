@@ -267,6 +267,7 @@
   "boiler_type": "Boiler Type",
   "group_head": "Group Head",
   "pressure_bar": "Pressure (bar)",
+  "purchased": "Purchased",
 
   "no_machines_yet": "No Machines Yet",
   "no_machines_description": "Add your espresso machine to start brewing",

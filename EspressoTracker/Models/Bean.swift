@@ -100,11 +100,11 @@ final class Bean {
 
     var freshnessIndicator: String {
         let days = daysFromRoast
-        if days <= 7 { return "Very Fresh" }
-        if days <= 14 { return "Fresh" }
-        if days <= 21 { return "Good" }
-        if days <= 30 { return "Aging" }
-        return "Stale"
+        if days <= 7 { return LocalizedString.get("very_fresh") }
+        if days <= 14 { return LocalizedString.get("fresh") }
+        if days <= 21 { return LocalizedString.get("good") }
+        if days <= 30 { return LocalizedString.get("aging") }
+        return LocalizedString.get("stale")
     }
 
     var sessionsArray: [BrewingSession] {

@@ -54,7 +54,7 @@ struct MachineDetailView: View {
                                 .foregroundColor(.espressoBrown)
 
                             if !machine.model.isEmpty {
-                                Text("Model: \(machine.model)")
+                                Text("\(LocalizedString.get("model")): \(machine.model)")
                                     .font(.subheadline)
                                     .foregroundColor(.textSecondary)
                             }
@@ -65,7 +65,7 @@ struct MachineDetailView: View {
                             if !machine.boilerType.isEmpty {
                                 InfoRow(
                                     icon: "flame",
-                                    label: "Boiler Type",
+                                    label: LocalizedString.get("boiler_type"),
                                     value: machine.boilerType
                                 )
                             }
@@ -73,7 +73,7 @@ struct MachineDetailView: View {
                             if !machine.groupHeadType.isEmpty {
                                 InfoRow(
                                     icon: "circle.hexagonpath",
-                                    label: "Group Head",
+                                    label: LocalizedString.get("group_head"),
                                     value: machine.groupHeadType
                                 )
                             }
@@ -81,7 +81,7 @@ struct MachineDetailView: View {
                             if machine.pressureBar > 0 {
                                 InfoRow(
                                     icon: "gauge.with.needle",
-                                    label: "Pressure",
+                                    label: LocalizedString.get("pressure"),
                                     value: String(format: "%.1f bar", machine.pressureBar)
                                 )
                             }
@@ -89,7 +89,7 @@ struct MachineDetailView: View {
                             if let purchaseDate = machine.purchaseDate {
                                 InfoRow(
                                     icon: "calendar",
-                                    label: "Purchased",
+                                    label: LocalizedString.get("purchased"),
                                     value: purchaseDate.formatted(date: .long, time: .omitted)
                                 )
                             }
@@ -99,7 +99,7 @@ struct MachineDetailView: View {
                                     HStack {
                                         Image(systemName: "note.text")
                                             .foregroundColor(.espressoBrown)
-                                        Text("Notes")
+                                        Text(LocalizedString.get("notes"))
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                             .foregroundColor(.textSecondary)
@@ -118,20 +118,20 @@ struct MachineDetailView: View {
                     if sessionCount > 0 {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Statistics")
+                                Text(LocalizedString.get("statistics"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
 
                                 InfoRow(
                                     icon: "cup.and.saucer.fill",
-                                    label: "Total Shots",
+                                    label: LocalizedString.get("total_shots"),
                                     value: "\(sessionCount)"
                                 )
 
                                 if let lastSession = machine.sessionsArray.first {
                                     InfoRow(
                                         icon: "clock",
-                                        label: "Last Used",
+                                        label: LocalizedString.get("last_used"),
                                         value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                     )
                                 }

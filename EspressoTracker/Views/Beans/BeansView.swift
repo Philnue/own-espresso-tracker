@@ -170,21 +170,22 @@ struct BeanCardView: View {
                             .font(.subheadline)
                             .foregroundColor(.espressoBrown)
 
-                        HStack(spacing: 12) {
+                        HStack(spacing: 8) {
                             // Origin
                             if !bean.wrappedOrigin.isEmpty {
-                                HStack(spacing: 4) {
+                                HStack(spacing: 2) {
                                     Image(systemName: "globe")
-                                        .font(.caption)
+                                        .font(.caption2)
                                     Text(bean.wrappedOrigin)
                                         .font(.caption)
+                                        .lineLimit(1)
                                 }
                             }
 
                             // Freshness indicator
-                            HStack(spacing: 4) {
+                            HStack(spacing: 2) {
                                 Image(systemName: "calendar")
-                                    .font(.caption)
+                                    .font(.caption2)
                                 Text("\(bean.daysFromRoast)d")
                                     .font(.caption)
                             }
@@ -192,9 +193,9 @@ struct BeanCardView: View {
 
                             // Remaining weight
                             if bean.weight > 0 {
-                                HStack(spacing: 4) {
+                                HStack(spacing: 2) {
                                     Image(systemName: "scalemass")
-                                        .font(.caption)
+                                        .font(.caption2)
                                     Text("\(Int(bean.remainingWeight))g")
                                         .font(.caption)
                                 }
@@ -202,6 +203,7 @@ struct BeanCardView: View {
                             }
                         }
                         .foregroundColor(.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
                     }
 
                     Spacer()

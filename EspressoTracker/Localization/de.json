@@ -336,5 +336,11 @@
 
   "hours": "Stunden",
   "minutes": "Min",
-  "seconds": "Sek"
+  "seconds": "Sek",
+
+  "avg_time": "Ø Zeit",
+  "avg_ratio": "Ø Verhältnis",
+  "this_week": "Diese Woche",
+  "espresso_info": "Espresso: 1g ≈ 1ml (Wasser + extrahierter Kaffee)",
+  "yield_out_g": "Ertrag (g)"
 }

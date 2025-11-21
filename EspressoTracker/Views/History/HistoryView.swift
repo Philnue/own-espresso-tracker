@@ -39,7 +39,7 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationTitle("History")
+            .navigationTitle(LocalizedString.get("tab_history"))
         }
     }
 
@@ -47,13 +47,13 @@ struct HistoryView: View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
                 StatCard(
-                    title: "Total Shots",
+                    title: LocalizedString.get("total_shots"),
                     value: "\(sessions.count)",
                     icon: "cup.and.saucer.fill"
                 )
 
                 StatCard(
-                    title: "Avg Time",
+                    title: LocalizedString.get("avg_time"),
                     value: averageBrewTime,
                     icon: "timer",
                     color: .successGreen
@@ -62,14 +62,14 @@ struct HistoryView: View {
 
             HStack(spacing: 12) {
                 StatCard(
-                    title: "Avg Ratio",
+                    title: LocalizedString.get("avg_ratio"),
                     value: averageRatio,
                     icon: "scalemass",
                     color: .richCrema
                 )
 
                 StatCard(
-                    title: "This Week",
+                    title: LocalizedString.get("this_week"),
                     value: "\(sessionsThisWeek)",
                     icon: "calendar",
                     color: .warningOrange
@@ -172,7 +172,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Brew Time")
+                        Text(LocalizedString.get("brew_time"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -186,7 +186,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Ratio")
+                        Text(LocalizedString.get("ratio"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -200,7 +200,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Dose")
+                        Text(LocalizedString.get("dose"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }

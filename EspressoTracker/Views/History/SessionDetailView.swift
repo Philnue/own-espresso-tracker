@@ -70,7 +70,7 @@ struct SessionDetailView: View {
                     // Brewing parameters
                     CustomCard {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("Brewing Parameters")
+                            Text(LocalizedString.get("brewing_parameters"))
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
 
@@ -79,25 +79,25 @@ struct SessionDetailView: View {
 
                             InfoRow(
                                 icon: "timer",
-                                label: "Brew Time",
+                                label: LocalizedString.get("brew_time"),
                                 value: session.brewTimeFormatted
                             )
 
                             InfoRow(
                                 icon: "scalemass",
-                                label: "Dose In",
+                                label: LocalizedString.get("dose_in"),
                                 value: String(format: "%.1fg", session.doseIn)
                             )
 
                             InfoRow(
                                 icon: "drop.fill",
-                                label: "Yield Out",
+                                label: LocalizedString.get("yield_out"),
                                 value: String(format: "%.1fg", session.yieldOut)
                             )
 
                             InfoRow(
                                 icon: "chart.bar.fill",
-                                label: "Brew Ratio",
+                                label: LocalizedString.get("brew_ratio"),
                                 value: session.brewRatioString,
                                 valueColor: .espressoBrown
                             )
@@ -105,7 +105,7 @@ struct SessionDetailView: View {
                             if session.waterTemp > 0 {
                                 InfoRow(
                                     icon: "thermometer",
-                                    label: "Water Temp",
+                                    label: LocalizedString.get("water_temp"),
                                     value: String(format: "%.1f°C", session.waterTemp)
                                 )
                             }
@@ -113,7 +113,7 @@ struct SessionDetailView: View {
                             if session.pressure > 0 {
                                 InfoRow(
                                     icon: "gauge.with.needle",
-                                    label: "Pressure",
+                                    label: LocalizedString.get("pressure"),
                                     value: String(format: "%.1f bar", session.pressure)
                                 )
                             }
@@ -121,7 +121,7 @@ struct SessionDetailView: View {
                             if !session.grindSetting.isEmpty {
                                 InfoRow(
                                     icon: "gearshape.2",
-                                    label: "Grind Setting",
+                                    label: LocalizedString.get("grind_setting"),
                                     value: session.grindSetting
                                 )
                             }
@@ -132,7 +132,7 @@ struct SessionDetailView: View {
                     if session.grinder != nil || session.machine != nil || session.bean != nil {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 16) {
-                                Text("Equipment & Beans")
+                                Text(LocalizedString.get("equipment_beans"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
 
@@ -142,7 +142,7 @@ struct SessionDetailView: View {
                                 if let grinder = session.grinder {
                                     InfoRow(
                                         icon: "slider.horizontal.3",
-                                        label: "Grinder",
+                                        label: LocalizedString.get("grinder"),
                                         value: grinder.wrappedName
                                     )
                                 }
@@ -150,7 +150,7 @@ struct SessionDetailView: View {
                                 if let machine = session.machine {
                                     InfoRow(
                                         icon: "refrigerator",
-                                        label: "Machine",
+                                        label: LocalizedString.get("machine"),
                                         value: machine.wrappedName
                                     )
                                 }
@@ -159,7 +159,7 @@ struct SessionDetailView: View {
                                     VStack(alignment: .leading, spacing: 8) {
                                         InfoRow(
                                             icon: "leaf.fill",
-                                            label: "Bean",
+                                            label: LocalizedString.get("bean"),
                                             value: bean.wrappedName
                                         )
 
@@ -167,7 +167,7 @@ struct SessionDetailView: View {
                                             HStack(spacing: 12) {
                                                 Spacer()
                                                     .frame(width: 24)
-                                                Text("Roaster")
+                                                Text(LocalizedString.get("roaster"))
                                                     .font(.caption)
                                                     .foregroundColor(.textTertiary)
                                                 Spacer()
@@ -180,11 +180,11 @@ struct SessionDetailView: View {
                                         HStack(spacing: 12) {
                                             Spacer()
                                                 .frame(width: 24)
-                                            Text("Freshness")
+                                            Text(LocalizedString.get("freshness"))
                                                 .font(.caption)
                                                 .foregroundColor(.textTertiary)
                                             Spacer()
-                                            Text("\(bean.daysFromRoast) days from roast")
+                                            Text("\(bean.daysFromRoast) \(LocalizedString.get("days_from_roast"))")
                                                 .font(.caption)
                                                 .foregroundColor(.textSecondary)
                                         }
@@ -201,7 +201,7 @@ struct SessionDetailView: View {
                                 HStack {
                                     Image(systemName: "hand.raised.fill")
                                         .foregroundColor(.espressoBrown)
-                                    Text("Puck Prep Techniques")
+                                    Text(LocalizedString.get("puck_prep_techniques"))
                                         .font(.headline)
                                         .foregroundColor(.textPrimary)
                                 }
@@ -215,11 +215,11 @@ struct SessionDetailView: View {
                                             Image(systemName: "checkmark.circle.fill")
                                                 .foregroundColor(.successGreen)
                                             VStack(alignment: .leading, spacing: 4) {
-                                                Text("WDT")
+                                                Text(LocalizedString.get("wdt"))
                                                     .font(.subheadline)
                                                     .fontWeight(.semibold)
                                                     .foregroundColor(.textPrimary)
-                                                Text("Weiss Distribution Technique")
+                                                Text(LocalizedString.get("wdt_full"))
                                                     .font(.caption)
                                                     .foregroundColor(.textSecondary)
                                             }
@@ -231,11 +231,11 @@ struct SessionDetailView: View {
                                             Image(systemName: "checkmark.circle.fill")
                                                 .foregroundColor(.successGreen)
                                             VStack(alignment: .leading, spacing: 4) {
-                                                Text("RDT")
+                                                Text(LocalizedString.get("rdt"))
                                                     .font(.subheadline)
                                                     .fontWeight(.semibold)
                                                     .foregroundColor(.textPrimary)
-                                                Text("Ross Droplet Technique")
+                                                Text(LocalizedString.get("rdt_full"))
                                                     .font(.caption)
                                                     .foregroundColor(.textSecondary)
                                             }
@@ -253,7 +253,7 @@ struct SessionDetailView: View {
                                 HStack {
                                     Image(systemName: "note.text")
                                         .foregroundColor(.espressoBrown)
-                                    Text("Tasting Notes")
+                                    Text(LocalizedString.get("tasting_notes"))
                                         .font(.headline)
                                         .foregroundColor(.textPrimary)
                                 }
@@ -271,7 +271,7 @@ struct SessionDetailView: View {
                             HStack {
                                 Image(systemName: "cup.and.saucer.fill")
                                     .foregroundColor(.espressoBrown)
-                                Text("Taste Profile")
+                                Text(LocalizedString.get("taste_profile"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
                                 Spacer()
@@ -289,11 +289,11 @@ struct SessionDetailView: View {
                                 .background(Color.dividerColor)
 
                             VStack(spacing: 12) {
-                                TasteBar(label: "Acidity", value: session.acidity, icon: "sparkles")
-                                TasteBar(label: "Sweetness", value: session.sweetness, icon: "heart.fill")
-                                TasteBar(label: "Bitterness", value: session.bitterness, icon: "flame.fill")
-                                TasteBar(label: "Body", value: session.bodyWeight, icon: "drop.fill")
-                                TasteBar(label: "Aftertaste", value: session.aftertaste, icon: "star.fill")
+                                TasteBar(label: LocalizedString.get("acidity"), value: session.acidity, icon: "sparkles")
+                                TasteBar(label: LocalizedString.get("sweetness"), value: session.sweetness, icon: "heart.fill")
+                                TasteBar(label: LocalizedString.get("bitterness"), value: session.bitterness, icon: "flame.fill")
+                                TasteBar(label: LocalizedString.get("body"), value: session.bodyWeight, icon: "drop.fill")
+                                TasteBar(label: LocalizedString.get("aftertaste"), value: session.aftertaste, icon: "star.fill")
                             }
                         }
                     }
@@ -304,7 +304,7 @@ struct SessionDetailView: View {
                             HStack {
                                 Image(systemName: "lightbulb.fill")
                                     .foregroundColor(.espressoBrown)
-                                Text("Recommendations")
+                                Text(LocalizedString.get("recommendations"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
                             }
@@ -332,7 +332,7 @@ struct SessionDetailView: View {
                     // Extraction analysis
                     CustomCard {
                         VStack(alignment: .leading, spacing: 12) {
-                            Text("Extraction Analysis")
+                            Text(LocalizedString.get("extraction_analysis"))
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
 
@@ -341,7 +341,7 @@ struct SessionDetailView: View {
 
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text("Status")
+                                    Text(LocalizedString.get("status"))
                                         .font(.subheadline)
                                         .foregroundColor(.textSecondary)
                                     Text(session.extraction)
@@ -357,7 +357,7 @@ struct SessionDetailView: View {
                                 Spacer()
 
                                 VStack(alignment: .trailing) {
-                                    Text("Target Range")
+                                    Text(LocalizedString.get("target_range"))
                                         .font(.subheadline)
                                         .foregroundColor(.textSecondary)
                                     Text("20-35s")
@@ -370,7 +370,7 @@ struct SessionDetailView: View {
                     }
 
                     // Delete button
-                    PrimaryButton(title: "Delete Session", action: {
+                    PrimaryButton(title: LocalizedString.get("delete_session"), action: {
                         showingDeleteAlert = true
                     }, isDestructive: true)
                 }
@@ -378,14 +378,14 @@ struct SessionDetailView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Shot Details")
-        .alert("Delete Session", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .navigationTitle(LocalizedString.get("shot_details"))
+        .alert(LocalizedString.get("delete_session"), isPresented: $showingDeleteAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("delete"), role: .destructive) {
                 deleteSession()
             }
         } message: {
-            Text("Are you sure you want to delete this brewing session? This action cannot be undone.")
+            Text(LocalizedString.get("delete_session_confirm"))
         }
     }
 

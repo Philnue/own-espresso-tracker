@@ -49,23 +49,23 @@ struct FinishBrewView: View {
 
             Form {
                 // Summary section
-                Section(header: Text("Brew Summary").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("brew_summary")).foregroundColor(.espressoBrown)) {
                     InfoRow(
                         icon: "timer",
-                        label: "Brew Time",
+                        label: LocalizedString.get("brew_time"),
                         value: String(format: "%.1fs", viewModel.elapsedTime)
                     )
 
                     InfoRow(
                         icon: "scalemass",
-                        label: "Dose In",
+                        label: LocalizedString.get("dose_in"),
                         value: "\(viewModel.doseIn)g"
                     )
 
                     if !yieldOut.isEmpty, let yield = Double(yieldOut) {
                         InfoRow(
                             icon: "drop.fill",
-                            label: "Actual Ratio",
+                            label: LocalizedString.get("actual_ratio"),
                             value: String(format: "1:%.2f", actualRatio),
                             valueColor: actualRatio >= 1.5 && actualRatio <= 3.0 ? .successGreen : .warningOrange
                         )
@@ -74,9 +74,9 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Yield output
-                Section(header: Text("Output").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("output")).foregroundColor(.espressoBrown)) {
                     HStack {
-                        Text("Yield Out (g)")
+                        Text(LocalizedString.get("yield_out_g"))
                             .foregroundColor(.textPrimary)
                         Spacer()
                         TextField(viewModel.targetYieldString, text: $yieldOut)
@@ -86,11 +86,11 @@ struct FinishBrewView: View {
                             .foregroundColor(.textPrimary)
                     }
 
-                    Text("Target: \(viewModel.targetYieldString)g")
+                    Text("\(LocalizedString.get("target")): \(viewModel.targetYieldString)g")
                         .font(.caption)
                         .foregroundColor(.textSecondary)
 
-                    Text("ℹ️ Espresso: 1g ≈ 1ml (water + extracted coffee)")
+                    Text("ℹ️ \(LocalizedString.get("espresso_info"))")
                         .font(.caption2)
                         .foregroundColor(.textTertiary)
                         .italic()
@@ -98,9 +98,9 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Rating
-                Section(header: Text("Rating").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("rating")).foregroundColor(.espressoBrown)) {
                     HStack {
-                        Text("Quality")
+                        Text(LocalizedString.get("quality"))
                             .foregroundColor(.textPrimary)
                         Spacer()
                         HStack(spacing: 8) {
@@ -119,21 +119,21 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Taste Profile
-                Section(header: Text("Taste Profile").foregroundColor(.espressoBrown)) {
-                    TasteSlider(label: "Acidity", value: $acidity, icon: "sparkles")
+                Section(header: Text(LocalizedString.get("taste_profile")).foregroundColor(.espressoBrown)) {
+                    TasteSlider(label: LocalizedString.get("acidity"), value: $acidity, icon: "sparkles")
                     Divider()
-                    TasteSlider(label: "Sweetness", value: $sweetness, icon: "heart.fill")
+                    TasteSlider(label: LocalizedString.get("sweetness"), value: $sweetness, icon: "heart.fill")
                     Divider()
-                    TasteSlider(label: "Bitterness", value: $bitterness, icon: "flame.fill")
+                    TasteSlider(label: LocalizedString.get("bitterness"), value: $bitterness, icon: "flame.fill")
                     Divider()
-                    TasteSlider(label: "Body", value: $bodyWeight, icon: "drop.fill")
+                    TasteSlider(label: LocalizedString.get("body"), value: $bodyWeight, icon: "drop.fill")
                     Divider()
-                    TasteSlider(label: "Aftertaste", value: $aftertaste, icon: "star.fill")
+                    TasteSlider(label: LocalizedString.get("aftertaste"), value: $aftertaste, icon: "star.fill")
                 }
                 .listRowBackground(Color.cardBackground)
 
                 // Equipment used
-                Section(header: Text("Equipment Used").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("equipment_used")).foregroundColor(.espressoBrown)) {
                     if let grinder = grinder {
                         HStack {
                             Image(systemName: "slider.horizontal.3")
@@ -164,7 +164,7 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Puck Preparation Techniques
-                Section(header: Text("Puck Prep Techniques").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("puck_prep_techniques")).foregroundColor(.espressoBrown)) {
                     VStack(spacing: 16) {
                         // WDT Toggle
                         HStack {
@@ -172,12 +172,12 @@ struct FinishBrewView: View {
                                 HStack {
                                     Image(systemName: "wand.and.stars")
                                         .foregroundColor(.espressoBrown)
-                                    Text("WDT")
+                                    Text(LocalizedString.get("wdt"))
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                         .foregroundColor(.textPrimary)
                                 }
-                                Text("Weiss Distribution Technique")
+                                Text(LocalizedString.get("wdt_full"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                             }
@@ -197,12 +197,12 @@ struct FinishBrewView: View {
                                 HStack {
                                     Image(systemName: "drop.triangle")
                                         .foregroundColor(.espressoBrown)
-                                    Text("RDT")
+                                    Text(LocalizedString.get("rdt"))
                                         .font(.subheadline)
                                         .fontWeight(.semibold)
                                         .foregroundColor(.textPrimary)
                                 }
-                                Text("Ross Droplet Technique")
+                                Text(LocalizedString.get("rdt_full"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                             }
@@ -217,7 +217,7 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Photo
-                Section(header: Text("Shot Photo (Optional)").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("shot_photo")).foregroundColor(.espressoBrown)) {
                     PhotosPicker(selection: $selectedImage, matching: .images) {
                         HStack {
                             if let imageData = imageData,
@@ -236,7 +236,7 @@ struct FinishBrewView: View {
                                     .cornerRadius(8)
                             }
 
-                            Text("Add Photo")
+                            Text(LocalizedString.get("add_photo"))
                                 .foregroundColor(.espressoBrown)
 
                             Spacer()
@@ -253,7 +253,7 @@ struct FinishBrewView: View {
                 .listRowBackground(Color.cardBackground)
 
                 // Notes
-                Section(header: Text("Tasting Notes").foregroundColor(.espressoBrown)) {
+                Section(header: Text(LocalizedString.get("tasting_notes")).foregroundColor(.espressoBrown)) {
                     TextEditor(text: $notes)
                         .frame(height: 100)
                         .foregroundColor(.textPrimary)
@@ -262,18 +262,18 @@ struct FinishBrewView: View {
             }
             .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Finish Shot")
+            .navigationTitle(LocalizedString.get("finish_shot"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveBrewingSession()
                     }
                     .foregroundColor(.espressoBrown)

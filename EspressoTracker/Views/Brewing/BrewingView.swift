@@ -24,6 +24,7 @@ struct BrewingView: View {
     @State private var showingFinishSheet = false
     @State private var showArchivedBeans = false
     @State private var showingBeanPicker = false
+    @FocusState private var isInputFocused: Bool
 
     // Filtered beans based on archive status
     private var beans: [Bean] {
@@ -106,6 +107,16 @@ struct BrewingView: View {
             .onChange(of: settings.defaultBrewMethod) { _, newValue in
                 if let method = BrewMethod.allCases.first(where: { $0.rawValue.lowercased() == newValue }) {
                     selectedMethod = method
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isInputFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
                 }
             }
         }
@@ -494,6 +505,7 @@ struct BrewingView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($isInputFocused)
                     }
 
                     Divider()
@@ -510,6 +522,7 @@ struct BrewingView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($isInputFocused)
                     }
 
                     Divider()
@@ -526,6 +539,7 @@ struct BrewingView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($isInputFocused)
                     }
                 }
             }
@@ -587,6 +601,7 @@ struct BrewingView: View {
                                 .font(.system(size: 32, weight: .bold, design: .rounded))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.textPrimary)
+                                .focused($isInputFocused)
 
                             Text("g")
                                 .font(.title3)
@@ -621,12 +636,39 @@ struct BrewingView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 12) {
-            PrimaryButton(title: LocalizedString.get("finish_save_shot")) {
+            // Enhanced Finish Button
+            Button(action: {
                 if !viewModel.isRunning {
                     showingFinishSheet = true
                 }
+            }) {
+                HStack(spacing: 12) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.title2)
+                    Text(LocalizedString.get("finish_save_shot"))
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(
+                    Group {
+                        if canFinish {
+                            LinearGradient(
+                                gradient: Gradient(colors: [Color.successGreen, Color.successGreen.opacity(0.8)]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        } else {
+                            Color.textTertiary
+                        }
+                    }
+                )
+                .cornerRadius(16)
+                .shadow(color: canFinish ? Color.successGreen.opacity(0.4) : Color.clear, radius: 8, x: 0, y: 4)
             }
-            .disabled(viewModel.isRunning || viewModel.elapsedTime == 0 || selectedGrinder == nil || selectedMachine == nil || selectedBean == nil)
+            .disabled(!canFinish)
 
             // Show helpful message when equipment is missing
             if selectedGrinder == nil || selectedMachine == nil || selectedBean == nil {
@@ -634,8 +676,17 @@ struct BrewingView: View {
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
+            } else if viewModel.elapsedTime == 0 {
+                Text("Start the timer to begin brewing")
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
             }
         }
+    }
+
+    private var canFinish: Bool {
+        !viewModel.isRunning && viewModel.elapsedTime > 0 && selectedGrinder != nil && selectedMachine != nil && selectedBean != nil
     }
 
     private var extractionStatus: String {

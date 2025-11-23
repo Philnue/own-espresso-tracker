@@ -35,6 +35,7 @@ struct FinishBrewView: View {
     // Puck preparation techniques
     @State private var puckPrepWDT: Bool = false
     @State private var puckPrepRDT: Bool = false
+    @FocusState private var isInputFocused: Bool
 
     var actualRatio: Double {
         guard let dose = Double(viewModel.doseIn),
@@ -85,6 +86,7 @@ struct FinishBrewView: View {
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
                                 .foregroundColor(.textPrimary)
+                                .focused($isInputFocused)
                         }
 
                         Text("Target: \(viewModel.targetYieldString)g")
@@ -253,6 +255,7 @@ struct FinishBrewView: View {
                         TextEditor(text: $notes)
                             .frame(height: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($isInputFocused)
                     }
                     .listRowBackground(Color.cardBackground)
                 }
@@ -274,6 +277,15 @@ struct FinishBrewView: View {
                     }
                     .foregroundColor(.espressoBrown)
                     .disabled(yieldOut.isEmpty)
+                }
+
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isInputFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
                 }
             }
         }

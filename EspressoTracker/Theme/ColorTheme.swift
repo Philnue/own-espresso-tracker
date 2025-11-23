@@ -51,6 +51,13 @@ extension Color {
     static let warningOrange = Color(red: 1.00, green: 0.58, blue: 0.00)       // #FF9500
     static let errorRed = Color(red: 1.00, green: 0.27, blue: 0.23)            // #FF453A
 
+    // Freshness indicator colors
+    static let freshnessVeryFresh = Color(red: 0.00, green: 0.80, blue: 0.60)  // #00CC99 - Teal/Mint
+    static let freshnessFresh = Color(red: 0.20, green: 0.78, blue: 0.35)      // #34C759 - Green
+    static let freshnessGood = Color(red: 0.35, green: 0.60, blue: 0.85)       // #5999D9 - Blue
+    static let freshnessAging = Color(red: 1.00, green: 0.58, blue: 0.00)      // #FF9500 - Orange
+    static let freshnessStale = Color(red: 1.00, green: 0.27, blue: 0.23)      // #FF453A - Red
+
     // Adaptive Text colors
     static let textPrimary = Color(UIColor { traitCollection in
         traitCollection.userInterfaceStyle == .dark

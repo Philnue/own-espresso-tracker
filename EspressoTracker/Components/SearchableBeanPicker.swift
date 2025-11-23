@@ -16,6 +16,7 @@ struct SearchableBeanPicker: View {
 
     @State private var searchText = ""
     @State private var sortOption: BeanSortOption = .name
+    @FocusState private var isSearchFocused: Bool
 
     enum BeanSortOption: String, CaseIterable {
         case name = "Name"
@@ -71,6 +72,7 @@ struct SearchableBeanPicker: View {
                                 .foregroundColor(.textSecondary)
                             TextField("Search beans...", text: $searchText)
                                 .foregroundColor(.textPrimary)
+                                .focused($isSearchFocused)
                             if !searchText.isEmpty {
                                 Button(action: { searchText = "" }) {
                                     Image(systemName: "xmark.circle.fill")
@@ -171,6 +173,14 @@ struct SearchableBeanPicker: View {
                         onDismiss()
                     }
                     .foregroundColor(.textSecondary)
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isSearchFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
                 }
             }
         }
@@ -291,14 +301,16 @@ struct BeanPickerRow: View {
 
     private func freshnessColor(for bean: Bean) -> Color {
         switch bean.freshnessIndicator {
-        case "Very Fresh", "Fresh":
-            return .successGreen
+        case "Very Fresh":
+            return .freshnessVeryFresh
+        case "Fresh":
+            return .freshnessFresh
         case "Good":
-            return .espressoBrown
+            return .freshnessGood
         case "Aging":
-            return .warningOrange
+            return .freshnessAging
         default:
-            return .errorRed
+            return .freshnessStale
         }
     }
 }

@@ -13,6 +13,7 @@ struct RecipeCalculatorView: View {
     @State private var doseIn: String = "18"
     @State private var ratio: String = "2.0"
     @State private var targetYield: Double = 36.0
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         NavigationView {
@@ -40,6 +41,22 @@ struct RecipeCalculatorView: View {
                 }
             }
             .navigationTitle("Recipe Calculator")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isInputFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                }
+            }
+            .onAppear {
+                // Load default brew method from settings
+                if let method = BrewMethod.allCases.first(where: { $0.rawValue.lowercased() == settings.defaultBrewMethod }) {
+                    selectedMethod = method
+                    updateDefaults(for: method)
+                }
+            }
         }
     }
 
@@ -88,6 +105,7 @@ struct RecipeCalculatorView: View {
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 100)
+                            .focused($isInputFocused)
                             .onChange(of: doseIn) { _, newValue in
                                 calculateYield()
                             }
@@ -110,6 +128,7 @@ struct RecipeCalculatorView: View {
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 100)
+                            .focused($isInputFocused)
                             .onChange(of: ratio) { _, newValue in
                                 calculateYield()
                             }
@@ -249,8 +268,9 @@ struct RecipeCalculatorView: View {
     private func updateDefaults(for method: BrewMethod) {
         switch method {
         case .espresso:
-            doseIn = "18"
-            ratio = "2.0"
+            // Use user's default settings for espresso
+            doseIn = String(format: "%.0f", settings.defaultDoseIn)
+            ratio = String(format: "%.1f", settings.defaultRatio)
         case .aeropress:
             doseIn = "15"
             ratio = "16.0"

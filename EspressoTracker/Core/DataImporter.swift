@@ -99,6 +99,13 @@ class DataImporter {
                 rating: sessionExport.rating,
                 notes: sessionExport.notes,
                 createdAt: sessionExport.createdAt,
+                acidity: sessionExport.acidity ?? 3,
+                sweetness: sessionExport.sweetness ?? 3,
+                bitterness: sessionExport.bitterness ?? 3,
+                bodyWeight: sessionExport.bodyWeight ?? 3,
+                aftertaste: sessionExport.aftertaste ?? 3,
+                puckPrepWDT: sessionExport.puckPrepWDT ?? false,
+                puckPrepRDT: sessionExport.puckPrepRDT ?? false,
                 grinder: sessionExport.grinderId.flatMap { grinderMap[$0] },
                 machine: sessionExport.machineId.flatMap { machineMap[$0] },
                 bean: sessionExport.beanId.flatMap { beanMap[$0] }

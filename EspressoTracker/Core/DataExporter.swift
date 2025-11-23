@@ -72,6 +72,15 @@ struct SessionExport: Codable {
     let grinderId: UUID?
     let machineId: UUID?
     let beanId: UUID?
+    // Taste Profile (optional for backwards compatibility)
+    let acidity: Int?
+    let sweetness: Int?
+    let bitterness: Int?
+    let bodyWeight: Int?
+    let aftertaste: Int?
+    // Puck Prep Techniques (optional for backwards compatibility)
+    let puckPrepWDT: Bool?
+    let puckPrepRDT: Bool?
 }
 
 @MainActor
@@ -154,7 +163,14 @@ class DataExporter {
                     createdAt: session.createdAt,
                     grinderId: session.grinder?.id,
                     machineId: session.machine?.id,
-                    beanId: session.bean?.id
+                    beanId: session.bean?.id,
+                    acidity: session.acidity,
+                    sweetness: session.sweetness,
+                    bitterness: session.bitterness,
+                    bodyWeight: session.bodyWeight,
+                    aftertaste: session.aftertaste,
+                    puckPrepWDT: session.puckPrepWDT,
+                    puckPrepRDT: session.puckPrepRDT
                 )
             },
             exportDate: Date(),

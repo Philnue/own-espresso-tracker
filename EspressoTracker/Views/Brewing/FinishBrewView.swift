@@ -52,10 +52,75 @@ struct FinishBrewView: View {
         return yield / dose
     }
 
+    var canSave: Bool {
+        !yieldOut.isEmpty && !doseIn.isEmpty
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.backgroundPrimary.ignoresSafeArea()
+
+                VStack(spacing: 0) {
+                    // Quick summary header
+                    HStack(spacing: 20) {
+                        // Dose
+                        VStack(spacing: 4) {
+                            Text(doseIn.isEmpty ? "--" : doseIn)
+                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                .foregroundColor(.espressoBrown)
+                            Text("g in")
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        Image(systemName: "arrow.right")
+                            .foregroundColor(.textTertiary)
+
+                        // Time
+                        VStack(spacing: 4) {
+                            Text(brewTime.isEmpty ? "--" : brewTime)
+                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                .foregroundColor(.textPrimary)
+                            Text("sec")
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        Image(systemName: "arrow.right")
+                            .foregroundColor(.textTertiary)
+
+                        // Yield
+                        VStack(spacing: 4) {
+                            Text(yieldOut.isEmpty ? "--" : yieldOut)
+                                .font(.system(size: 24, weight: .bold, design: .rounded))
+                                .foregroundColor(.espressoBrown)
+                            Text("g out")
+                                .font(.caption2)
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        // Ratio badge
+                        if !yieldOut.isEmpty && !doseIn.isEmpty && actualRatio > 0 {
+                            VStack(spacing: 4) {
+                                Text(String(format: "1:%.1f", actualRatio))
+                                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(actualRatio >= 1.5 && actualRatio <= 3.0 ? Color.successGreen : Color.warningOrange)
+                                    .cornerRadius(8)
+                                Text(LocalizedString.get("ratio"))
+                                    .font(.caption2)
+                                    .foregroundColor(.textSecondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(Color.cardBackground)
+                    .cornerRadius(16)
+                    .padding(.horizontal)
+                    .padding(.top, 8)
 
                 Form {
                     // Editable brew parameters section
@@ -295,8 +360,37 @@ struct FinishBrewView: View {
                         .foregroundColor(.textPrimary)
                 }
                 .listRowBackground(Color.cardBackground)
+
+                // Spacer section for save button
+                Section {
+                    EmptyView()
+                }
+                .listRowBackground(Color.clear)
+                .frame(height: 80)
             }
                 .scrollContentBackground(.hidden)
+
+                    // Sticky save button at bottom
+                    VStack(spacing: 0) {
+                        Divider()
+                        Button(action: { saveBrewingSession() }) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text(LocalizedString.get("save"))
+                                    .fontWeight(.semibold)
+                            }
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 56)
+                            .background(canSave ? Color.espressoBrown : Color.textTertiary)
+                            .cornerRadius(16)
+                        }
+                        .disabled(!canSave)
+                        .padding()
+                        .background(Color.backgroundPrimary)
+                    }
+                }
             }
             .navigationTitle(LocalizedString.get("finish_shot"))
             .navigationBarTitleDisplayMode(.inline)

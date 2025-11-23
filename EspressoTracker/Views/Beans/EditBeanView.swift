@@ -27,6 +27,7 @@ struct EditBeanView: View {
     @State private var notes = ""
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
+    @FocusState private var isInputFocused: Bool
 
     let roastLevels = ["Light", "Medium-Light", "Medium", "Medium-Dark", "Dark"]
     let processes = ["Washed", "Natural", "Honey", "Anaerobic", "Other"]
@@ -81,6 +82,7 @@ struct EditBeanView: View {
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
+                                .focused($isInputFocused)
                         }
 
                         HStack {
@@ -90,6 +92,7 @@ struct EditBeanView: View {
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
+                                .focused($isInputFocused)
                         }
                     }
                     .listRowBackground(Color.cardBackground)
@@ -154,6 +157,17 @@ struct EditBeanView: View {
                     }
                     .foregroundColor(.espressoBrown)
                     .disabled(name.isEmpty)
+                }
+
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            isInputFocused = false
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
                 }
             }
             .onAppear {

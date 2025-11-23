@@ -112,6 +112,7 @@
   "delete_session": "Delete Session",
   "shot_details": "Shot Details",
   "please_select_equipment": "Please select grinder, machine, and beans to continue",
+  "start_timer_hint": "Start the timer to begin brewing",
 
   "parameters": "Parameters",
   "start": "Start",

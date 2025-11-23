@@ -112,6 +112,7 @@
   "delete_session": "Sitzung löschen",
   "shot_details": "Shot-Details",
   "please_select_equipment": "Bitte wählen Sie Mühle, Maschine und Bohnen aus",
+  "start_timer_hint": "Starte den Timer um mit dem Brühen zu beginnen",
 
   "parameters": "Parameter",
   "start": "Start",

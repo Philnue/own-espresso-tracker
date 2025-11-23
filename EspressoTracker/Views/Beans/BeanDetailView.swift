@@ -50,7 +50,7 @@ struct BeanDetailView: View {
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .foregroundColor(.textPrimary)
-                                Text("days from roast")
+                                Text(LocalizedString.get("days_from_roast"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                             }
@@ -63,7 +63,7 @@ struct BeanDetailView: View {
                                     .font(.title3)
                                     .fontWeight(.bold)
                                     .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-                                Text("freshness")
+                                Text(LocalizedString.get("freshness"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
                             }
@@ -77,7 +77,7 @@ struct BeanDetailView: View {
                                         .font(.title)
                                         .fontWeight(.bold)
                                         .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textPrimary))
-                                    Text("remaining")
+                                    Text(LocalizedString.get("remaining"))
                                         .font(.caption)
                                         .foregroundColor(.textSecondary)
                                 }
@@ -93,7 +93,7 @@ struct BeanDetailView: View {
                             HStack {
                                 Image(systemName: "archivebox.fill")
                                     .foregroundColor(.warningOrange)
-                                Text("Archived")
+                                Text(LocalizedString.get("archived"))
                                     .font(.subheadline)
                                     .fontWeight(.medium)
                             }
@@ -137,28 +137,28 @@ struct BeanDetailView: View {
 
                             InfoRow(
                                 icon: "globe",
-                                label: "Origin",
+                                label: LocalizedString.get("origin"),
                                 value: bean.wrappedOrigin
                             )
 
                             if !bean.roastLevel.isEmpty {
                                 InfoRow(
                                     icon: "flame",
-                                    label: "Roast Level",
+                                    label: LocalizedString.get("roast_level"),
                                     value: bean.roastLevel
                                 )
                             }
 
                             InfoRow(
                                 icon: "calendar",
-                                label: "Roast Date",
+                                label: LocalizedString.get("roast_date"),
                                 value: bean.roastDate.formatted(date: .long, time: .omitted)
                             )
 
                             if !bean.process.isEmpty {
                                 InfoRow(
                                     icon: "leaf",
-                                    label: "Process",
+                                    label: LocalizedString.get("process"),
                                     value: bean.process
                                 )
                             }
@@ -166,7 +166,7 @@ struct BeanDetailView: View {
                             if !bean.variety.isEmpty {
                                 InfoRow(
                                     icon: "tag",
-                                    label: "Variety",
+                                    label: LocalizedString.get("variety"),
                                     value: bean.variety
                                 )
                             }
@@ -176,7 +176,7 @@ struct BeanDetailView: View {
                                     HStack {
                                         Image(systemName: "cup.and.saucer")
                                             .foregroundColor(.espressoBrown)
-                                        Text("Tasting Notes")
+                                        Text(LocalizedString.get("tasting_notes"))
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                             .foregroundColor(.textSecondary)
@@ -191,7 +191,7 @@ struct BeanDetailView: View {
                             if bean.price > 0 {
                                 InfoRow(
                                     icon: "dollarsign.circle",
-                                    label: "Price",
+                                    label: LocalizedString.get("price"),
                                     value: String(format: "$%.2f", bean.price)
                                 )
                             }
@@ -199,14 +199,14 @@ struct BeanDetailView: View {
                             if bean.weight > 0 {
                                 InfoRow(
                                     icon: "scalemass",
-                                    label: "Weight",
+                                    label: LocalizedString.get("weight"),
                                     value: String(format: "%.0fg", bean.weight)
                                 )
                             }
 
                             InfoRow(
                                 icon: "bag",
-                                label: "Purchase Date",
+                                label: LocalizedString.get("purchase_date"),
                                 value: bean.formattedPurchaseDate
                             )
 
@@ -215,7 +215,7 @@ struct BeanDetailView: View {
                                     HStack {
                                         Image(systemName: "note.text")
                                             .foregroundColor(.espressoBrown)
-                                        Text("Notes")
+                                        Text(LocalizedString.get("notes"))
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                             .foregroundColor(.textSecondary)
@@ -234,21 +234,21 @@ struct BeanDetailView: View {
                     if sessionCount > 0 || bean.weight > 0 {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Usage & Statistics")
+                                Text(LocalizedString.get("usage_statistics"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
 
                                 if sessionCount > 0 {
                                     InfoRow(
                                         icon: "cup.and.saucer.fill",
-                                        label: "Total Shots",
+                                        label: LocalizedString.get("total_shots"),
                                         value: "\(sessionCount)"
                                     )
 
                                     if let lastSession = bean.sessionsArray.first {
                                         InfoRow(
                                             icon: "clock",
-                                            label: "Last Used",
+                                            label: LocalizedString.get("last_used"),
                                             value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                         )
                                     }
@@ -260,13 +260,13 @@ struct BeanDetailView: View {
 
                                     InfoRow(
                                         icon: "scalemass.fill",
-                                        label: "Coffee Used",
+                                        label: LocalizedString.get("coffee_used"),
                                         value: String(format: "%.1fg", bean.totalGramsUsed)
                                     )
 
                                     InfoRow(
                                         icon: "chart.bar.fill",
-                                        label: "Usage",
+                                        label: LocalizedString.get("usage"),
                                         value: String(format: "%.1f%%", bean.usagePercentage)
                                     )
 
@@ -293,13 +293,13 @@ struct BeanDetailView: View {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 16) {
                                 HStack {
-                                    Text("Shot History")
+                                    Text(LocalizedString.get("shot_history"))
                                         .font(.headline)
                                         .foregroundColor(.textPrimary)
 
                                     Spacer()
 
-                                    Text("\(sessionCount) shots")
+                                    Text("\(sessionCount) \(LocalizedString.get("shots"))")
                                         .font(.caption)
                                         .foregroundColor(.textSecondary)
                                 }
@@ -329,7 +329,7 @@ struct BeanDetailView: View {
                         }) {
                             HStack {
                                 Image(systemName: "cart.badge.plus")
-                                Text("Buy Again (New Batch)")
+                                Text(LocalizedString.get("buy_again"))
                             }
                             .font(.body)
                             .fontWeight(.semibold)
@@ -341,7 +341,7 @@ struct BeanDetailView: View {
                         }
                         .buttonShadow()
 
-                        PrimaryButton(title: "Edit Bean") {
+                        PrimaryButton(title: LocalizedString.get("edit_bean")) {
                             showingEditView = true
                         }
 
@@ -350,7 +350,7 @@ struct BeanDetailView: View {
                         }) {
                             HStack {
                                 Image(systemName: bean.isArchived ? "arrow.uturn.backward" : "archivebox")
-                                Text(bean.isArchived ? "Unarchive Bean" : "Archive Bean")
+                                Text(bean.isArchived ? LocalizedString.get("unarchive_bean") : LocalizedString.get("archive_bean"))
                             }
                             .font(.body)
                             .fontWeight(.semibold)
@@ -362,7 +362,7 @@ struct BeanDetailView: View {
                         }
                         .buttonShadow()
 
-                        PrimaryButton(title: "Delete Bean", action: {
+                        PrimaryButton(title: LocalizedString.get("delete_bean"), action: {
                             showingDeleteAlert = true
                         }, isDestructive: true)
                     }
@@ -377,13 +377,13 @@ struct BeanDetailView: View {
         .sheet(isPresented: $showingAddBatch) {
             AddBatchView(existingBean: bean)
         }
-        .alert("Delete Bean", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert(LocalizedString.get("delete_bean"), isPresented: $showingDeleteAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("delete"), role: .destructive) {
                 deleteBean()
             }
         } message: {
-            Text("Are you sure you want to delete this bean? This action cannot be undone.")
+            Text(LocalizedString.get("delete_bean_confirm"))
         }
     }
 

@@ -20,6 +20,8 @@ struct FinishBrewView: View {
     let bean: Bean?
 
     @State private var yieldOut: String = ""
+    @State private var doseIn: String = ""
+    @State private var brewTime: String = ""
     @State private var rating: Int = 3
     @State private var notes: String = ""
     @State private var selectedImage: PhotosPickerItem?
@@ -36,253 +38,308 @@ struct FinishBrewView: View {
     @State private var puckPrepWDT: Bool = false
     @State private var puckPrepRDT: Bool = false
 
+    // Focus state for keyboard
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case yield, dose, brewTime
+    }
+
     var actualRatio: Double {
-        guard let dose = Double(viewModel.doseIn),
+        guard let dose = Double(doseIn),
               let yield = Double(yieldOut),
               dose > 0 else { return 0 }
         return yield / dose
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
-                    // Summary section
-                    Section(header: Text("Brew Summary").foregroundColor(.espressoBrown)) {
-                        InfoRow(
-                            icon: "timer",
-                            label: "Brew Time",
-                            value: String(format: "%.1fs", viewModel.elapsedTime)
-                        )
-
-                        InfoRow(
-                            icon: "scalemass",
-                            label: "Dose In",
-                            value: "\(viewModel.doseIn)g"
-                        )
-
-                        if !yieldOut.isEmpty, let yield = Double(yieldOut) {
-                            InfoRow(
-                                icon: "drop.fill",
-                                label: "Actual Ratio",
-                                value: String(format: "1:%.2f", actualRatio),
-                                valueColor: actualRatio >= 1.5 && actualRatio <= 3.0 ? .successGreen : .warningOrange
-                            )
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Yield output
-                    Section(header: Text("Output").foregroundColor(.espressoBrown)) {
+                    // Editable brew parameters section
+                    Section(header: Text(LocalizedString.get("brew_summary")).foregroundColor(.espressoBrown)) {
+                        // Dose In - editable
                         HStack {
-                            Text("Yield Out (g)")
+                            Image(systemName: "scalemass")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("dose_in"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            TextField("18", text: $doseIn)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .dose)
+                            Text("g")
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        // Brew Time - editable
+                        HStack {
+                            Image(systemName: "timer")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("brew_time"))
+                                .foregroundColor(.textPrimary)
+                            Spacer()
+                            TextField("25", text: $brewTime)
+                                .keyboardType(.decimalPad)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .brewTime)
+                            Text("s")
+                                .foregroundColor(.textSecondary)
+                        }
+
+                        // Yield Out - editable
+                        HStack {
+                            Image(systemName: "drop.fill")
+                                .foregroundColor(.espressoBrown)
+                                .frame(width: 24)
+                            Text(LocalizedString.get("yield_out_g"))
                                 .foregroundColor(.textPrimary)
                             Spacer()
                             TextField(viewModel.targetYieldString, text: $yieldOut)
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
-                                .frame(width: 100)
-                                .foregroundColor(.textPrimary)
+                                .frame(width: 80)
+                                .focused($focusedField, equals: .yield)
+                            Text("g")
+                                .foregroundColor(.textSecondary)
                         }
 
-                        Text("Target: \(viewModel.targetYieldString)g")
-                            .font(.caption)
-                            .foregroundColor(.textSecondary)
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Rating
-                    Section(header: Text("Rating").foregroundColor(.espressoBrown)) {
-                        HStack {
-                            Text("Quality")
-                                .foregroundColor(.textPrimary)
-                            Spacer()
-                            HStack(spacing: 8) {
-                                ForEach(1...5, id: \.self) { star in
-                                    Button(action: {
-                                        rating = star
-                                    }) {
-                                        Image(systemName: star <= rating ? "star.fill" : "star")
-                                            .font(.title3)
-                                            .foregroundColor(star <= rating ? .espressoBrown : .textTertiary)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Taste Profile
-                    Section(header: Text("Taste Profile").foregroundColor(.espressoBrown)) {
-                        TasteSlider(label: "Acidity", value: $acidity, icon: "sparkles")
-                        Divider()
-                        TasteSlider(label: "Sweetness", value: $sweetness, icon: "heart.fill")
-                        Divider()
-                        TasteSlider(label: "Bitterness", value: $bitterness, icon: "flame.fill")
-                        Divider()
-                        TasteSlider(label: "Body", value: $bodyWeight, icon: "drop.fill")
-                        Divider()
-                        TasteSlider(label: "Aftertaste", value: $aftertaste, icon: "star.fill")
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Equipment used
-                    Section(header: Text("Equipment Used").foregroundColor(.espressoBrown)) {
-                        if let grinder = grinder {
+                        // Calculated ratio
+                        if !yieldOut.isEmpty && !doseIn.isEmpty {
                             HStack {
-                                Image(systemName: "slider.horizontal.3")
+                                Image(systemName: "percent")
                                     .foregroundColor(.espressoBrown)
-                                Text(grinder.wrappedName)
+                                    .frame(width: 24)
+                                Text(LocalizedString.get("actual_ratio"))
                                     .foregroundColor(.textPrimary)
+                                Spacer()
+                                Text(String(format: "1:%.2f", actualRatio))
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(actualRatio >= 1.5 && actualRatio <= 3.0 ? .successGreen : .warningOrange)
                             }
                         }
 
-                        if let machine = machine {
-                            HStack {
-                                Image(systemName: "refrigerator")
-                                    .foregroundColor(.espressoBrown)
-                                Text(machine.wrappedName)
-                                    .foregroundColor(.textPrimary)
-                            }
-                        }
-
-                        if let bean = bean {
-                            HStack {
-                                Image(systemName: "leaf.fill")
-                                    .foregroundColor(.espressoBrown)
-                                Text(bean.wrappedName)
-                                    .foregroundColor(.textPrimary)
-                            }
-                        }
+                        Text("ℹ️ \(LocalizedString.get("espresso_info"))")
+                            .font(.caption2)
+                            .foregroundColor(.textTertiary)
+                            .italic()
                     }
                     .listRowBackground(Color.cardBackground)
 
-                    // Puck Preparation Techniques
-                    Section(header: Text("Puck Prep Techniques").foregroundColor(.espressoBrown)) {
-                        VStack(spacing: 16) {
-                            // WDT Toggle
-                            HStack {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    HStack {
-                                        Image(systemName: "wand.and.stars")
-                                            .foregroundColor(.espressoBrown)
-                                        Text("WDT")
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.textPrimary)
-                                    }
-                                    Text("Weiss Distribution Technique")
-                                        .font(.caption)
-                                        .foregroundColor(.textSecondary)
-                                }
-
-                                Spacer()
-
-                                Toggle("", isOn: $puckPrepWDT)
-                                    .tint(.espressoBrown)
-                            }
-
-                            Divider()
-                                .background(Color.dividerColor)
-
-                            // RDT Toggle
-                            HStack {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    HStack {
-                                        Image(systemName: "drop.triangle")
-                                            .foregroundColor(.espressoBrown)
-                                        Text("RDT")
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.textPrimary)
-                                    }
-                                    Text("Ross Droplet Technique")
-                                        .font(.caption)
-                                        .foregroundColor(.textSecondary)
-                                }
-
-                                Spacer()
-
-                                Toggle("", isOn: $puckPrepRDT)
-                                    .tint(.espressoBrown)
-                            }
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Photo
-                    Section(header: Text("Shot Photo (Optional)").foregroundColor(.espressoBrown)) {
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            HStack {
-                                if let imageData = imageData,
-                                   let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(8)
-                                } else {
-                                    Image(systemName: "camera")
-                                        .font(.title2)
-                                        .foregroundColor(.textSecondary)
-                                        .frame(width: 60, height: 60)
-                                        .background(Color.backgroundSecondary)
-                                        .cornerRadius(8)
-                                }
-
-                                Text("Add Photo")
-                                    .foregroundColor(.espressoBrown)
-
-                                Spacer()
-                            }
-                        }
-                        .onChange(of: selectedImage) { oldValue, newValue in
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    imageData = data
-                                }
-                            }
-                        }
-                    }
-                    .listRowBackground(Color.cardBackground)
-
-                    // Notes
-                    Section(header: Text("Tasting Notes").foregroundColor(.espressoBrown)) {
-                        TextEditor(text: $notes)
-                            .frame(height: 100)
+                // Rating
+                Section(header: Text(LocalizedString.get("rating")).foregroundColor(.espressoBrown)) {
+                    HStack {
+                        Text(LocalizedString.get("quality"))
                             .foregroundColor(.textPrimary)
+                        Spacer()
+                        HStack(spacing: 8) {
+                            ForEach(1...5, id: \.self) { star in
+                                Button(action: {
+                                    rating = star
+                                }) {
+                                    Image(systemName: star <= rating ? "star.fill" : "star")
+                                        .font(.title3)
+                                        .foregroundColor(star <= rating ? .espressoBrown : .textTertiary)
+                                }
+                            }
+                        }
                     }
-                    .listRowBackground(Color.cardBackground)
                 }
+                .listRowBackground(Color.cardBackground)
+
+                // Taste Profile
+                Section(header: Text(LocalizedString.get("taste_profile")).foregroundColor(.espressoBrown)) {
+                    TasteSlider(label: LocalizedString.get("acidity"), value: $acidity, icon: "sparkles")
+                    Divider()
+                    TasteSlider(label: LocalizedString.get("sweetness"), value: $sweetness, icon: "heart.fill")
+                    Divider()
+                    TasteSlider(label: LocalizedString.get("bitterness"), value: $bitterness, icon: "flame.fill")
+                    Divider()
+                    TasteSlider(label: LocalizedString.get("body"), value: $bodyWeight, icon: "drop.fill")
+                    Divider()
+                    TasteSlider(label: LocalizedString.get("aftertaste"), value: $aftertaste, icon: "star.fill")
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Equipment used
+                Section(header: Text(LocalizedString.get("equipment_used")).foregroundColor(.espressoBrown)) {
+                    if let grinder = grinder {
+                        HStack {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundColor(.espressoBrown)
+                            Text(grinder.wrappedName)
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+
+                    if let machine = machine {
+                        HStack {
+                            Image(systemName: "refrigerator")
+                                .foregroundColor(.espressoBrown)
+                            Text(machine.wrappedName)
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+
+                    if let bean = bean {
+                        HStack {
+                            Image(systemName: "leaf.fill")
+                                .foregroundColor(.espressoBrown)
+                            Text(bean.wrappedName)
+                                .foregroundColor(.textPrimary)
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Puck Preparation Techniques
+                Section(header: Text(LocalizedString.get("puck_prep_techniques")).foregroundColor(.espressoBrown)) {
+                    VStack(spacing: 16) {
+                        // WDT Toggle
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Image(systemName: "wand.and.stars")
+                                        .foregroundColor(.espressoBrown)
+                                    Text(LocalizedString.get("wdt"))
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.textPrimary)
+                                }
+                                Text(LocalizedString.get("wdt_full"))
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+
+                            Spacer()
+
+                            Toggle("", isOn: $puckPrepWDT)
+                                .tint(.espressoBrown)
+                        }
+
+                        Divider()
+                            .background(Color.dividerColor)
+
+                        // RDT Toggle
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Image(systemName: "drop.triangle")
+                                        .foregroundColor(.espressoBrown)
+                                    Text(LocalizedString.get("rdt"))
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.textPrimary)
+                                }
+                                Text(LocalizedString.get("rdt_full"))
+                                    .font(.caption)
+                                    .foregroundColor(.textSecondary)
+                            }
+
+                            Spacer()
+
+                            Toggle("", isOn: $puckPrepRDT)
+                                .tint(.espressoBrown)
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Photo
+                Section(header: Text(LocalizedString.get("shot_photo")).foregroundColor(.espressoBrown)) {
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
+                        HStack {
+                            if let imageData = imageData,
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(8)
+                            } else {
+                                Image(systemName: "camera")
+                                    .font(.title2)
+                                    .foregroundColor(.textSecondary)
+                                    .frame(width: 60, height: 60)
+                                    .background(Color.backgroundSecondary)
+                                    .cornerRadius(8)
+                            }
+
+                            Text(LocalizedString.get("add_photo"))
+                                .foregroundColor(.espressoBrown)
+
+                            Spacer()
+                        }
+                    }
+                    .onChange(of: selectedImage) { oldValue, newValue in
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                imageData = data
+                            }
+                        }
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                // Notes
+                Section(header: Text(LocalizedString.get("tasting_notes")).foregroundColor(.espressoBrown)) {
+                    TextEditor(text: $notes)
+                        .frame(height: 100)
+                        .foregroundColor(.textPrimary)
+                }
+                .listRowBackground(Color.cardBackground)
+            }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("Finish Shot")
+            .navigationTitle(LocalizedString.get("finish_shot"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveBrewingSession()
                     }
                     .foregroundColor(.espressoBrown)
-                    .disabled(yieldOut.isEmpty)
+                    .fontWeight(.semibold)
+                    .disabled(yieldOut.isEmpty || doseIn.isEmpty)
                 }
+
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            focusedField = nil
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
+                }
+            }
+            .onAppear {
+                doseIn = viewModel.doseIn
+                brewTime = String(format: "%.1f", viewModel.elapsedTime)
             }
         }
     }
 
     private func saveBrewingSession() {
         guard let yield = Double(yieldOut),
-              let dose = Double(viewModel.doseIn) else { return }
+              let dose = Double(doseIn) else { return }
 
+        let brewTimeValue = Double(brewTime) ?? viewModel.elapsedTime
         let waterTemp = Double(viewModel.waterTemp) ?? 93.0
         let pressure = Double(viewModel.pressure) ?? 9.0
 
@@ -295,7 +352,7 @@ struct FinishBrewView: View {
             grindSetting: viewModel.grindSetting,
             doseIn: dose,
             yieldOut: yield,
-            brewTime: viewModel.elapsedTime,
+            brewTime: brewTimeValue,
             waterTemp: waterTemp,
             pressure: pressure,
             rating: rating,

@@ -39,7 +39,7 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationTitle("History")
+            .navigationTitle(LocalizedString.get("tab_history"))
         }
     }
 
@@ -47,13 +47,13 @@ struct HistoryView: View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
                 StatCard(
-                    title: "Total Shots",
+                    title: LocalizedString.get("total_shots"),
                     value: "\(sessions.count)",
                     icon: "cup.and.saucer.fill"
                 )
 
                 StatCard(
-                    title: "Avg Time",
+                    title: LocalizedString.get("avg_time"),
                     value: averageBrewTime,
                     icon: "timer",
                     color: .successGreen
@@ -62,14 +62,14 @@ struct HistoryView: View {
 
             HStack(spacing: 12) {
                 StatCard(
-                    title: "Avg Ratio",
+                    title: LocalizedString.get("avg_ratio"),
                     value: averageRatio,
                     icon: "scalemass",
                     color: .richCrema
                 )
 
                 StatCard(
-                    title: "This Week",
+                    title: LocalizedString.get("this_week"),
                     value: "\(sessionsThisWeek)",
                     icon: "calendar",
                     color: .warningOrange
@@ -127,15 +127,26 @@ struct SessionCardView: View {
     var body: some View {
         CustomCard {
             VStack(alignment: .leading, spacing: 12) {
-                // Header with date and rating
+                // Header with date, brewing method and rating
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(session.startTime.formatted(date: .abbreviated, time: .omitted))
                             .font(.subheadline)
                             .foregroundColor(.textSecondary)
-                        Text(session.startTime.formatted(date: .omitted, time: .shortened))
-                            .font(.caption)
-                            .foregroundColor(.textTertiary)
+                        HStack(spacing: 6) {
+                            Image(systemName: brewMethodIcon(for: session.brewMethod))
+                                .font(.caption2)
+                                .foregroundColor(.espressoBrown)
+                            Text(LocalizedString.get(session.brewMethod.lowercased()))
+                                .font(.caption)
+                                .foregroundColor(.textSecondary)
+                            Text("•")
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
+                            Text(session.startTime.formatted(date: .omitted, time: .shortened))
+                                .font(.caption)
+                                .foregroundColor(.textTertiary)
+                        }
                     }
 
                     Spacer()
@@ -161,7 +172,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Brew Time")
+                        Text(LocalizedString.get("brew_time"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -175,7 +186,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Ratio")
+                        Text(LocalizedString.get("ratio"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -189,7 +200,7 @@ struct SessionCardView: View {
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.textPrimary)
-                        Text("Dose")
+                        Text(LocalizedString.get("dose"))
                             .font(.caption)
                             .foregroundColor(.textSecondary)
                     }
@@ -243,6 +254,18 @@ struct SessionCardView: View {
                         .foregroundColor(.textTertiary)
                 }
             }
+        }
+    }
+
+    private func brewMethodIcon(for method: String) -> String {
+        switch method.lowercased() {
+        case "espresso": return "cup.and.saucer.fill"
+        case "aeropress": return "arrow.down.circle.fill"
+        case "frenchpress", "french_press": return "cylinder.fill"
+        case "coldbrew", "cold_brew": return "snowflake"
+        case "pourover", "pour_over": return "drop.fill"
+        case "moka", "moka_pot": return "flame.fill"
+        default: return "cup.and.saucer.fill"
         }
     }
 }

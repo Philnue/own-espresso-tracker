@@ -100,11 +100,21 @@ final class Bean {
 
     var freshnessIndicator: String {
         let days = daysFromRoast
-        if days <= 7 { return "Very Fresh" }
-        if days <= 14 { return "Fresh" }
-        if days <= 21 { return "Good" }
-        if days <= 30 { return "Aging" }
-        return "Stale"
+        if days <= 7 { return LocalizedString.get("very_fresh") }
+        if days <= 14 { return LocalizedString.get("fresh") }
+        if days <= 21 { return LocalizedString.get("good") }
+        if days <= 30 { return LocalizedString.get("aging") }
+        return LocalizedString.get("stale")
+    }
+
+    // Returns freshness level for color coding: 0=very fresh, 1=fresh, 2=good, 3=aging, 4=stale
+    var freshnessLevel: Int {
+        let days = daysFromRoast
+        if days <= 7 { return 0 }  // very fresh - bright green
+        if days <= 14 { return 1 } // fresh - green
+        if days <= 21 { return 2 } // good - espresso brown
+        if days <= 30 { return 3 } // aging - orange
+        return 4                    // stale - red/warning
     }
 
     var sessionsArray: [BrewingSession] {

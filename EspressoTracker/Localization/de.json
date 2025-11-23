@@ -101,6 +101,7 @@
   "rating": "Bewertung",
   "quality": "Qualität",
   "tasting_notes": "Geschmacksnotizen",
+  "tasting_notes_placeholder": "z.B. Schokolade, Karamell, Zitrus",
   "notes": "Notizen",
   "shot_photo": "Shot-Foto (Optional)",
   "add_photo": "Foto hinzufügen",
@@ -182,6 +183,7 @@
 
   "basic_information": "Grundinformationen",
   "name": "Name",
+  "brand": "Marke",
   "bean_details": "Bohnendetails",
   "roast_level": "Röstgrad",
   "roast_date": "Röstdatum",
@@ -192,6 +194,7 @@
   "purchase_date": "Kaufdatum",
   "image": "Bild",
   "select_image": "Bild auswählen",
+  "change_image": "Bild ändern",
   "additional_notes": "Zusätzliche Notizen",
 
   "add_beans": "Bohnen hinzufügen",
@@ -261,20 +264,85 @@
   "model": "Modell",
   "statistics": "Statistiken",
   "purchase_information": "Kaufinformationen",
+  "track_purchase_date": "Kaufdatum verfolgen",
   "boiler_type": "Kesseltyp",
   "group_head": "Brühgruppe",
   "pressure_bar": "Druck (bar)",
+  "purchased": "Gekauft",
 
   "no_machines_yet": "Noch keine Maschinen",
   "no_machines_description": "Fügen Sie Ihre Espressomaschine hinzu",
   "delete_machine_confirm": "Möchten Sie diese Maschine wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "delete_grinder_confirm": "Möchten Sie diese Mühle wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
   "delete_session_confirm": "Möchten Sie diese Brühsitzung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
 
   "weight_g": "Gewicht (g)",
   "price_currency": "Preis (€)",
 
   "add_grinder": "Mühle hinzufügen",
+  "edit_grinder": "Mühle bearbeiten",
+  "delete_grinder": "Mühle löschen",
   "add_machine": "Maschine hinzufügen",
+  "edit_machine": "Maschine bearbeiten",
+  "delete_machine": "Maschine löschen",
   "grinders": "Mühlen",
-  "machines": "Maschinen"
+  "machines": "Maschinen",
+
+  "brewing_methods": "Brühmethoden",
+  "manage_brewing_methods": "Brühmethoden verwalten",
+  "no_brewing_methods": "Keine Brühmethoden",
+  "add_brewing_methods_description": "Fügen Sie Brühmethoden mit eigenen Parametern hinzu",
+  "add_default_methods": "Standard-Methoden hinzufügen",
+  "add_method": "Methode hinzufügen",
+  "edit_method": "Methode bearbeiten",
+  "method_name": "Methodenname",
+  "icon": "Symbol",
+  "basic_information": "Grundinformationen",
+  "default_parameters": "Standardparameter",
+  "default_dose": "Standard-Dosis",
+  "ratio_range": "Verhältnisbereich (1:x)",
+  "brew_time_range": "Brühzeitbereich (Sekunden)",
+  "water_temperature": "Wassertemperatur",
+  "min": "Min",
+  "max": "Max",
+
+  "skip": "Überspringen",
+  "next": "Weiter",
+  "previous": "Zurück",
+  "get_started": "Los geht's",
+  "view_tutorial": "Tutorial anzeigen",
+
+  "welcome_to_brew_diary": "Willkommen bei Brew Diary!",
+  "tutorial_welcome_desc": "Verfolgen Sie Ihre Espresso-Reise, perfektionieren Sie Ihre Rezepte und entdecken Sie, was eine großartige Tasse ausmacht. Lassen Sie uns die Funktionen gemeinsam erkunden.",
+
+  "tutorial_beans_title": "Bohnen verwalten",
+  "tutorial_beans_desc": "Fügen Sie Ihre Kaffeebohnen mit Röstdatum, Herkunft und Verkostungsnotizen hinzu. Verfolgen Sie Frische und Bestand, um immer zu wissen, was vorrätig ist.",
+
+  "tutorial_equipment_title": "Ausrüstung verfolgen",
+  "tutorial_equipment_desc": "Fügen Sie Ihre Espressomaschinen und Mühlen hinzu. Notieren Sie Einstellungen und Modifikationen, um sich zu merken, was am besten funktioniert.",
+
+  "tutorial_brewing_title": "Brühvorgänge protokollieren",
+  "tutorial_brewing_desc": "Zeichnen Sie jeden Shot mit Dosis, Ertrag, Zeit und Verkostungsnotizen auf. Bewerten Sie Ihre Shots und verfolgen Sie, welche Parameter die besten Ergebnisse liefern.",
+
+  "tutorial_methods_title": "Brühmethoden anpassen",
+  "tutorial_methods_desc": "Erstellen und bearbeiten Sie Brühmethoden mit benutzerdefinierten Verhältnisbereichen, Temperaturen und Zeiten. Passen Sie die App an Ihren Brühstil an.",
+
+  "tutorial_history_title": "Verlauf überprüfen",
+  "tutorial_history_desc": "Durchsuchen Sie vergangene Brühvorgänge, sehen Sie Trends im Laufe der Zeit und lernen Sie aus Ihren besten (und schlechtesten) Shots.",
+
+  "tutorial_calculator_title": "Rezeptrechner",
+  "tutorial_calculator_desc": "Berechnen Sie perfekte Brühverhältnisse für jede Methode. Erhalten Sie Brühanleitungen mit empfohlenen Parametern für Ihre benutzerdefinierten Methoden.",
+
+  "tutorial_ready_title": "Sie sind startklar!",
+  "tutorial_ready_desc": "Beginnen Sie, indem Sie Ihre Bohnen und Ausrüstung hinzufügen, dann protokollieren Sie Ihren ersten Shot. Viel Spaß beim Brühen!",
+
+  "hours": "Stunden",
+  "minutes": "Min",
+  "seconds": "Sek",
+
+  "avg_time": "Ø Zeit",
+  "avg_ratio": "Ø Verhältnis",
+  "this_week": "Diese Woche",
+  "espresso_info": "Espresso: 1g ≈ 1ml (Wasser + extrahierter Kaffee)",
+  "yield_out_g": "Ertrag (g)"
 }

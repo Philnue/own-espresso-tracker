@@ -101,6 +101,7 @@
   "rating": "Rating",
   "quality": "Quality",
   "tasting_notes": "Tasting Notes",
+  "tasting_notes_placeholder": "e.g., Chocolate, Caramel, Citrus",
   "notes": "Notes",
   "shot_photo": "Shot Photo (Optional)",
   "add_photo": "Add Photo",
@@ -182,6 +183,7 @@
 
   "basic_information": "Basic Information",
   "name": "Name",
+  "brand": "Brand",
   "bean_details": "Bean Details",
   "roast_level": "Roast Level",
   "roast_date": "Roast Date",
@@ -192,6 +194,7 @@
   "purchase_date": "Purchase Date",
   "image": "Image",
   "select_image": "Select Image",
+  "change_image": "Change Image",
   "additional_notes": "Additional Notes",
 
   "add_beans": "Add Beans",
@@ -261,20 +264,85 @@
   "model": "Model",
   "statistics": "Statistics",
   "purchase_information": "Purchase Information",
+  "track_purchase_date": "Track Purchase Date",
   "boiler_type": "Boiler Type",
   "group_head": "Group Head",
   "pressure_bar": "Pressure (bar)",
+  "purchased": "Purchased",
 
   "no_machines_yet": "No Machines Yet",
   "no_machines_description": "Add your espresso machine to start brewing",
   "delete_machine_confirm": "Are you sure you want to delete this machine? This action cannot be undone.",
+  "delete_grinder_confirm": "Are you sure you want to delete this grinder? This action cannot be undone.",
   "delete_session_confirm": "Are you sure you want to delete this brewing session? This action cannot be undone.",
 
   "weight_g": "Weight (g)",
   "price_currency": "Price ($)",
 
   "add_grinder": "Add Grinder",
+  "edit_grinder": "Edit Grinder",
+  "delete_grinder": "Delete Grinder",
   "add_machine": "Add Machine",
+  "edit_machine": "Edit Machine",
+  "delete_machine": "Delete Machine",
   "grinders": "Grinders",
-  "machines": "Machines"
+  "machines": "Machines",
+
+  "brewing_methods": "Brewing Methods",
+  "manage_brewing_methods": "Manage Brewing Methods",
+  "no_brewing_methods": "No Brewing Methods",
+  "add_brewing_methods_description": "Add brewing methods with custom parameters",
+  "add_default_methods": "Add Default Methods",
+  "add_method": "Add Method",
+  "edit_method": "Edit Method",
+  "method_name": "Method Name",
+  "icon": "Icon",
+  "basic_information": "Basic Information",
+  "default_parameters": "Default Parameters",
+  "default_dose": "Default Dose",
+  "ratio_range": "Ratio Range (1:x)",
+  "brew_time_range": "Brew Time Range (seconds)",
+  "water_temperature": "Water Temperature",
+  "min": "Min",
+  "max": "Max",
+
+  "skip": "Skip",
+  "next": "Next",
+  "previous": "Previous",
+  "get_started": "Get Started",
+  "view_tutorial": "View Tutorial",
+
+  "welcome_to_brew_diary": "Welcome to Brew Diary!",
+  "tutorial_welcome_desc": "Track your espresso journey, perfect your recipes, and discover what makes a great cup. Let's explore the features together.",
+
+  "tutorial_beans_title": "Manage Your Beans",
+  "tutorial_beans_desc": "Add your coffee beans with roast dates, origin, and tasting notes. Track freshness and inventory to always know what's in stock.",
+
+  "tutorial_equipment_title": "Track Your Equipment",
+  "tutorial_equipment_desc": "Add your espresso machines and grinders. Keep notes on settings and modifications to remember what works best.",
+
+  "tutorial_brewing_title": "Log Brewing Sessions",
+  "tutorial_brewing_desc": "Record every shot with dose, yield, time, and tasting notes. Rate your shots and track what parameters produce the best results.",
+
+  "tutorial_methods_title": "Customize Brew Methods",
+  "tutorial_methods_desc": "Create and edit brewing methods with custom ratio ranges, temperatures, and times. Tailor the app to match your brewing style.",
+
+  "tutorial_history_title": "Review Your History",
+  "tutorial_history_desc": "Browse past brewing sessions, see trends over time, and learn from your best (and worst) shots.",
+
+  "tutorial_calculator_title": "Recipe Calculator",
+  "tutorial_calculator_desc": "Calculate perfect brew ratios for any method. Get brewing guides with recommended parameters for your custom methods.",
+
+  "tutorial_ready_title": "You're All Set!",
+  "tutorial_ready_desc": "Start by adding your beans and equipment, then log your first shot. Happy brewing!",
+
+  "hours": "hours",
+  "minutes": "min",
+  "seconds": "sec",
+
+  "avg_time": "Avg Time",
+  "avg_ratio": "Avg Ratio",
+  "this_week": "This Week",
+  "espresso_info": "Espresso: 1g ≈ 1ml (water + extracted coffee)",
+  "yield_out_g": "Yield Out (g)"
 }

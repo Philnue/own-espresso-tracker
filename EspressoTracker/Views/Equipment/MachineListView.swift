@@ -34,7 +34,7 @@ struct MachineListView: View {
                 }
             }
         }
-        .navigationTitle("Machines")
+        .navigationTitle(LocalizedString.get("machines"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { showingAddMachine = true }) {

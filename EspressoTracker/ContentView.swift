@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @ObservedObject private var settings = UserSettings.shared
+    @State private var showingTutorial = !UserDefaults.standard.bool(forKey: "hasSeenTutorial")
 
     var body: some View {
         Group {
@@ -34,20 +35,20 @@ struct ContentView: View {
                         Label(LocalizedString.get("tab_recipes"), systemImage: "book.fill")
                     }
 
-                EquipmentView()
-                    .tabItem {
-                        Label(LocalizedString.get("tab_equipment"), systemImage: "gearshape.fill")
-                    }
-
                 SettingsView()
                     .tabItem {
-                        Label(LocalizedString.get("tab_settings"), systemImage: "gear")
+                        Label(LocalizedString.get("tab_settings"), systemImage: "gearshape.fill")
                     }
             }
             .accentColor(.espressoBrown)
         }
         .preferredColorScheme(settings.colorScheme == "dark" ? .dark : settings.colorScheme == "light" ? .light : nil)
         .id("\(settings.appLanguage)_\(settings.colorScheme)") // Force refresh when language or theme changes
+        .fullScreenCover(isPresented: $showingTutorial, onDismiss: {
+            UserDefaults.standard.set(true, forKey: "hasSeenTutorial")
+        }) {
+            TutorialView()
+        }
     }
 }
 

@@ -17,15 +17,25 @@ struct LocalizedString {
     private static func loadTranslations() -> [String: [String: String]] {
         var result: [String: [String: String]] = [:]
 
-        // Load English translations
-        if let enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization"),
+        // Load English translations - try multiple locations for robustness
+        var enURL = Bundle.main.url(forResource: "en", withExtension: "json", subdirectory: "Localization")
+        if enURL == nil {
+            enURL = Bundle.main.url(forResource: "en", withExtension: "json")
+        }
+
+        if let enURL = enURL,
            let enData = try? Data(contentsOf: enURL),
            let enDict = try? JSONDecoder().decode([String: String].self, from: enData) {
             result["en"] = enDict
         }
 
-        // Load German translations
-        if let deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization"),
+        // Load German translations - try multiple locations for robustness
+        var deURL = Bundle.main.url(forResource: "de", withExtension: "json", subdirectory: "Localization")
+        if deURL == nil {
+            deURL = Bundle.main.url(forResource: "de", withExtension: "json")
+        }
+
+        if let deURL = deURL,
            let deData = try? Data(contentsOf: deURL),
            let deDict = try? JSONDecoder().decode([String: String].self, from: deData) {
             result["de"] = deDict
@@ -80,7 +90,9 @@ struct LocalizedString {
                 "recommendations": "Recommendations",
                 "great_shot": "Great shot! Current parameters are working well",
                 "import_data": "Import Data",
-                "export_data": "Export Data"
+                "export_data": "Export Data",
+                "no_history_yet": "No Brewing History",
+                "no_history_description": "Your brewing sessions will appear here"
             ],
             "de": [
                 "tab_brew": "Brühen",
@@ -120,7 +132,9 @@ struct LocalizedString {
                 "recommendations": "Empfehlungen",
                 "great_shot": "Perfekter Shot! Die aktuellen Parameter funktionieren gut",
                 "import_data": "Daten importieren",
-                "export_data": "Daten exportieren"
+                "export_data": "Daten exportieren",
+                "no_history_yet": "Keine Brühhistorie",
+                "no_history_description": "Ihre Brühsitzungen erscheinen hier"
             ]
         ]
     }

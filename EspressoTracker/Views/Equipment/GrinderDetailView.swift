@@ -59,7 +59,7 @@ struct GrinderDetailView: View {
                             if !grinder.burrType.isEmpty {
                                 InfoRow(
                                     icon: "gearshape.2",
-                                    label: "Burr Type",
+                                    label: LocalizedString.get("burr_type"),
                                     value: grinder.burrType
                                 )
                             }
@@ -67,7 +67,7 @@ struct GrinderDetailView: View {
                             if grinder.burrSize > 0 {
                                 InfoRow(
                                     icon: "ruler",
-                                    label: "Burr Size",
+                                    label: LocalizedString.get("burr_size_mm"),
                                     value: "\(grinder.burrSize)mm"
                                 )
                             }
@@ -77,7 +77,7 @@ struct GrinderDetailView: View {
                                     HStack {
                                         Image(systemName: "note.text")
                                             .foregroundColor(.espressoBrown)
-                                        Text("Notes")
+                                        Text(LocalizedString.get("notes"))
                                             .font(.subheadline)
                                             .fontWeight(.medium)
                                             .foregroundColor(.textSecondary)
@@ -96,20 +96,20 @@ struct GrinderDetailView: View {
                     if sessionCount > 0 {
                         CustomCard {
                             VStack(alignment: .leading, spacing: 12) {
-                                Text("Statistics")
+                                Text(LocalizedString.get("statistics"))
                                     .font(.headline)
                                     .foregroundColor(.textPrimary)
 
                                 InfoRow(
                                     icon: "cup.and.saucer.fill",
-                                    label: "Total Shots",
+                                    label: LocalizedString.get("total_shots"),
                                     value: "\(sessionCount)"
                                 )
 
                                 if let lastSession = grinder.sessionsArray.first {
                                     InfoRow(
                                         icon: "clock",
-                                        label: "Last Used",
+                                        label: LocalizedString.get("last_used"),
                                         value: lastSession.startTime.formatted(date: .abbreviated, time: .omitted)
                                     )
                                 }
@@ -119,11 +119,11 @@ struct GrinderDetailView: View {
 
                     // Action buttons
                     VStack(spacing: 12) {
-                        PrimaryButton(title: "Edit Grinder") {
+                        PrimaryButton(title: LocalizedString.get("edit_grinder")) {
                             showingEditView = true
                         }
 
-                        PrimaryButton(title: "Delete Grinder", action: {
+                        PrimaryButton(title: LocalizedString.get("delete_grinder"), action: {
                             showingDeleteAlert = true
                         }, isDestructive: true)
                     }
@@ -135,13 +135,13 @@ struct GrinderDetailView: View {
         .sheet(isPresented: $showingEditView) {
             EditGrinderView(grinder: grinder)
         }
-        .alert("Delete Grinder", isPresented: $showingDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert(LocalizedString.get("delete_grinder"), isPresented: $showingDeleteAlert) {
+            Button(LocalizedString.get("cancel"), role: .cancel) { }
+            Button(LocalizedString.get("delete"), role: .destructive) {
                 deleteGrinder()
             }
         } message: {
-            Text("Are you sure you want to delete this grinder? This action cannot be undone.")
+            Text(LocalizedString.get("delete_grinder_confirm"))
         }
     }
 

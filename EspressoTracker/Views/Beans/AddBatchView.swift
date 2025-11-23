@@ -20,43 +20,43 @@ struct AddBatchView: View {
     @State private var price = ""
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
                     // Bean info (read-only)
-                    Section(header: Text("Bean Details").foregroundColor(.espressoBrown)) {
+                    Section(header: Text(LocalizedString.get("bean_details")).foregroundColor(.espressoBrown)) {
                         HStack {
-                            Text("Name")
-                            Spacer()
-                            Text(existingBean.wrappedName)
-                                .foregroundColor(.textSecondary)
-                        }
+                            Text(LocalizedString.get("name"))
+                        Spacer()
+                        Text(existingBean.wrappedName)
+                            .foregroundColor(.textSecondary)
+                    }
 
-                        HStack {
-                            Text("Roaster")
+                    HStack {
+                            Text(LocalizedString.get("roaster"))
                             Spacer()
                             Text(existingBean.wrappedRoaster)
                                 .foregroundColor(.textSecondary)
                         }
 
                         HStack {
-                            Text("Origin")
+                            Text(LocalizedString.get("origin"))
                             Spacer()
                             Text(existingBean.wrappedOrigin)
                                 .foregroundColor(.textSecondary)
                         }
 
                         HStack {
-                            Text("Roast Level")
+                            Text(LocalizedString.get("roast_level"))
                             Spacer()
                             Text(existingBean.roastLevel)
                                 .foregroundColor(.textSecondary)
                         }
 
                         HStack {
-                            Text("Process")
+                            Text(LocalizedString.get("process"))
                             Spacer()
                             Text(existingBean.process)
                                 .foregroundColor(.textSecondary)
@@ -65,13 +65,13 @@ struct AddBatchView: View {
                     .listRowBackground(Color.cardBackground)
 
                     // Batch-specific info
-                    Section(header: Text("New Batch Details").foregroundColor(.espressoBrown)) {
-                        DatePicker("Roast Date", selection: $roastDate, displayedComponents: .date)
+                    Section(header: Text(LocalizedString.get("new_batch_details")).foregroundColor(.espressoBrown)) {
+                        DatePicker(LocalizedString.get("roast_date"), selection: $roastDate, displayedComponents: .date)
 
-                        DatePicker("Purchase Date", selection: $purchaseDate, displayedComponents: .date)
+                        DatePicker(LocalizedString.get("purchase_date"), selection: $purchaseDate, displayedComponents: .date)
 
                         HStack {
-                            Text("Weight (g)")
+                            Text(LocalizedString.get("weight_g"))
                             Spacer()
                             TextField("250", text: $weight)
                                 .keyboardType(.numberPad)
@@ -80,7 +80,7 @@ struct AddBatchView: View {
                         }
 
                         HStack {
-                            Text("Price ($)")
+                            Text(LocalizedString.get("price_currency"))
                             Spacer()
                             TextField(String(format: "%.2f", existingBean.price), text: $price)
                                 .keyboardType(.decimalPad)
@@ -95,7 +95,7 @@ struct AddBatchView: View {
                         HStack {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.espressoBrown)
-                            Text("This will create a new batch with its own inventory tracking. The original bean will remain unchanged.")
+                            Text(LocalizedString.get("new_batch_info"))
                                 .font(.caption)
                                 .foregroundColor(.textSecondary)
                         }
@@ -104,18 +104,18 @@ struct AddBatchView: View {
                 }
                 .scrollContentBackground(.hidden)
             }
-            .navigationTitle("New Batch")
+            .navigationTitle(LocalizedString.get("new_batch"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(LocalizedString.get("cancel")) {
                         dismiss()
                     }
                     .foregroundColor(.textSecondary)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
+                    Button(LocalizedString.get("save")) {
                         saveBatch()
                     }
                     .foregroundColor(.espressoBrown)

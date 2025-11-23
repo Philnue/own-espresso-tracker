@@ -52,7 +52,7 @@ struct BeansView: View {
                     }
                 }
             }
-            .navigationTitle(showArchivedBeans ? "All Beans" : "Active Beans")
+            .navigationTitle(showArchivedBeans ? LocalizedString.get("all_beans") : LocalizedString.get("active_beans"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if archivedBeanCount > 0 {
@@ -123,30 +123,32 @@ struct BeanCardView: View {
 
     var body: some View {
         CustomCard {
-            VStack(spacing: 0) {
-                HStack(spacing: 16) {
+            VStack(spacing: 12) {
+                HStack(alignment: .top, spacing: 12) {
                     // Image or placeholder
                     if let imageData = bean.imageData,
                        let uiImage = UIImage(data: imageData) {
                         Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80)
-                            .cornerRadius(12)
+                            .frame(width: 70, height: 70)
+                            .cornerRadius(10)
                     } else {
                         Image(systemName: "leaf.fill")
-                            .font(.system(size: 32))
+                            .font(.system(size: 28))
                             .foregroundColor(.textSecondary)
-                            .frame(width: 80, height: 80)
+                            .frame(width: 70, height: 70)
                             .background(Color.backgroundSecondary)
-                            .cornerRadius(12)
+                            .cornerRadius(10)
                     }
 
-                    VStack(alignment: .leading, spacing: 8) {
+                    // Bean info
+                    VStack(alignment: .leading, spacing: 6) {
                         HStack {
                             Text(bean.wrappedName)
                                 .font(.headline)
                                 .foregroundColor(.textPrimary)
+                                .lineLimit(1)
 
                             if bean.batchNumber > 1 {
                                 Text("#\(bean.batchNumber)")
@@ -164,66 +166,73 @@ struct BeanCardView: View {
                                     .font(.caption)
                                     .foregroundColor(.warningOrange)
                             }
+
+                            Spacer()
+
+                            // Freshness badge
+                            Text(bean.freshnessIndicator)
+                                .font(.caption2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(freshnessColor(for: bean.freshnessLevel))
+                                .cornerRadius(6)
                         }
 
                         Text(bean.wrappedRoaster)
                             .font(.subheadline)
                             .foregroundColor(.espressoBrown)
+                            .lineLimit(1)
+                    }
+                }
 
-                        HStack(spacing: 12) {
-                            // Origin
-                            if !bean.wrappedOrigin.isEmpty {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "globe")
-                                        .font(.caption)
-                                    Text(bean.wrappedOrigin)
-                                        .font(.caption)
-                                }
-                            }
+                // Details row - vertical layout
+                Divider()
+                    .background(Color.dividerColor)
 
-                            // Freshness indicator
-                            HStack(spacing: 4) {
-                                Image(systemName: "calendar")
-                                    .font(.caption)
-                                Text("\(bean.daysFromRoast)d")
-                                    .font(.caption)
-                            }
-                            .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
-
-                            // Remaining weight
-                            if bean.weight > 0 {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "scalemass")
-                                        .font(.caption)
-                                    Text("\(Int(bean.remainingWeight))g")
-                                        .font(.caption)
-                                }
-                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textSecondary))
-                            }
+                HStack(spacing: 8) {
+                    // Origin
+                    if !bean.wrappedOrigin.isEmpty {
+                        HStack(spacing: 4) {
+                            Image(systemName: "globe")
+                                .font(.caption2)
+                                .foregroundColor(.espressoBrown)
+                            Text(bean.wrappedOrigin)
+                                .font(.caption)
+                                .foregroundColor(.textPrimary)
+                                .lineLimit(1)
                         }
-                        .foregroundColor(.textSecondary)
                     }
 
                     Spacer()
 
-                    // Freshness badge
-                    VStack {
-                        Text(bean.freshnessIndicator)
+                    // Freshness
+                    HStack(spacing: 4) {
+                        Image(systemName: "calendar")
                             .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(
-                                bean.isStale ? Color.warningOrange : Color.successGreen
-                            )
-                            .cornerRadius(6)
-
-                        Spacer()
-
-                        Image(systemName: "chevron.right")
-                            .foregroundColor(.textTertiary)
+                            .foregroundColor(freshnessColor(for: bean.freshnessLevel))
+                        Text("\(bean.daysFromRoast)d")
+                            .font(.caption)
+                            .foregroundColor(freshnessColor(for: bean.freshnessLevel))
                     }
+
+                    // Remaining weight
+                    if bean.weight > 0 {
+                        HStack(spacing: 4) {
+                            Image(systemName: "scalemass")
+                                .font(.caption2)
+                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .espressoBrown))
+                            Text("\(Int(bean.remainingWeight))g")
+                                .font(.caption)
+                                .foregroundColor(bean.isLowStock ? .warningOrange : (bean.isFinished ? .errorRed : .textPrimary))
+                        }
+                    }
+
+                    // Arrow
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundColor(.textTertiary)
                 }
 
                 // Usage progress bar
@@ -241,23 +250,31 @@ struct BeanCardView: View {
                             }
                         }
                         .frame(height: 4)
-                        .padding(.top, 12)
 
                         HStack {
-                            Text("\(String(format: "%.1f%%", bean.usagePercentage)) used")
+                            Text("\(String(format: "%.1f%%", bean.usagePercentage)) \(LocalizedString.get("used").lowercased())")
                                 .font(.caption2)
                                 .foregroundColor(.textSecondary)
 
                             Spacer()
 
-                            Text("\(bean.sessionsArray.count) shots")
+                            Text("\(bean.sessionsArray.count) \(LocalizedString.get("shots"))")
                                 .font(.caption2)
                                 .foregroundColor(.textSecondary)
                         }
-                        .padding(.top, 4)
                     }
                 }
             }
+        }
+    }
+
+    private func freshnessColor(for level: Int) -> Color {
+        switch level {
+        case 0: return .successGreen      // Very Fresh - bright green
+        case 1: return .successGreen      // Fresh - green
+        case 2: return .espressoBrown     // Good - brown
+        case 3: return .warningOrange     // Aging - orange
+        default: return .errorRed         // Stale - red
         }
     }
 }

@@ -25,100 +25,100 @@ struct EditGrinderView: View {
     let burrTypes = ["Flat", "Conical", "Other"]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.backgroundPrimary.ignoresSafeArea()
 
                 Form {
-                    Section(header: Text("Basic Information").foregroundColor(.espressoBrown)) {
-                        TextField("Name", text: $name)
-                        TextField("Brand", text: $brand)
+                    Section(header: Text(LocalizedString.get("basic_information")).foregroundColor(.espressoBrown)) {
+                        TextField(LocalizedString.get("name"), text: $name)
+                        TextField(LocalizedString.get("brand"), text: $brand)
                     }
                     .listRowBackground(Color.cardBackground)
 
-                    Section(header: Text("Specifications").foregroundColor(.espressoBrown)) {
-                        Picker("Burr Type", selection: $burrType) {
-                            ForEach(burrTypes, id: \.self) { type in
-                                Text(type).tag(type)
-                            }
+                Section(header: Text(LocalizedString.get("specifications")).foregroundColor(.espressoBrown)) {
+                    Picker(LocalizedString.get("burr_type"), selection: $burrType) {
+                        ForEach(burrTypes, id: \.self) { type in
+                            Text(type).tag(type)
                         }
+                    }
 
+                    HStack {
+                        Text(LocalizedString.get("burr_size_mm"))
+                        Spacer()
+                        TextField("63", text: $burrSize)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 80)
+                    }
+                }
+                .listRowBackground(Color.cardBackground)
+
+                Section(header: Text(LocalizedString.get("image")).foregroundColor(.espressoBrown)) {
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
                         HStack {
-                            Text("Burr Size (mm)")
+                            if let imageData = imageData,
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(8)
+                            } else {
+                                Image(systemName: "photo")
+                                    .font(.title2)
+                                    .foregroundColor(.textSecondary)
+                                    .frame(width: 60, height: 60)
+                                    .background(Color.backgroundSecondary)
+                                    .cornerRadius(8)
+                            }
+
+                            Text(LocalizedString.get("change_image"))
+                                .foregroundColor(.espressoBrown)
+
                             Spacer()
-                            TextField("63", text: $burrSize)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.trailing)
-                                .frame(width: 80)
                         }
                     }
-                    .listRowBackground(Color.cardBackground)
-
-                    Section(header: Text("Image").foregroundColor(.espressoBrown)) {
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            HStack {
-                                if let imageData = imageData,
-                                   let uiImage = UIImage(data: imageData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(8)
-                                } else {
-                                    Image(systemName: "photo")
-                                        .font(.title2)
-                                        .foregroundColor(.textSecondary)
-                                        .frame(width: 60, height: 60)
-                                        .background(Color.backgroundSecondary)
-                                        .cornerRadius(8)
-                                }
-
-                                Text("Change Image")
-                                    .foregroundColor(.espressoBrown)
-
-                                Spacer()
-                            }
-                        }
-                        .onChange(of: selectedImage) { oldValue, newValue in
-                            Task {
-                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                    imageData = data
-                                }
+                    .onChange(of: selectedImage) { oldValue, newValue in
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                imageData = data
                             }
                         }
                     }
-                    .listRowBackground(Color.cardBackground)
+                }
+                .listRowBackground(Color.cardBackground)
 
-                    Section(header: Text("Notes").foregroundColor(.espressoBrown)) {
-                        TextEditor(text: $notes)
-                            .frame(height: 100)
-                            .foregroundColor(.textPrimary)
-                    }
-                    .listRowBackground(Color.cardBackground)
+                Section(header: Text(LocalizedString.get("notes")).foregroundColor(.espressoBrown)) {
+                    TextEditor(text: $notes)
+                        .frame(height: 100)
+                        .foregroundColor(.textPrimary)
                 }
-                .scrollContentBackground(.hidden)
+                .listRowBackground(Color.cardBackground)
             }
-            .navigationTitle("Edit Grinder")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    .foregroundColor(.textSecondary)
+            .scrollContentBackground(.hidden)
+        }
+        .navigationTitle(LocalizedString.get("edit_grinder"))
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(LocalizedString.get("cancel")) {
+                    dismiss()
                 }
+                .foregroundColor(.textSecondary)
+            }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        saveChanges()
-                    }
-                    .foregroundColor(.espressoBrown)
-                    .disabled(name.isEmpty)
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(LocalizedString.get("save")) {
+                    saveChanges()
                 }
+                .foregroundColor(.espressoBrown)
+                .disabled(name.isEmpty)
             }
-            .onAppear {
-                loadGrinderData()
-            }
+        }
+        .onAppear {
+            loadGrinderData()
+        }
         }
     }
 

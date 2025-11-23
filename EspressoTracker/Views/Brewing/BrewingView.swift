@@ -681,12 +681,37 @@ struct BrewingView: View {
                     .font(.caption)
                     .foregroundColor(.textSecondary)
                     .multilineTextAlignment(.center)
+            } else if viewModel.elapsedTime == 0 {
+                Text(LocalizedString.get("start_timer_hint"))
+                    .font(.caption)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
             }
         }
     }
 
     private var canFinish: Bool {
-        !viewModel.isRunning && viewModel.elapsedTime > 0 && selectedGrinder != nil && selectedMachine != nil && selectedBean != nil
+        !viewModel.isRunning && viewModel.elapsedTime > 0 && isEquipmentComplete
+    }
+
+    private func getEquipmentMessage() -> String {
+        var missing: [String] = []
+
+        if selectedGrinder == nil {
+            missing.append(LocalizedString.get("grinder").lowercased())
+        }
+        if requiresMachine && selectedMachine == nil {
+            missing.append(LocalizedString.get("machine").lowercased())
+        }
+        if selectedBean == nil {
+            missing.append(LocalizedString.get("beans").lowercased())
+        }
+
+        if missing.isEmpty {
+            return ""
+        } else {
+            return LocalizedString.get("please_select_equipment")
+        }
     }
 
     private var extractionStatus: String {

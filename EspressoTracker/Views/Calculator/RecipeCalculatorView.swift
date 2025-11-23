@@ -15,6 +15,11 @@ struct RecipeCalculatorView: View {
     @State private var targetYield: Double = 36.0
     @FocusState private var isInputFocused: Bool
 
+    var selectedMethod: BrewingMethodModel? {
+        guard !brewingMethods.isEmpty, selectedMethodIndex < brewingMethods.count else { return nil }
+        return brewingMethods[selectedMethodIndex]
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -40,14 +45,15 @@ struct RecipeCalculatorView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Recipe Calculator")
+            .navigationTitle(LocalizedString.get("recipe_calculator"))
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Done") {
+                    Button(LocalizedString.get("done")) {
                         isInputFocused = false
                     }
                     .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
                 }
             }
             .onAppear {
@@ -265,27 +271,14 @@ struct RecipeCalculatorView: View {
         targetYield = dose * ratioValue
     }
 
-    private func updateDefaults(for method: BrewMethod) {
-        switch method {
-        case .espresso:
-            // Use user's default settings for espresso
+    private func updateDefaults(for method: BrewingMethodModel) {
+        // Use user's default settings for espresso if it's espresso method
+        if method.name.lowercased() == "espresso" {
             doseIn = String(format: "%.0f", settings.defaultDoseIn)
             ratio = String(format: "%.1f", settings.defaultRatio)
-        case .aeropress:
-            doseIn = "15"
-            ratio = "16.0"
-        case .frenchPress:
-            doseIn = "30"
-            ratio = "16.0"
-        case .coldBrew:
-            doseIn = "100"
-            ratio = "5.0"
-        case .pourOver:
-            doseIn = "20"
-            ratio = "16.0"
-        case .moka:
-            doseIn = "20"
-            ratio = "8.0"
+        } else {
+            doseIn = String(format: "%.0f", method.defaultDoseGrams)
+            ratio = String(format: "%.1f", (method.defaultRatioMin + method.defaultRatioMax) / 2.0)
         }
         calculateYield()
     }

@@ -300,17 +300,16 @@ struct BeanPickerRow: View {
     }
 
     private func freshnessColor(for bean: Bean) -> Color {
-        // Use freshnessLevel (Int) for reliable color mapping regardless of localization
-        switch bean.freshnessLevel {
-        case 0:  // Very Fresh (≤7 days)
+        switch bean.freshnessIndicator {
+        case "Very Fresh":
             return .freshnessVeryFresh
-        case 1:  // Fresh (≤14 days)
+        case "Fresh":
             return .freshnessFresh
-        case 2:  // Good (≤21 days)
+        case "Good":
             return .freshnessGood
-        case 3:  // Aging (≤30 days)
+        case "Aging":
             return .freshnessAging
-        default: // Stale (>30 days)
+        default:
             return .freshnessStale
         }
     }

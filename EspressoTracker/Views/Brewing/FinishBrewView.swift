@@ -281,8 +281,8 @@ struct FinishBrewView: View {
 
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Done") {
-                        isInputFocused = false
+                    Button(LocalizedString.get("done")) {
+                        focusedField = nil
                     }
                     .foregroundColor(.espressoBrown)
                     .fontWeight(.semibold)

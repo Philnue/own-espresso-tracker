@@ -20,6 +20,7 @@ struct SettingsView: View {
     @State private var showingTestDataSuccess = false
     @State private var showingTutorial = false
     @State private var exportURL: URL?
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         NavigationView {
@@ -62,6 +63,7 @@ struct SettingsView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                         Text("g")
                             .foregroundColor(.textSecondary)
                     }
@@ -73,6 +75,7 @@ struct SettingsView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                         Text("1:x")
                             .foregroundColor(.textSecondary)
                     }
@@ -84,6 +87,7 @@ struct SettingsView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                         Text("°C")
                             .foregroundColor(.textSecondary)
                     }
@@ -95,6 +99,7 @@ struct SettingsView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                         Text("bar")
                             .foregroundColor(.textSecondary)
                     }
@@ -237,6 +242,18 @@ struct SettingsView: View {
             .id(settings.appLanguage) // Force refresh when language changes
         }
         .navigationTitle(LocalizedString.get("tab_settings"))
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                HStack {
+                    Spacer()
+                    Button(LocalizedString.get("done")) {
+                        isInputFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
+                }
+            }
+        }
         .fileImporter(
             isPresented: $showingImport,
             allowedContentTypes: [.json],

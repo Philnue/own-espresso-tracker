@@ -20,6 +20,7 @@ struct AddGrinderView: View {
     @State private var notes = ""
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
+    @FocusState private var isInputFocused: Bool
 
     let burrTypes = ["Flat", "Conical", "Other"]
 
@@ -49,6 +50,7 @@ struct AddGrinderView: View {
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                     }
                 }
                 .listRowBackground(Color.cardBackground)
@@ -113,6 +115,17 @@ struct AddGrinderView: View {
                 }
                 .foregroundColor(.espressoBrown)
                 .disabled(name.isEmpty)
+            }
+
+            ToolbarItem(placement: .keyboard) {
+                HStack {
+                    Spacer()
+                    Button(LocalizedString.get("done")) {
+                        isInputFocused = false
+                    }
+                    .foregroundColor(.espressoBrown)
+                    .fontWeight(.semibold)
+                }
             }
         }
         }

@@ -24,6 +24,7 @@ struct AddMachineView: View {
     @State private var hasPurchaseDate = false
     @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
+    @FocusState private var isInputFocused: Bool
 
     let boilerTypes = ["Single Boiler", "Double Boiler", "Heat Exchanger", "Dual Boiler"]
     let groupHeadTypes = ["Standard", "E61", "Saturated", "Semi-Saturated", "Other"]
@@ -61,6 +62,7 @@ struct AddMachineView: View {
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 80)
+                            .focused($isInputFocused)
                     }
                 }
                 .listRowBackground(Color.cardBackground)
@@ -134,6 +136,17 @@ struct AddMachineView: View {
                     }
                     .foregroundColor(.espressoBrown)
                     .disabled(name.isEmpty)
+                }
+
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            isInputFocused = false
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
                 }
             }
         }

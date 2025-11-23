@@ -526,6 +526,7 @@ struct BrewingView: View {
                             .foregroundColor(.textSecondary)
                         Spacer()
                         TextField("e.g., 15", text: $viewModel.grindSetting)
+                            .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)

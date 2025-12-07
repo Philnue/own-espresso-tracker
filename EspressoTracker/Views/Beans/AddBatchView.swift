@@ -18,6 +18,7 @@ struct AddBatchView: View {
     @State private var purchaseDate = Date()
     @State private var weight = "250"
     @State private var price = ""
+    @FocusState private var isInputFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -77,6 +78,7 @@ struct AddBatchView: View {
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
+                                .focused($isInputFocused)
                         }
 
                         HStack {
@@ -86,6 +88,7 @@ struct AddBatchView: View {
                                 .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: 100)
+                                .focused($isInputFocused)
                         }
                     }
                     .listRowBackground(Color.cardBackground)
@@ -119,6 +122,17 @@ struct AddBatchView: View {
                         saveBatch()
                     }
                     .foregroundColor(.espressoBrown)
+                }
+
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            isInputFocused = false
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
                 }
             }
             .onAppear {

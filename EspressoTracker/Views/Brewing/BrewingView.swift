@@ -24,6 +24,11 @@ struct BrewingView: View {
     @State private var showingFinishSheet = false
     @State private var showArchivedBeans = false
     @State private var showingBeanPicker = false
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case grindSetting, waterTemp, pressure, doseIn
+    }
 
     // Filtered beans based on archive status
     private var beans: [Bean] {
@@ -76,6 +81,18 @@ struct BrewingView: View {
                 }
             }
             .navigationTitle(LocalizedString.get("tab_brew"))
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            focusedField = nil
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
+                }
+            }
             .sheet(isPresented: $showingFinishSheet) {
                 FinishBrewView(
                     viewModel: viewModel,
@@ -509,9 +526,11 @@ struct BrewingView: View {
                             .foregroundColor(.textSecondary)
                         Spacer()
                         TextField("e.g., 15", text: $viewModel.grindSetting)
+                            .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($focusedField, equals: .grindSetting)
                     }
 
                     Divider()
@@ -528,6 +547,7 @@ struct BrewingView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($focusedField, equals: .waterTemp)
                     }
 
                     Divider()
@@ -544,6 +564,7 @@ struct BrewingView: View {
                             .multilineTextAlignment(.trailing)
                             .frame(width: 100)
                             .foregroundColor(.textPrimary)
+                            .focused($focusedField, equals: .pressure)
                     }
                 }
             }
@@ -605,6 +626,7 @@ struct BrewingView: View {
                                 .font(.system(size: 32, weight: .bold, design: .rounded))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.textPrimary)
+                                .focused($focusedField, equals: .doseIn)
 
                             Text("g")
                                 .font(.title3)

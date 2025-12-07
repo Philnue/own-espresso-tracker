@@ -47,9 +47,11 @@ extension Color {
     })
 
     // Status colors (same for both modes)
-    static let successGreen = Color(red: 0.20, green: 0.78, blue: 0.35)        // #34C759
-    static let warningOrange = Color(red: 1.00, green: 0.58, blue: 0.00)       // #FF9500
-    static let errorRed = Color(red: 1.00, green: 0.27, blue: 0.23)            // #FF453A
+    static let successGreen = Color(red: 0.20, green: 0.78, blue: 0.35)        // #34C759 - Very Fresh
+    static let freshGreen = Color(red: 0.30, green: 0.69, blue: 0.31)          // #4CAF50 - Fresh
+    static let goodBlue = Color(red: 0.13, green: 0.59, blue: 0.95)            // #2196F3 - Good
+    static let warningOrange = Color(red: 1.00, green: 0.58, blue: 0.00)       // #FF9500 - Aging
+    static let errorRed = Color(red: 1.00, green: 0.27, blue: 0.23)            // #FF453A - Stale
 
     // Adaptive Text colors
     static let textPrimary = Color(UIColor { traitCollection in

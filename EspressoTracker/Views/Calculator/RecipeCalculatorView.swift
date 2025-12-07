@@ -16,6 +16,11 @@ struct RecipeCalculatorView: View {
     @State private var doseIn: String = "18"
     @State private var ratio: String = "2.0"
     @State private var targetYield: Double = 36.0
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case dose, ratio
+    }
 
     var selectedMethod: BrewingMethodModel? {
         guard !brewingMethods.isEmpty, selectedMethodIndex < brewingMethods.count else { return nil }
@@ -45,6 +50,18 @@ struct RecipeCalculatorView: View {
                 }
             }
             .navigationTitle(LocalizedString.get("recipe_calculator"))
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button(LocalizedString.get("done")) {
+                            focusedField = nil
+                        }
+                        .foregroundColor(.espressoBrown)
+                        .fontWeight(.semibold)
+                    }
+                }
+            }
             .onAppear {
                 if let firstMethod = brewingMethods.first {
                     updateDefaults(for: firstMethod)
@@ -104,6 +121,7 @@ struct RecipeCalculatorView: View {
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 100)
+                            .focused($focusedField, equals: .dose)
                             .onChange(of: doseIn) { _, newValue in
                                 calculateYield()
                             }
@@ -126,6 +144,7 @@ struct RecipeCalculatorView: View {
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 100)
+                            .focused($focusedField, equals: .ratio)
                             .onChange(of: ratio) { _, newValue in
                                 calculateYield()
                             }

@@ -62,7 +62,7 @@ struct BeanDetailView: View {
                                 Text(bean.freshnessIndicator)
                                     .font(.title3)
                                     .fontWeight(.bold)
-                                    .foregroundColor(bean.isStale ? .warningOrange : .successGreen)
+                                    .foregroundColor(freshnessColor(for: bean.freshnessLevel))
                                 Text(LocalizedString.get("freshness"))
                                     .font(.caption)
                                     .foregroundColor(.textSecondary)
@@ -403,6 +403,16 @@ struct BeanDetailView: View {
             dismiss()
         } catch {
             print("Error deleting bean: \(error)")
+        }
+    }
+
+    private func freshnessColor(for level: Int) -> Color {
+        switch level {
+        case 0: return .successGreen      // Very Fresh (0-7 days) - bright green
+        case 1: return .freshGreen        // Fresh (8-14 days) - darker green
+        case 2: return .goodBlue          // Good (15-21 days) - blue
+        case 3: return .warningOrange     // Aging (22-30 days) - orange
+        default: return .errorRed         // Stale (>30 days) - red
         }
     }
 }

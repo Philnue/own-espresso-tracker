@@ -270,11 +270,11 @@ struct BeanCardView: View {
 
     private func freshnessColor(for level: Int) -> Color {
         switch level {
-        case 0: return .successGreen      // Very Fresh - bright green
-        case 1: return .successGreen      // Fresh - green
-        case 2: return .espressoBrown     // Good - brown
-        case 3: return .warningOrange     // Aging - orange
-        default: return .errorRed         // Stale - red
+        case 0: return .successGreen      // Very Fresh (0-7 days) - bright green
+        case 1: return .freshGreen        // Fresh (8-14 days) - darker green
+        case 2: return .goodBlue          // Good (15-21 days) - blue
+        case 3: return .warningOrange     // Aging (22-30 days) - orange
+        default: return .errorRed         // Stale (>30 days) - red
         }
     }
 }

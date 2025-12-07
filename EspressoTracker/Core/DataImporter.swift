@@ -40,8 +40,11 @@ class DataImporter {
                 weight: beanExport.weight,
                 notes: beanExport.notes,
                 createdAt: beanExport.createdAt,
-                updatedAt: beanExport.createdAt
+                updatedAt: beanExport.createdAt,
+                batchNumber: beanExport.batchNumber,
+                purchaseDate: beanExport.purchaseDate
             )
+            bean.isArchived = beanExport.isArchived
             modelContext.insert(bean)
             beanMap[bean.id] = bean
         }
@@ -99,6 +102,13 @@ class DataImporter {
                 rating: sessionExport.rating,
                 notes: sessionExport.notes,
                 createdAt: sessionExport.createdAt,
+                acidity: sessionExport.acidity,
+                sweetness: sessionExport.sweetness,
+                bitterness: sessionExport.bitterness,
+                bodyWeight: sessionExport.bodyWeight,
+                aftertaste: sessionExport.aftertaste,
+                puckPrepWDT: sessionExport.puckPrepWDT,
+                puckPrepRDT: sessionExport.puckPrepRDT,
                 grinder: sessionExport.grinderId.flatMap { grinderMap[$0] },
                 machine: sessionExport.machineId.flatMap { machineMap[$0] },
                 bean: sessionExport.beanId.flatMap { beanMap[$0] }
